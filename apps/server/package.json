@@ -1,0 +1,62 @@
+{
+  "name": "@resourvereign/server",
+  "private": true,
+  "version": "1.0.0",
+  "author": {
+    "name": "Dani Lupión",
+    "email": "danilupion@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "start:dev": "nodemon --watch src --watch config -e ts,json --ignore '**/*.spec.*' --exec 'ts-node --esm --project tsconfig.dev.json ./src/server.ts'",
+    "start:prod": "ts-node --esm --project tsconfig.json ./src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "build:check": "tsc -p tsconfig.json --noEmit",
+    "test": "jest --passWithNoTests",
+    "test:watch": "jest --watch --onlyChanged",
+    "lint:fix": "eslint -c .eslintrc.json 'src/**/*.ts' --fix",
+    "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
+    "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\"",
+    "cli": "ts-node --esm --project tsconfig.json ./src/cli/index.ts"
+  },
+  "dependencies": {
+    "@slangy/mongo": "^1.0.0",
+    "@slangy/server": "^1.0.0",
+    "@resourvereign/common": "1.0.0",
+    "chalk": "^5.3.0",
+    "config": "^3.3.9",
+    "express-validator": "^7.0.1",
+    "ts-node": "^10.9.1",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/config": "^3.3.1",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^20.6.2",
+    "@types/yargs": "^17.0.24",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-jest": "^27.4.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^14.0.1",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  },
+  "lint-staged": {
+    "src/**/*.{js,cjs}": [
+      "yarn prettify"
+    ],
+    "src/**/*.{ts,json}": [
+      "yarn prettify",
+      "yarn lint:fix --max-warnings=0",
+      "yarn test"
+    ]
+  }
+}

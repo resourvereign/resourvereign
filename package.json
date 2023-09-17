@@ -1,0 +1,46 @@
+{
+  "name": "resourvereign",
+  "private": true,
+  "repository": "git@github.com:danilupion/resourvereign.git",
+  "author": {
+    "name": "Dani Lupión",
+    "email": "danilupion@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "start:dev:client": "yarn workspace @resourvereign/client start:dev",
+    "start:dev:server": "yarn workspace @resourvereign/server start:dev",
+    "start:dev": "yarn run:parallel 'yarn start:dev:client' 'yarn start:dev:server'",
+    "start:prod:server": "yarn workspace @resourvereign/server start:prod",
+    "test:common": "yarn workspace @resourvereign/common test",
+    "test:client": "yarn workspace @resourvereign/client test",
+    "test:server": "yarn workspace @resourvereign/server test",
+    "test:watch:common": "yarn workspace @resourvereign/common test:watch",
+    "test:watch:client": "yarn workspace @resourvereign/client test:watch",
+    "test:watch:server": "yarn workspace @resourvereign/server test:watch",
+    "build:watch:common": "yarn workspace @resourvereign/common build:watch",
+    "build:check:common": "yarn workspace @resourvereign/common build:check",
+    "build:check:client": "yarn workspace @resourvereign/client build:check",
+    "build:check:server": "yarn workspace @resourvereign/server build:check",
+    "build:common": "yarn workspace @resourvereign/common build",
+    "build:client": "yarn workspace @resourvereign/client build",
+    "build:server": "yarn workspace @resourvereign/server build",
+    "build:apps": "yarn run:parallel 'yarn build:client' 'yarn build:server'",
+    "build": "./scripts/build.sh",
+    "build:check": "yarn build:check:common && yarn build:check:client && yarn build:check:server",
+    "run:parallel": "./scripts/run-parallel.sh",
+    "clean:install": "./scripts/clean-install.sh",
+    "clean:build": "./scripts/clean-build.sh",
+    "clean": "yarn run:parallel 'yarn clean:install' 'yarn clean:build'",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "husky": "^8.0.3"
+  }
+}

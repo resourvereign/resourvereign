@@ -1,0 +1,20 @@
+{
+  "environment": "development",
+  "server": {
+    "bodyParserLimits": {
+      "json": "5mb"
+    },
+    "port": 3700
+  },
+  "mongodb": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "database": "test"
+  },
+  "auth": {
+    "jwt": {
+      "secret": "RANDOM STRING, CHANGE ME",
+      "expiration": "7d"
+    }
+  }
+}

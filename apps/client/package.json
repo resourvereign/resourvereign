@@ -1,0 +1,80 @@
+{
+  "name": "@resourvereign/client",
+  "private": true,
+  "version": "1.0.0",
+  "author": {
+    "name": "Dani Lupión",
+    "email": "danilupion@gmail.com"
+  },
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "start:dev": "vite",
+    "build": "tsc && vite build",
+    "build:check": "tsc --noEmit && vite build --config vite.config-no-write.js",
+    "test": "vitest run --coverage",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui",
+    "lint:fix": "eslint src utils --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
+    "lint": "eslint src utils --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "prettify": "prettier --write  \"./src/**/*.{cjs,js,ts,tsx,json,scss,css}\""
+  },
+  "dependencies": {
+    "@slangy/client": "^1.0.0",
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "@resourvereign/common": "1.0.0",
+    "classnames": "^2.3.2",
+    "formik": "^2.4.4",
+    "i18next": "^23.5.1",
+    "i18next-browser-languagedetector": "^7.1.0",
+    "jwt-decode": "^3.1.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^13.2.2",
+    "react-router-dom": "^6.16.0",
+    "swr": "^2.2.2",
+    "vite-plugin-svgr": "^3.2.0",
+    "zustand": "^4.4.1"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.1.3",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/react-hooks": "^8.0.1",
+    "@testing-library/user-event": "^14.5.1",
+    "@types/jsonwebtoken": "^9.0.3",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.7.0",
+    "@typescript-eslint/parser": "^6.7.0",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "@vitest/coverage-v8": "^0.34.4",
+    "@vitest/ui": "^0.34.4",
+    "autoprefixer": "^10.4.15",
+    "eslint": "^8.49.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "jsdom": "^22.1.0",
+    "lint-staged": "^14.0.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.4"
+  },
+  "lint-staged": {
+    "src/**/*.{js,cjs,json}": [
+      "yarn prettify"
+    ],
+    "src/**/*.{ts,tsx}": [
+      "yarn prettify",
+      "yarn lint:fix --max-warnings=0",
+      "yarn test"
+    ]
+  }
+}

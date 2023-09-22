@@ -17,5 +17,13 @@
       "rememberMe": "Recuérdame",
       "submit": "Iniciar sesión"
     }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "message": "La página que estás buscando no existe.",
+    "buttons": {
+      "goBack": "Volver atrás",
+      "goHome": "Ir a la página de inicio"
+    }
   }
 }

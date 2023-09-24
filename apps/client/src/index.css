@@ -1,0 +1,17 @@
+/* primeflex*/
+@import 'primeflex/primeflex.css';
+
+/* primereact theme */
+@import 'primereact/resources/themes/lara-light-indigo/theme.css';
+
+/* primereact core */
+@import 'primereact/resources/primereact.css';
+
+/* primeicons */
+@import 'primeicons/primeicons.css';
+
+html,
+body,
+#root {
+  font-family: var(--font-family);
+}

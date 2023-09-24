@@ -1,29 +1,55 @@
 {
-  "signIn": {
-    "error": {
-      "title": "Error",
-      "message": "Could not sign in. Please check your credentials."
-    },
-    "title": "Sign in",
-    "form": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Type your email address"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Type your password"
-      },
-      "rememberMe": "Remember me",
-      "submit": "Sign in"
+  "menu": {
+    "items": {
+      "home": "Home",
+      "calendar": "Calendar",
+      "settings": "Settings",
+      "logs": "Logs"
     }
   },
-  "notFound": {
-    "title": "Page not found",
-    "message": "The page you are looking for does not exist.",
-    "buttons": {
-      "goBack": "Go back",
+  "pages": {
+    "home": {
+      "title": "Home",
+      "body": "Welcome to the home page!"
+    },
+    "signIn": {
+      "error": {
+        "title": "Error",
+        "message": "Could not sign in. Please check your credentials."
+      },
+      "title": "Sign in",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Type your email address"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Type your password"
+        },
+        "rememberMe": "Remember me",
+        "submit": "Sign in"
+      }
+    },
+    "calendar": {
+      "title": "Calendar",
+      "body": "Welcome to the calendar page!"
+    },
+    "settings": {
+      "title": "Settings",
+      "body": "Welcome to the settings page!"
+    },
+    "logs": {
+      "title": "Logs",
+      "body": "Welcome to the logs page!"
+    },
+    "notFound": {
+      "title": "Page not found",
+      "message": "The page you are looking for does not exist.",
+      "buttons": {
+        "goBack": "Go back",
         "goHome": "Go home"
+      }
     }
   }
 }

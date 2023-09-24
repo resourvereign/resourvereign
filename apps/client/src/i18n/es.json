@@ -1,29 +1,55 @@
 {
-  "signIn": {
-    "error": {
-      "title": "Error",
-      "message": "No se pudo iniciar sesión. Por favor, compruebe sus credenciales."
-    },
-    "title": "Iniciar sesión",
-    "form": {
-      "email": {
-        "label": "Email",
-        "placeholder": "Escribe tu email"
-      },
-      "password": {
-        "label": "Password",
-        "placeholder": "Escribe tu password"
-      },
-      "rememberMe": "Recuérdame",
-      "submit": "Iniciar sesión"
+  "menu": {
+    "items": {
+      "home": "Inicio",
+      "calendar": "Calendario",
+      "settings": "Configuración",
+      "logs": "Logs"
     }
   },
-  "notFound": {
-    "title": "Página no encontrada",
-    "message": "La página que estás buscando no existe.",
-    "buttons": {
-      "goBack": "Volver atrás",
-      "goHome": "Ir a la página de inicio"
+  "pages": {
+    "home": {
+      "title": "Inicio",
+      "body": "Bienvenido a la página de inicio."
+    },
+    "signIn": {
+      "error": {
+        "title": "Error",
+        "message": "No se pudo iniciar sesión. Por favor, compruebe sus credenciales."
+      },
+      "title": "Iniciar sesión",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Escribe tu email"
+        },
+        "password": {
+          "label": "Password",
+          "placeholder": "Escribe tu password"
+        },
+        "rememberMe": "Recuérdame",
+        "submit": "Iniciar sesión"
+      }
+    },
+    "calendar": {
+      "title": "Calendario",
+      "body": "Bienvenido a la página de calendario."
+    },
+    "settings": {
+      "title": "Configuración",
+      "body": "Bienvenido a la página de configuración."
+    },
+    "logs": {
+      "title": "Logs",
+      "body": "Bienvenido a la página de logs."
+    },
+    "notFound": {
+      "title": "Página no encontrada",
+      "message": "La página que estás buscando no existe.",
+      "buttons": {
+        "goBack": "Volver atrás",
+        "goHome": "Ir a la página de inicio"
+      }
     }
   }
 }

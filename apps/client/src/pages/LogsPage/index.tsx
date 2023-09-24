@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 
-const HomePage = () => {
-  const { t } = useTranslation('pages', { keyPrefix: 'home' });
+const LogsPage = () => {
+  const { t } = useTranslation('pages', { keyPrefix: 'logs' });
 
   return (
     <div>
@@ -11,4 +11,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default LogsPage;

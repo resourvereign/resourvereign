@@ -15,7 +15,15 @@
         "placeholder": "Type your password"
       },
       "rememberMe": "Remember me",
-        "submit": "Sign in"
+      "submit": "Sign in"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you are looking for does not exist.",
+    "buttons": {
+      "goBack": "Go back",
+        "goHome": "Go home"
     }
   }
 }

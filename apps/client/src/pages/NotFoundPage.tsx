@@ -1,35 +1,40 @@
+import { Button } from 'primereact/button';
+import { Card } from 'primereact/card';
 import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import Page from '../components/Page';
+import LinkButton from '../components/LinkButton';
 
 type NotFoundPageProps = {
   homeTo: string;
 };
 
 const NotFoundPage = ({ homeTo }: NotFoundPageProps) => {
-  const { t } = useTranslation('notFoundPage');
+  const { t } = useTranslation('notFound');
   const navigate = useNavigate();
   const onGoBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
   return (
-    <Page title={t('title')} className="min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
-      <p className="mt-6 text-base leading-7 text-gray-600">{t('body')}</p>
-      <div className="mt-10 flex items-center justify-center gap-x-6">
-        <button
-          onClick={onGoBack}
-          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          {t('actions.back')}
-        </button>
-        <Link to={homeTo} className="text-sm font-semibold text-gray-900">
-          {t('actions.home')}
-        </Link>
-      </div>
-    </Page>
+    <Card
+      className="p-4 shadow-2 border-round w-full lg:w-4"
+      title={t('title')}
+      footer={
+        <div className="flex flex-wrap justify-content-end gap-2">
+          <Button label={t('buttons.goBack')} icon="pi pi-chevron-circle-left" onClick={onGoBack} />
+          <LinkButton
+            to={homeTo}
+            label={t('buttons.goHome')}
+            icon="pi pi-home"
+            className="p-button-outlined p-button-secondary"
+          />
+        </div>
+      }
+    >
+      <p className="">{t('message')}</p>
+    </Card>
   );
 };
 

@@ -24,7 +24,9 @@ function ResourVereignApp() {
             <Route path="" element={<SignInPage />} />
           </Route>
         </Route>
-        <Route path="*" element={<NotFoundPage homeTo={routes.home} />} />
+        <Route path="*" element={<HeadlessLayout />}>
+          <Route path="*" element={<NotFoundPage homeTo={routes.home} />} />
+        </Route>
       </Routes>
     </Suspense>
   );

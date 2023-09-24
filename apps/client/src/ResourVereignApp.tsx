@@ -5,8 +5,11 @@ import NotSignedInGuard from './guards/NotSignedInGuard';
 import SignedInGuard from './guards/SignedInGuard';
 import DefaultLayout from './layouts/DefaultLayout';
 import HeadlessLayout from './layouts/HeadlessLayout';
+import CalendarPage from './pages/CalendarPage';
 import HomePage from './pages/HomePage';
+import LogsPage from './pages/LogsPage';
 import NotFoundPage from './pages/NotFoundPage';
+import SettingsPage from './pages/SettingsPage';
 import SignInPage from './pages/SignInPage';
 import routes from './shared/routes';
 
@@ -15,8 +18,11 @@ function ResourVereignApp() {
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
         <Route path={routes.home} element={<SignedInGuard redirectTo={routes.signIn} />}>
-          <Route path="" element={<DefaultLayout />}>
-            <Route path="" element={<HomePage />} />
+          <Route element={<DefaultLayout />}>
+            <Route path={routes.home} element={<HomePage />} />
+            <Route path={routes.calendar} element={<CalendarPage />} />
+            <Route path={routes.settings} element={<SettingsPage />} />
+            <Route path={routes.logs} element={<LogsPage />} />
           </Route>
         </Route>
         <Route path={routes.signIn} element={<NotSignedInGuard />}>

@@ -1,0 +1,33 @@
+.sign-in {
+  .header {
+    img {
+      height: 50px;
+    }
+
+    div {
+      &.title {
+      }
+    }
+  }
+
+  form {
+    input {
+    }
+
+    .password {
+      input {
+      }
+    }
+
+    .remember-me {
+      & > div {
+      }
+
+      label {
+      }
+    }
+
+    button {
+    }
+  }
+}

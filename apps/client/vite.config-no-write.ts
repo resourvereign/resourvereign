@@ -8,4 +8,15 @@ export default defineConfig({
   build: {
     write: false,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        includePaths: ['./src'],
+        jit: true,
+      },
+    },
+    modules: {
+      localsConvention: 'camelCaseOnly',
+    },
+  },
 });

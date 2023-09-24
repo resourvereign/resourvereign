@@ -11,7 +11,7 @@ type NotFoundPageProps = {
 };
 
 const NotFoundPage = ({ homeTo }: NotFoundPageProps) => {
-  const { t } = useTranslation('notFound');
+  const { t } = useTranslation('pages', { keyPrefix: 'notFound' });
   const navigate = useNavigate();
   const onGoBack = useCallback(() => {
     navigate(-1);

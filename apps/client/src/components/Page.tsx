@@ -8,7 +8,7 @@ type PageProps = PropsWithChildren<{
 
 const Page = ({ children, title, className }: PageProps) => {
   return (
-    <main className={classNames(className, 'grid')}>
+    <main className={classNames(className)}>
       {title && <h1>{title}</h1>}
       {children}
     </main>

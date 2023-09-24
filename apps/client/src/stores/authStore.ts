@@ -125,5 +125,3 @@ export const authStoreFactory = () =>
       },
     };
   });
-
-export default authStoreFactory();

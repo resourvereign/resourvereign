@@ -1,1 +1,21 @@
-{}
+{
+  "signIn": {
+    "error": {
+      "title": "Error",
+      "message": "No se pudo iniciar sesión. Por favor, compruebe sus credenciales."
+    },
+    "title": "Iniciar sesión",
+    "form": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Escribe tu email"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Escribe tu password"
+      },
+      "rememberMe": "Recuérdame",
+      "submit": "Iniciar sesión"
+    }
+  }
+}

@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
-import useAuthStore from '../stores/authStore';
+import useAuth from '../hooks/useAuth';
 
 interface SignedInGuardProps {
   redirectTo?: string;
 }
 
 const SignedInGuard = ({ redirectTo = '/' }: SignedInGuardProps) => {
-  const { user } = useAuthStore();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const signedIn = !!user;

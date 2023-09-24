@@ -1,1 +1,21 @@
-{}
+{
+  "signIn": {
+    "error": {
+      "title": "Error",
+      "message": "Could not sign in. Please check your credentials."
+    },
+    "title": "Sign in",
+    "form": {
+      "email": {
+        "label": "Email",
+        "placeholder": "Type your email address"
+      },
+      "password": {
+        "label": "Password",
+        "placeholder": "Type your password"
+      },
+      "rememberMe": "Remember me",
+        "submit": "Sign in"
+    }
+  }
+}

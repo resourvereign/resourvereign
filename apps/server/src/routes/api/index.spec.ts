@@ -4,7 +4,7 @@ import server from '@slangy/server/test-utils/server.js';
 
 import router from './index.js';
 
-routes(router, '/api', ['/auth']);
+routes(router, '/api', ['/auth', '/me', '/plugins']);
 
 describe('/api', () => {
   describe('Should fail for unsupported routes', () => {

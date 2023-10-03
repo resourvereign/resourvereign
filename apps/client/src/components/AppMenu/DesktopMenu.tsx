@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { Button } from 'primereact/button';
 import { NavLink } from 'react-router-dom';
 
-import useAuth from '../../hooks/useAuth';
+import useAuthStore from '../../hooks/useAuthStore';
 
 import styles from './DesktopMenu.module.css';
 import { MenuItem } from './shared';
@@ -33,7 +33,7 @@ type DesktopMenuProps = {
 };
 
 const DesktopMenu = ({ home, items }: DesktopMenuProps) => {
-  const { logout } = useAuth();
+  const { logout } = useAuthStore();
 
   return (
     <div

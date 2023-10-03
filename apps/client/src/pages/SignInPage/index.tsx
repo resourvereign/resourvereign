@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import useAuth from '../../hooks/useAuth';
+import useAuthStore from '../../hooks/useAuthStore';
 
 import styles from './index.module.css';
 
@@ -20,7 +20,7 @@ type SignInValues = {
 
 const SignInPage = () => {
   const { t } = useTranslation('pages', { keyPrefix: 'signIn' });
-  const { login } = useAuth();
+  const { login } = useAuthStore();
   const { register, handleSubmit, control } = useForm<SignInValues>({
     defaultValues: { email: '', password: '', rememberMe: false },
   });

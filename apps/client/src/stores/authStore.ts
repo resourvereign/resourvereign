@@ -33,6 +33,7 @@ const userFromToken = (token: string): LoggedUser | undefined => {
   if (exp * 1000 < Date.now()) {
     return undefined;
   }
+
   // TODO: perform toke validation
 
   return {

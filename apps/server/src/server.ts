@@ -6,9 +6,12 @@ import server from '@slangy/server/helpers/express/server.js';
 import config from 'config';
 
 import routes from './routes/index.js';
+import { initializePlugins } from './utils/plugin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+await initializePlugins();
 
 server({
   port: config.get<number>('server.port'),

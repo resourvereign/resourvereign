@@ -8,14 +8,9 @@ import styles from './index.module.css';
 
 const DefaultLayout = () => {
   return (
-    <div
-      className={classNames(
-        styles.container,
-        'min-h-screen flex relative lg:static surface-ground',
-      )}
-    >
+    <div className={classNames(styles.container, 'min-h-screen flex  surface-ground')}>
       <AppMenu />
-      <main className="min-h-screen flex flex-column relative flex-auto">
+      <main className="min-h-screen flex flex-column  flex-auto">
         <div className={classNames(styles.container, 'p-5 flex flex-column flex-auto')}>
           <div
             className={classNames(

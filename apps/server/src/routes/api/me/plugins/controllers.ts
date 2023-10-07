@@ -3,6 +3,7 @@ import {
   MyPluginsRes,
   PluginStatus,
 } from '@resourvereign/common/api/me/plugins.js';
+import { LogLevel } from '@resourvereign/common/models/log.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -13,6 +14,7 @@ import { ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
+import LogModel from '../../../../models/log.js';
 import PluginModel, { PluginDocument } from '../../../../models/plugin.js';
 import { isPluginAvailable } from '../../../../utils/plugin.js';
 
@@ -51,6 +53,12 @@ export const createPlugin = controller<
   ResponseWithBody<MyPluginsRes>
 >(async (req, res) => {
   const plugin = await PluginModel.create({ ...req.body, user: req.jwtUser.id });
+
+  await LogModel.create({
+    user: req.jwtUser.id,
+    level: LogLevel.ERROR,
+    message: `Plugin ${plugin.name} created`,
+  });
 
   return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
 });

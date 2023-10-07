@@ -40,8 +40,11 @@
       "body": "Bienvenido a la página de configuración."
     },
     "logs": {
-      "title": "Logs",
-      "body": "Bienvenido a la página de logs."
+      "fields": {
+        "date": "Fecha",
+        "level": "Nivel",
+        "message": "Mensaje"
+      }
     },
     "notFound": {
       "title": "Página no encontrada",

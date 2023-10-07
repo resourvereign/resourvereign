@@ -40,8 +40,11 @@
       "body": "Welcome to the settings page!"
     },
     "logs": {
-      "title": "Logs",
-      "body": "Welcome to the logs page!"
+      "fields": {
+        "date": "Time",
+        "level": "Level",
+        "message": "Message"
+      }
     },
     "notFound": {
       "title": "Page not found",

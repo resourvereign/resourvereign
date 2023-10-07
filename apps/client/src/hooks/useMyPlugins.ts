@@ -6,7 +6,7 @@ import {
   listMyPlugins,
   removeMyPlugin,
   updateMyPlugin,
-} from '../api/me';
+} from '../api/me/plugins';
 import { itemsStoreFactory } from '../stores/itemsStore';
 
 import createDataHook from './useData';

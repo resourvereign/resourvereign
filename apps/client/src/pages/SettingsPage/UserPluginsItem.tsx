@@ -1,8 +1,7 @@
-import { PluginStatus } from '@resourvereign/common/api/me.js';
 import classNames from 'classnames';
 import { Button } from 'primereact/button';
 
-import { MyPlugin } from '../../api/me';
+import { MyPlugin, PluginStatus } from '../../api/me/plugins';
 
 type PluginActions = {
   onEdit: () => void;

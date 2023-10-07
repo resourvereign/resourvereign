@@ -23,9 +23,9 @@ export type PluginConfig = {
   [key: string]: string;
 };
 
-export interface Plugin<Config extends PluginConfig = PluginConfig> extends WithTimestamps {
+export type Plugin<Config extends PluginConfig = PluginConfig> = WithTimestamps & {
   type: PluginType;
   name: string;
   label: string;
   config: Config;
-}
+};

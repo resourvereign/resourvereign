@@ -1,7 +1,12 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
-import { MyPluginInputReq, MyPluginRes, MyPluginsRes } from '@resourvereign/common/api/me.js';
+import {
+  MyPluginInputReq,
+  MyPluginRes,
+  MyPluginsRes,
+} from '@resourvereign/common/api/me/plugins.js';
 import { PluginConfig } from '@resourvereign/common/models/plugin.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
+export { PluginStatus } from '@resourvereign/common/api/me/plugins.js';
 
 const basePath = '/api/me/plugins';
 

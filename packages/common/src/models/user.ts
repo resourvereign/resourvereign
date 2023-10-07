@@ -6,7 +6,8 @@ export enum UserRole {
   admin = 'admin',
 }
 
-export interface User extends WithEmail, WithTimestamps {
-  username: string;
-  role: UserRole;
-}
+export type User = WithEmail &
+  WithTimestamps & {
+    username: string;
+    role: UserRole;
+  };

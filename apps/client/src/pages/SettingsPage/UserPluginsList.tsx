@@ -1,6 +1,6 @@
 import { DataView } from 'primereact/dataview';
 
-import { MyPlugin } from '../../api/me';
+import { MyPlugin } from '../../api/me/plugins';
 import useMyPlugins from '../../hooks/useMyPlugins';
 
 import UserPluginsItem from './UserPluginsItem';

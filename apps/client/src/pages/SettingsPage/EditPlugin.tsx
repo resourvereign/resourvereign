@@ -1,4 +1,3 @@
-import { PluginSchema } from '@resourvereign/common/api/plugins.js';
 import { toStartCase } from '@slangy/client/string.js';
 import classNames from 'classnames';
 import { Button } from 'primereact/button';
@@ -7,7 +6,8 @@ import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyPluginInput } from '../../api/me';
+import { MyPluginInput } from '../../api/me/plugins';
+import { PluginSchema } from '../../api/plugins';
 import useMyPlugins from '../../hooks/useMyPlugins';
 import styles from '../SignInPage/index.module.css';
 

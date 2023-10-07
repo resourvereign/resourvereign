@@ -1,10 +1,10 @@
-import { PluginSchema } from '@resourvereign/common/api/plugins.js';
 import { Button } from 'primereact/button';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { useCallback, useState } from 'react';
 
-import { MyPlugin, MyPluginInput } from '../../api/me';
+import { MyPlugin, MyPluginInput } from '../../api/me/plugins';
 import { Plugin } from '../../api/plugins';
+import { PluginSchema } from '../../api/plugins';
 import useMyPlugins from '../../hooks/useMyPlugins';
 import usePlugins from '../../hooks/usePlugins';
 

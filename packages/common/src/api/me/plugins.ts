@@ -1,6 +1,5 @@
-import { Plugin, PluginConfig } from '../models/plugin.js';
-
-import { ApiModel } from './common.js';
+import { Plugin, PluginConfig } from '../../models/plugin.js';
+import { ApiModel } from '../common.js';
 
 export enum PluginStatus {
   enabled = 'enabled',

@@ -1,4 +1,8 @@
-import { MyPluginInputReq, MyPluginsRes, PluginStatus } from '@resourvereign/common/api/me.js';
+import {
+  MyPluginInputReq,
+  MyPluginsRes,
+  PluginStatus,
+} from '@resourvereign/common/api/me/plugins.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,

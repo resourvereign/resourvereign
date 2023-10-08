@@ -9,11 +9,12 @@ import controller, {
   RequestWithParams,
   ResponseWithBody,
 } from '@slangy/server/helpers/express/controller.js';
-import { ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
+import { ClientErrorBadRequest, ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
+import PluginModel from '../../../../models/plugin.js';
 
 export const intentById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { intent: IntentDocument }>>
@@ -34,7 +35,7 @@ export const intentById = controller<
 // TODO: add pagination
 export const getIntents = controller<RequestWithFields<JwtData>, ResponseWithBody<MyIntentsRes>>(
   async (req, res) => {
-    const intents = await IntentModel.find({ user: req.jwtUser.id }).exec();
+    const intents = await IntentModel.find({ user: req.jwtUser.id }).populate('resource').exec();
     return res.status(SuccessStatusCode.SuccessOK).send(intents.map((log) => log.toJSON()));
   },
 );
@@ -43,18 +44,35 @@ export const createIntent = controller<
   RequestWithBody<MyIntentInputReq, RequestWithFields<JwtData>>,
   ResponseWithBody<MyIntentRes>
 >(async (req, res) => {
-  const intent = await IntentModel.create({ ...req.body, user: req.jwtUser.id });
+  const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
+
+  if (!plugin) {
+    throw new ClientErrorBadRequest();
+  }
+
+  const intent = await (
+    await IntentModel.create({ ...req.body, user: req.jwtUser.id })
+  ).populate('resource');
 
   return res.status(SuccessStatusCode.SuccessCreated).send(intent.toJSON());
 });
 
 export const updateIntent = controller<
-  RequestWithBody<MyIntentInputReq, RequestWithFields<{ intent: IntentDocument }>>,
+  RequestWithBody<MyIntentInputReq, RequestWithFields<JwtData & { intent: IntentDocument }>>,
   ResponseWithBody<MyIntentRes>
 >(async (req, res) => {
+  const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
+
+  if (!plugin) {
+    throw new ClientErrorBadRequest();
+  }
+
   const intent = req.intent;
 
-  intent.set(req.body);
+  intent.set({
+    ...req.body,
+    resource: plugin,
+  });
   await intent.save();
 
   return res.status(SuccessStatusCode.SuccessCreated).send(intent.toJSON());

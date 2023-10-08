@@ -1,7 +1,6 @@
 import {
   MyPlugin,
-  MyPluginCreateInput,
-  MyPluginUpdateInput,
+  PluginType,
   createMyPlugin,
   listMyPlugins,
   removeMyPlugin,
@@ -13,7 +12,10 @@ import createDataHook from './useData';
 
 const myPluginsStore = itemsStoreFactory<MyPlugin>({});
 
-const useMyPlugins = createDataHook<MyPlugin, MyPluginCreateInput, MyPluginUpdateInput>({
+const useMyPlugins = createDataHook({
+  extraPropertiesFactory: (plugins) => ({
+    resources: plugins.filter((plugin) => plugin.type === PluginType.Resource),
+  }),
   key: 'myPlugins',
   store: myPluginsStore,
   fetcher: listMyPlugins,

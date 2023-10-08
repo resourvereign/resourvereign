@@ -1,7 +1,5 @@
 import {
   MyIntent,
-  MyIntentCreateInput,
-  MyIntentUpdateInput,
   createMyIntent,
   listMyIntents,
   removeMyIntent,
@@ -13,7 +11,7 @@ import createDataHook from './useData';
 
 const myIntentsStore = itemsStoreFactory<MyIntent>({});
 
-const useMyIntents = createDataHook<MyIntent, MyIntentCreateInput, MyIntentUpdateInput>({
+const useMyIntents = createDataHook({
   key: 'myIntents',
   store: myIntentsStore,
   fetcher: listMyIntents,

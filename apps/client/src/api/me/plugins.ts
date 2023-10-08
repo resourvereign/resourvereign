@@ -6,7 +6,7 @@ import {
 } from '@resourvereign/common/api/me/plugins.js';
 import { PluginConfig } from '@resourvereign/common/models/plugin.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
-export { PluginStatus } from '@resourvereign/common/api/me/plugins.js';
+export { PluginStatus, PluginType } from '@resourvereign/common/api/me/plugins.js';
 
 const basePath = '/api/me/plugins';
 
@@ -26,15 +26,15 @@ export type MyPluginInput<T extends PluginConfig = DefaultPluginConfig> =
   | MyPluginCreateInput<T>;
 
 export const listMyPlugins = async () => await getRequest<MyPluginsRes>(basePath);
-export const createMyPlugin = async <T extends PluginConfig>(plugin: MyPluginCreateInput<T>) =>
-  await postRequest<MyPluginInputReq<T>, MyPluginRes>(basePath, plugin);
+export const createMyPlugin = async (plugin: MyPluginCreateInput) =>
+  await postRequest<MyPluginInputReq, MyPluginRes>(basePath, plugin);
 
-export const updateMyPlugin = async <T extends PluginConfig>(plugin: MyPluginUpdateInput<T>) => {
+export const updateMyPlugin = async (plugin: MyPluginUpdateInput) => {
   const { id, ...rest } = plugin;
-  return await putRequest<MyPluginInputReq<T>, MyPluginRes>(`${basePath}/${id}`, rest);
+  return await putRequest<MyPluginInputReq, MyPluginRes>(`${basePath}/${id}`, rest);
 };
 
-export const createOrUpdateMyPlugin = async <T extends PluginConfig>(plugin: MyPluginInput<T>) => {
+export const createOrUpdateMyPlugin = async (plugin: MyPluginInput) => {
   if ('id' in plugin) {
     return await updateMyPlugin(plugin);
   }

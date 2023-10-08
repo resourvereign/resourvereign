@@ -2,23 +2,25 @@ import useSWR from 'swr';
 
 import { ItemsStore } from '../stores/itemsStore';
 
-type UseDataFactoryParams<ItemType, CreateItemType, UpdateItemType> = {
+type UseDataFactoryParams<ItemType, CreateItemType, UpdateItemType, ExtraProperties> = {
   key: string;
   store: () => ItemsStore<ItemType>;
   fetcher: () => Promise<ItemType[]>;
   creator: (item: CreateItemType) => Promise<ItemType>;
   updater: (item: UpdateItemType) => Promise<ItemType>;
   remover: (item: ItemType) => Promise<void>;
+  extraPropertiesFactory?: (data: ItemType[]) => ExtraProperties;
 };
 
-function useDataFactory<ItemType, CreateItemType, UpdateItemType>({
+function useDataFactory<ItemType, CreateItemType, UpdateItemType, ExtraProperties>({
   key,
   store,
   fetcher,
   creator,
   remover,
   updater,
-}: UseDataFactoryParams<ItemType, CreateItemType, UpdateItemType>) {
+  extraPropertiesFactory,
+}: UseDataFactoryParams<ItemType, CreateItemType, UpdateItemType, ExtraProperties>) {
   return function useData() {
     const { data, set, add: addItem, update: updateItem, remove: removeItem } = store();
 
@@ -31,6 +33,8 @@ function useDataFactory<ItemType, CreateItemType, UpdateItemType>({
         return data;
       }
     });
+
+    const extraProperties = extraPropertiesFactory ? extraPropertiesFactory(data) : undefined;
 
     return {
       data: data,
@@ -48,6 +52,7 @@ function useDataFactory<ItemType, CreateItemType, UpdateItemType>({
         const updatedItem = await updater(item);
         updateItem(updatedItem);
       },
+      ...(extraProperties as ExtraProperties),
     };
   };
 }

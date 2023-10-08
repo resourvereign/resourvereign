@@ -8,26 +8,30 @@ import EditIntentDialog from './EditIntentDialog';
 
 const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [edittingIntent, setEdittingIntent] = useState<MyIntentInput | undefined>(undefined);
+  const [editingIntent, setEditingIntent] = useState<MyIntentInput | undefined>(undefined);
   const { data: myIntents } = useMyIntents();
 
   const handleEventClick = useCallback((event: CalendarEvent<MyIntent>) => {
-    setEdittingIntent(event.data);
+    setEditingIntent({
+      ...event.data,
+      resource: event.data.resource.id,
+    });
   }, []);
 
   const handleEditionFinished = useCallback(() => {
-    setEdittingIntent(undefined);
+    setEditingIntent(undefined);
   }, []);
 
   const handleDayClick = useCallback((day: Date) => {
-    setEdittingIntent({
+    setEditingIntent({
       date: day,
+      resource: '',
     });
   }, []);
 
   return (
     <>
-      <EditIntentDialog intent={edittingIntent} onFinished={handleEditionFinished} />
+      <EditIntentDialog intent={editingIntent} onFinished={handleEditionFinished} />
       <div className="h-full">
         <Calendar
           month={currentMonth}
@@ -36,7 +40,7 @@ const CalendarPage = () => {
           onEventClick={handleEventClick}
           events={myIntents.map((intent) => ({
             date: intent.date,
-            text: 'Change me',
+            text: `${intent.resource.label} (${intent.resource.name})`,
             data: intent,
           }))}
         />

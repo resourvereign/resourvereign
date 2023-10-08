@@ -1,0 +1,37 @@
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.cell {
+  flex: 1 1 0;
+}
+
+.cell + .cell {
+  border-left: 1px solid #ddd; /* vertical border */
+}
+
+.fillerDay {
+  color: darkgrey;
+}
+
+.headerCell {
+  border: none !important;
+  font-weight: bold;
+}
+
+.weekDaysRow {
+  margin-bottom: 10px;
+}
+
+.headerRow {
+  font-weight: bold;
+}
+
+.bodyRow + .bodyRow {
+  border-top: 1px solid #ddd; /* vertical border */
+}
+
+.event {
+  background-color: #e3a1ff;
+}

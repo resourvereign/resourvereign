@@ -84,7 +84,7 @@ const EditPlugin = ({ plugin, schema, onFinished }: EditPluginProps) => {
         </div>
       ))}
       <div className="col-12">
-        <Button className="w-auto ">{'id' in plugin ? 'Save' : 'Add'}</Button>
+        <Button className="w-auto">{'id' in plugin ? 'Save' : 'Add'}</Button>
       </div>
     </form>
   );

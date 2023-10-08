@@ -1,5 +1,6 @@
 import {
   MyPluginInputReq,
+  MyPluginRes,
   MyPluginsRes,
   PluginStatus,
 } from '@resourvereign/common/api/me/plugins.js';
@@ -50,7 +51,7 @@ export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBod
 
 export const createPlugin = controller<
   RequestWithBody<MyPluginInputReq, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyPluginsRes>
+  ResponseWithBody<MyPluginRes>
 >(async (req, res) => {
   const plugin = await PluginModel.create({ ...req.body, user: req.jwtUser.id });
 
@@ -65,7 +66,7 @@ export const createPlugin = controller<
 
 export const updatePlugin = controller<
   RequestWithBody<MyPluginInputReq, RequestWithFields<{ plugin: PluginDocument<never> }>>,
-  ResponseWithBody<MyPluginsRes>
+  ResponseWithBody<MyPluginRes>
 >(async (req, res) => {
   const plugin = req.plugin;
 

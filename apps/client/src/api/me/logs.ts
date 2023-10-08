@@ -1,7 +1,8 @@
-import { MyLogsRes } from '@resourvereign/common/api/me/logs.js';
+import { MyLogRes, MyLogsRes } from '@resourvereign/common/api/me/logs.js';
 import { getRequest } from '@slangy/client/rest/request.js';
-export type { MyLogRes } from '@resourvereign/common/api/me/logs.js';
 export { LogLevel } from '@resourvereign/common/api/me/logs.js';
+
+export type MyLog = MyLogRes;
 
 const basePath = '/api/me/logs';
 

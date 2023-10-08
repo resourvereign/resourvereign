@@ -4,7 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Tag } from 'primereact/tag';
 import { useTranslation } from 'react-i18next';
 
-import { LogLevel, MyLogRes } from '../../api/me/logs';
+import { LogLevel, MyLog } from '../../api/me/logs';
 import useMyLogs from '../../hooks/useMyLogs';
 
 const logLevelToSeverityMap = {
@@ -21,7 +21,7 @@ const logLevelToIconMap = {
   [LogLevel.ERROR]: 'pi-ban',
 };
 
-const levelTemplate = (log: MyLogRes) => {
+const levelTemplate = (log: MyLog) => {
   return (
     <Tag severity={logLevelToSeverityMap[log.level]}>
       <i className={classNames('pi', logLevelToIconMap[log.level])} />

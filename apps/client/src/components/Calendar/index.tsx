@@ -22,7 +22,7 @@ export type CalendarEvent<EventData = never> = {
   text: string;
   className?: string;
   color?: string;
-  data?: EventData;
+  data: EventData;
 };
 
 type CalendarProps<EventData = never> = {
@@ -104,9 +104,9 @@ const Calendar = <EventData = never,>({
             onClick={handleDayClick(cloneDay)}
           >
             {formattedDate}
-            {eventsForDay.map((event) => (
+            {eventsForDay.map((event, index) => (
               <div
-                key={event.date + event.text}
+                key={`${event.date}-${event.text}-${index}`}
                 className={classNames(styles.event, 'w-full text-sm', event.className)}
                 style={{ backgroundColor: event.color }}
                 onClick={handleEventClick(event)}

@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+import { startOfDay } from 'date-fns';
 import { useCallback, useState } from 'react';
 
 import { MyIntent, MyIntentInput } from '../../api/me/intents';
@@ -5,6 +7,7 @@ import Calendar, { CalendarEvent } from '../../components/Calendar';
 import useMyIntents from '../../hooks/useMyIntents';
 
 import EditIntentDialog from './EditIntentDialog';
+import styles from './index.module.css';
 
 const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -26,8 +29,11 @@ const CalendarPage = () => {
     setEditingIntent({
       date: day,
       resource: '',
+      satisfied: false,
     });
   }, []);
+
+  const beginningOfCurrentDay = startOfDay(new Date());
 
   return (
     <>
@@ -42,6 +48,10 @@ const CalendarPage = () => {
             date: intent.date,
             text: `${intent.resource.label} (${intent.resource.name})`,
             data: intent,
+            className: classNames({
+              [styles.satisfied]: intent.satisfied,
+              [styles.past]: intent.date < beginningOfCurrentDay,
+            }),
           }))}
         />
       </div>

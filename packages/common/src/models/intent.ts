@@ -5,4 +5,5 @@ import { Plugin } from './plugin.js';
 export type Intent = WithTimestamps & {
   date: Date;
   resource: Plugin;
+  satisfied: boolean;
 };

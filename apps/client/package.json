@@ -51,10 +51,10 @@
     "@testing-library/react-hooks": "^8.0.1",
     "@testing-library/user-event": "^14.5.1",
     "@types/jsonwebtoken": "^9.0.3",
-    "@types/react": "^18.2.25",
-    "@types/react-dom": "^18.2.11",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
+    "@types/react": "^18.2.27",
+    "@types/react-dom": "^18.2.12",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
     "@vitejs/plugin-react-swc": "^3.4.0",
     "@vitest/coverage-v8": "^0.34.6",
     "@vitest/ui": "^0.34.6",
@@ -79,7 +79,7 @@
     "vitest": "^0.34.6"
   },
   "lint-staged": {
-    "src/**/*.{js,cjs,json}": [
+    "src/**/*.{js,css,scss,cjs,json}": [
       "yarn prettify"
     ],
     "src/**/*.{ts,tsx}": [

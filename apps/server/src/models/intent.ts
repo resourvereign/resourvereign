@@ -19,6 +19,11 @@ const intentSchema = new Schema<Intent>(
       ref: 'Plugin',
       index: true,
     },
+    satisfied: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   { collection: 'intents', minimize: false },
 )

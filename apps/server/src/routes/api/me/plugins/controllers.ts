@@ -1,9 +1,4 @@
-import {
-  MyPluginInputReq,
-  MyPluginRes,
-  MyPluginsRes,
-  PluginStatus,
-} from '@resourvereign/common/api/me/plugins.js';
+import { MyPlugin, MyPluginInput, PluginStatus } from '@resourvereign/common/api/me/plugins.js';
 import { LogLevel } from '@resourvereign/common/models/log.js';
 import controller, {
   RequestWithBody,
@@ -35,7 +30,7 @@ export const pluginById = controller<
   return next();
 });
 
-export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBody<MyPluginsRes>>(
+export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBody<MyPlugin[]>>(
   async (req, res) => {
     const plugins = await PluginModel.find({ user: req.jwtUser.id });
     return res.status(SuccessStatusCode.SuccessOK).send(
@@ -50,8 +45,8 @@ export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBod
 );
 
 export const createPlugin = controller<
-  RequestWithBody<MyPluginInputReq, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyPluginRes>
+  RequestWithBody<MyPluginInput, RequestWithFields<JwtData>>,
+  ResponseWithBody<MyPlugin>
 >(async (req, res) => {
   const plugin = await PluginModel.create({ ...req.body, user: req.jwtUser.id });
 
@@ -65,8 +60,8 @@ export const createPlugin = controller<
 });
 
 export const updatePlugin = controller<
-  RequestWithBody<MyPluginInputReq, RequestWithFields<{ plugin: PluginDocument<never> }>>,
-  ResponseWithBody<MyPluginRes>
+  RequestWithBody<MyPluginInput, RequestWithFields<{ plugin: PluginDocument<never> }>>,
+  ResponseWithBody<MyPlugin>
 >(async (req, res) => {
   const plugin = req.plugin;
 

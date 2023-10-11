@@ -2,7 +2,7 @@ import { Plugin, PluginConfig, PluginType } from '@resourvereign/common/models/p
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
-import { HydratedDocument, Schema, model } from '@slangy/mongo/mongoose.js';
+import { HydratedDocument, Schema, model } from 'mongoose';
 
 export type PluginDocument<Config extends PluginConfig = PluginConfig> = HydratedDocument<
   Plugin<Config>
@@ -29,8 +29,7 @@ const pluginSchema = new Schema<Plugin>(
     },
     config: {
       required: true,
-      type: Map,
-      of: String,
+      type: Object,
       default: {},
     },
   },

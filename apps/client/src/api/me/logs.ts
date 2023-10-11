@@ -1,10 +1,12 @@
-import { MyLogRes, MyLogsRes } from '@resourvereign/common/api/me/logs.js';
+import { MyLog as MyLogFromServer } from '@resourvereign/common/api/me/logs.js';
 import { getRequest } from '@slangy/client/rest/request.js';
-export { LogLevel } from '@resourvereign/common/api/me/logs.js';
+import { Serialized } from '@slangy/client/types.js';
 
-export type MyLog = MyLogRes;
+export { LogLevel } from '@resourvereign/common/api/me/logs.js';
 
 const basePath = '/api/me/logs';
 
+export type MyLog = Serialized<MyLogFromServer>;
+
 // TODO: add pagination
-export const listMyLogs = () => getRequest<MyLogsRes>(basePath);
+export const listMyLogs = () => getRequest<MyLogFromServer[]>(basePath);

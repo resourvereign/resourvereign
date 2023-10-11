@@ -1,4 +1,4 @@
-import { PluginsRes } from '@resourvereign/common/api/plugins.js';
+import { Plugin } from '@resourvereign/common/api/plugins.js';
 import controller, {
   Request,
   ResponseWithBody,
@@ -7,7 +7,7 @@ import { SuccessStatusCode } from '@slangy/server/http.js';
 
 import { getAllPlugins } from '../../../utils/plugin.js';
 
-export const getPlugins = controller<Request, ResponseWithBody<PluginsRes>>(async (_req, res) => {
+export const getPlugins = controller<Request, ResponseWithBody<Plugin[]>>(async (_req, res) => {
   return res.status(SuccessStatusCode.SuccessCreated).send(
     getAllPlugins().map(({ name, type, plugin }) => ({
       name,

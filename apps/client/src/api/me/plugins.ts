@@ -1,45 +1,31 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
 import {
-  MyPluginInputReq,
-  MyPluginRes,
-  MyPluginsRes,
+  MyPlugin as MyPluginFromServer,
+  MyPluginInput,
+  PluginConfig,
 } from '@resourvereign/common/api/me/plugins.js';
-import { PluginConfig } from '@resourvereign/common/models/plugin.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
+import { Serialized } from '@slangy/client/types.js';
 export { PluginStatus, PluginType } from '@resourvereign/common/api/me/plugins.js';
 
 const basePath = '/api/me/plugins';
 
-export type MyPlugin = MyPluginRes;
+export type MyPlugin<T extends PluginConfig = PluginConfig> = Serialized<MyPluginFromServer<T>>;
 
-type DefaultPluginConfig = {
-  [key: string]: string;
-};
+export type MyPluginUpdate<T extends PluginConfig = PluginConfig> = ApiModel<MyPluginInput<T>>;
+export type MyPluginCreate<T extends PluginConfig = PluginConfig> = MyPluginInput<T>;
 
-export type MyPluginUpdateInput<T extends PluginConfig = DefaultPluginConfig> = ApiModel<
-  MyPluginInputReq<T>
->;
-export type MyPluginCreateInput<T extends PluginConfig = DefaultPluginConfig> = MyPluginInputReq<T>;
+export type MyPluginData<T extends PluginConfig = PluginConfig> =
+  | MyPluginUpdate<T>
+  | MyPluginCreate<T>;
 
-export type MyPluginInput<T extends PluginConfig = DefaultPluginConfig> =
-  | MyPluginUpdateInput<T>
-  | MyPluginCreateInput<T>;
+export const listMyPlugins = async () => await getRequest<MyPluginFromServer[]>(basePath);
+export const createMyPlugin = async (plugin: MyPluginCreate) =>
+  await postRequest<MyPluginInput, MyPluginFromServer>(basePath, plugin);
 
-export const listMyPlugins = async () => await getRequest<MyPluginsRes>(basePath);
-export const createMyPlugin = async (plugin: MyPluginCreateInput) =>
-  await postRequest<MyPluginInputReq, MyPluginRes>(basePath, plugin);
-
-export const updateMyPlugin = async (plugin: MyPluginUpdateInput) => {
+export const updateMyPlugin = async (plugin: MyPluginUpdate) => {
   const { id, ...rest } = plugin;
-  return await putRequest<MyPluginInputReq, MyPluginRes>(`${basePath}/${id}`, rest);
-};
-
-export const createOrUpdateMyPlugin = async (plugin: MyPluginInput) => {
-  if ('id' in plugin) {
-    return await updateMyPlugin(plugin);
-  }
-
-  return await createMyPlugin(plugin);
+  return await putRequest<MyPluginInput, MyPluginFromServer>(`${basePath}/${id}`, rest);
 };
 
 export const removeMyPlugin = async (plugin: MyPlugin) => {

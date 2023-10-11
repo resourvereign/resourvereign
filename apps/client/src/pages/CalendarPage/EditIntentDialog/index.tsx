@@ -1,11 +1,11 @@
 import { Dialog } from 'primereact/dialog';
 
-import { MyIntentInput } from '../../../api/me/intents';
+import { MyIntentData } from '../../../api/me/intents';
 
 import EditIntentForm from './EditIntentForm';
 
 type IntentDialogProps = {
-  intent?: MyIntentInput;
+  intent?: MyIntentData;
   onFinished?: () => void;
 };
 const EditIntentDialog = ({ intent, onFinished }: IntentDialogProps) => {

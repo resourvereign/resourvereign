@@ -4,12 +4,12 @@ import { Dropdown } from 'primereact/dropdown';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyIntent, MyIntentInput } from '../../../api/me/intents';
+import { MyIntent, MyIntentData } from '../../../api/me/intents';
 import useMyIntents from '../../../hooks/useMyIntents';
 import useMyPlugins from '../../../hooks/useMyPlugins';
 
 type EditIntentFormProps = {
-  intent: MyIntentInput;
+  intent: MyIntentData;
   onFinished?: () => void;
 };
 

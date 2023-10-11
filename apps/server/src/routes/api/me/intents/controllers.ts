@@ -1,8 +1,4 @@
-import {
-  MyIntentInputReq,
-  MyIntentRes,
-  MyIntentsRes,
-} from '@resourvereign/common/api/me/intents.js';
+import { MyIntent, MyIntentInput } from '@resourvereign/common/api/me/intents.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -33,7 +29,7 @@ export const intentById = controller<
 });
 
 // TODO: add pagination
-export const getIntents = controller<RequestWithFields<JwtData>, ResponseWithBody<MyIntentsRes>>(
+export const getIntents = controller<RequestWithFields<JwtData>, ResponseWithBody<MyIntent[]>>(
   async (req, res) => {
     const intents = await IntentModel.find({ user: req.jwtUser.id }).populate('resource').exec();
     return res.status(SuccessStatusCode.SuccessOK).send(intents.map((log) => log.toJSON()));
@@ -41,8 +37,8 @@ export const getIntents = controller<RequestWithFields<JwtData>, ResponseWithBod
 );
 
 export const createIntent = controller<
-  RequestWithBody<MyIntentInputReq, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyIntentRes>
+  RequestWithBody<MyIntentInput, RequestWithFields<JwtData>>,
+  ResponseWithBody<MyIntent>
 >(async (req, res) => {
   const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
 
@@ -58,8 +54,8 @@ export const createIntent = controller<
 });
 
 export const updateIntent = controller<
-  RequestWithBody<MyIntentInputReq, RequestWithFields<JwtData & { intent: IntentDocument }>>,
-  ResponseWithBody<MyIntentRes>
+  RequestWithBody<MyIntentInput, RequestWithFields<JwtData & { intent: IntentDocument }>>,
+  ResponseWithBody<MyIntent>
 >(async (req, res) => {
   const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
 

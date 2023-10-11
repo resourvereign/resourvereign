@@ -2,7 +2,7 @@ import { Button } from 'primereact/button';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { useCallback, useState } from 'react';
 
-import { MyPlugin, MyPluginInput } from '../../api/me/plugins';
+import { MyPlugin, MyPluginData } from '../../api/me/plugins';
 import { Plugin } from '../../api/plugins';
 import { PluginSchema } from '../../api/plugins';
 import useMyPlugins from '../../hooks/useMyPlugins';
@@ -15,7 +15,7 @@ const SettingsPage = () => {
   const { plugins } = usePlugins();
   const { remove } = useMyPlugins();
   const [selectedPlugin, setSelectedPlugin] = useState<Plugin>();
-  const [editingPlugin, setEditingPlugin] = useState<[PluginSchema, MyPluginInput]>();
+  const [editingPlugin, setEditingPlugin] = useState<[PluginSchema, MyPluginData]>();
 
   const handlePluginChange = useCallback((e: DropdownChangeEvent) => {
     setSelectedPlugin(e.value);

@@ -11,6 +11,7 @@ import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
 import PluginModel from '../../../../models/plugin.js';
+import { cancel, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const intentById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { intent: IntentDocument }>>
@@ -50,6 +51,8 @@ export const createIntent = controller<
     await IntentModel.create({ ...req.body, user: req.jwtUser.id })
   ).populate('resource');
 
+  scheduleIntent(intent);
+
   return res.status(SuccessStatusCode.SuccessCreated).send(intent.toJSON());
 });
 
@@ -71,6 +74,8 @@ export const updateIntent = controller<
   });
   await intent.save();
 
+  scheduleIntent(intent);
+
   return res.status(SuccessStatusCode.SuccessCreated).send(intent.toJSON());
 });
 
@@ -78,6 +83,7 @@ export const deleteIntent = controller<RequestWithFields<{ intent: IntentDocumen
   async (req, res) => {
     const intent = req.intent;
 
+    cancel(intent);
     await intent.deleteOne();
 
     return res.status(SuccessStatusCode.SuccessNoContent).send();

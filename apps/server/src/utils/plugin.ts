@@ -4,13 +4,29 @@ import { fileURLToPath } from 'url';
 
 import { PluginSchema, PluginType } from '@resourvereign/common/models/plugin.js';
 
+import { Logger } from './logger.js';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const pluginPattern = 'resourvereign-plugin';
 
-type ResourcePlugin<Schema = PluginSchema> = {
+type DefaultPluginConfig = {
+  [key: string]: unknown;
+};
+
+type ResourcePlugin<
+  Schema = PluginSchema,
+  Config extends DefaultPluginConfig = DefaultPluginConfig,
+  BookOverrides extends Config = Config,
+> = {
   schema: Schema;
+  initialize: (
+    config: Config,
+    logger: Logger,
+  ) => Promise<{
+    book(date: Date, overrides?: BookOverrides): Promise<boolean>;
+  }>;
 };
 
 export type Plugin = ResourcePlugin;

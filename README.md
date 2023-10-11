@@ -33,7 +33,7 @@
 
 **Utility Scripts:**
 - `run:parallel`: Executes the run-parallel script.
-- `clean:install [ --delete-lock | -dl ]: Executes the clean-install script. Optionally, use --delete-lock or -dl to delete the yarn.lock file and generate one from scratch.
+- `clean:install [ --delete-lock | -dl ]`: Executes the clean-install script. Optionally, use --delete-lock or -dl to delete the yarn.lock file and generate one from scratch.
 - `clean:build`: Executes the clean-build script.
 - `clean`: Cleans both installation and build concurrently.
 

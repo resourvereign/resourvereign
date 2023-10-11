@@ -4,9 +4,11 @@ import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
 import { HydratedDocument, Schema, Types, model } from 'mongoose';
 
-export type IntentDocument = HydratedDocument<Intent>;
+type IntetWithUser = Intent & { user: Types.ObjectId };
 
-const intentSchema = new Schema<Intent>(
+export type IntentDocument = HydratedDocument<IntetWithUser>;
+
+const intentSchema = new Schema<IntetWithUser>(
   {
     date: {
       type: Date,
@@ -31,4 +33,4 @@ const intentSchema = new Schema<Intent>(
   .plugin(timestamps)
   .plugin(normalizeJson, { remove: ['password', '__v', 'user'] });
 
-export default model('Intent', intentSchema);
+export default model<IntetWithUser>('Intent', intentSchema);

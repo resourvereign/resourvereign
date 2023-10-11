@@ -16,5 +16,8 @@
       "secret": "RANDOM STRING, CHANGE ME",
       "expiration": "7d"
     }
+  },
+  "scheduler": {
+    "cron": "*/10 * * * *"
   }
 }

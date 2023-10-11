@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { startOfDay } from 'date-fns';
 import { useCallback, useState } from 'react';
 
-import { MyIntent, MyIntentInput } from '../../api/me/intents';
+import { MyIntent, MyIntentData } from '../../api/me/intents';
 import Calendar, { CalendarEvent } from '../../components/Calendar';
 import useMyIntents from '../../hooks/useMyIntents';
 
@@ -11,7 +11,7 @@ import styles from './index.module.css';
 
 const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [editingIntent, setEditingIntent] = useState<MyIntentInput | undefined>(undefined);
+  const [editingIntent, setEditingIntent] = useState<MyIntentData | undefined>(undefined);
   const { data: myIntents } = useMyIntents();
 
   const handleEventClick = useCallback((event: CalendarEvent<MyIntent>) => {
@@ -49,6 +49,7 @@ const CalendarPage = () => {
             text: `${intent.resource.label} (${intent.resource.name})`,
             data: intent,
             className: classNames({
+              // TODO: maybe consider showing disabled plugins in a different way
               [styles.satisfied]: intent.satisfied,
               [styles.past]: intent.date < beginningOfCurrentDay,
             }),

@@ -3,7 +3,7 @@ import email from '@slangy/mongo/middleware/mongoose/email.js';
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import password, { WithPassword } from '@slangy/mongo/middleware/mongoose/password.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
-import { HydratedDocument, Schema, model } from '@slangy/mongo/mongoose.js';
+import { HydratedDocument, Schema, model } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User & WithPassword>;
 

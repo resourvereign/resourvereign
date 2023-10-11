@@ -1,36 +1,36 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
 import {
-  MyIntentInputReq,
-  MyIntentRes,
-  MyIntentsRes,
+  MyIntent as MyIntentFromServer,
+  MyIntentInput,
 } from '@resourvereign/common/api/me/intents.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
+import { Merge } from '@slangy/client/types.js';
+import { Serialized } from '@slangy/client/types.js';
 
-export type MyIntent = MyIntentRes;
+export type MyIntent = Merge<Serialized<MyIntentFromServer>, ReturnType<typeof parseIntent>>;
 
-export type MyIntentUpdateInput = ApiModel<MyIntentInputReq>;
-export type MyIntentCreateInput = MyIntentInputReq;
+export type MyIntentUpdate = ApiModel<MyIntentInput>;
+export type MyIntentCreate = MyIntentInput;
 
-export type MyIntentInput = MyIntentUpdateInput | MyIntentCreateInput;
+export type MyIntentData = MyIntentUpdate | MyIntentCreate;
 
 const basePath = '/api/me/intents';
 
-// TODO: Raw type from server without date parsing?
-const parseIntent = (intent: MyIntent) => ({
+const parseIntent = (intent: Serialized<MyIntentFromServer>) => ({
   ...intent,
   date: new Date(intent.date),
 });
 
 // TODO: add pagination
 export const listMyIntents = () =>
-  getRequest<MyIntentsRes>(basePath).then((intents) => intents.map(parseIntent));
+  getRequest<MyIntentFromServer[]>(basePath).then((intents) => intents.map(parseIntent));
 
-export const createMyIntent = async (intent: MyIntentCreateInput) =>
-  await postRequest<MyIntentInputReq, MyIntentRes>(basePath, intent).then(parseIntent);
+export const createMyIntent = async (intent: MyIntentCreate) =>
+  await postRequest<MyIntentInput, MyIntentFromServer>(basePath, intent).then(parseIntent);
 
-export const updateMyIntent = async (intent: MyIntentUpdateInput) => {
+export const updateMyIntent = async (intent: MyIntentUpdate) => {
   const { id, ...rest } = intent;
-  return await putRequest<MyIntentInputReq, MyIntentRes>(`${basePath}/${id}`, rest).then(
+  return await putRequest<MyIntentInput, MyIntentFromServer>(`${basePath}/${id}`, rest).then(
     parseIntent,
   );
 };

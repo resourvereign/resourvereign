@@ -2,7 +2,7 @@ import { Intent } from '@resourvereign/common/models/intent.js';
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
-import { HydratedDocument, Schema, Types, model } from '@slangy/mongo/mongoose.js';
+import { HydratedDocument, Schema, Types, model } from 'mongoose';
 
 export type IntentDocument = HydratedDocument<Intent>;
 

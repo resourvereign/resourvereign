@@ -6,13 +6,13 @@ import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyPluginInput } from '../../api/me/plugins';
+import { MyPluginData } from '../../api/me/plugins';
 import { PluginSchema } from '../../api/plugins';
 import useMyPlugins from '../../hooks/useMyPlugins';
 import styles from '../SignInPage/index.module.css';
 
 type EditPluginProps = {
-  plugin: MyPluginInput;
+  plugin: MyPluginData;
   schema: PluginSchema;
   onFinished?: () => void;
 };

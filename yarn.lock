@@ -7,7 +7,7 @@
   resolved "https://registry.yarnpkg.com/@aashutoshrathi/word-wrap/-/word-wrap-1.2.6.tgz#bd9154aec9983f77b3a034ecaa015c2e4201f6cf"
   integrity sha512-1Yjs2SvM8TflER/OD3cOjhWWOZb58A2t7wpE2S9XfBYTiIl+XFhQG2bjy4Pu1I+EAlCNUzRDYDdFwFYUKvXcIA==
 
-"@adobe/css-tools@^4.3.0":
+"@adobe/css-tools@^4.3.1":
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/@adobe/css-tools/-/css-tools-4.3.1.tgz#abfccb8ca78075a2b6187345c26243c1a0842f28"
   integrity sha512-/62yikz7NLScCGAAST5SHdnjaDJQBDq0M2muyRTpf2VQhw6StBg2ALiu73zSJQ4fMVLA+0uBhBHAle7Wg+2kSg==
@@ -1692,10 +1692,10 @@
     chalk "^5.3.0"
     mongodb-memory-server "^9.0.0"
 
-"@slangy/react@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@slangy/react/-/react-1.0.0.tgz#ecf365956be1258a7e818b1cd6d7da1f17166b7c"
-  integrity sha512-XtjH8Jgw33c/2QS8v6BZz1Hhd1r4iAzysHxMXRecb9x5n83t4JOk9vM5TeOeRgqiD4NLHhBIShZzHfzZQagseQ==
+"@slangy/react@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@slangy/react/-/react-2.1.0.tgz#1050d99e6218997866fcb41523439df25cbc8399"
+  integrity sha512-n5XOeL0d3h72pOcRzDAHEJ1ZqhgKJRqGxpYTKb7p1AB8eo35yaed3r2Hir3uLWwBlsPQD2djr2KLPkVNxWb7wQ==
 
 "@slangy/server@^1.6.0":
   version "1.6.0"
@@ -1899,12 +1899,12 @@
     lz-string "^1.5.0"
     pretty-format "^27.0.2"
 
-"@testing-library/jest-dom@^6.1.3":
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-6.1.3.tgz#443118c9e4043f96396f120de2c7122504a079c5"
-  integrity sha512-YzpjRHoCBWPzpPNtg6gnhasqtE/5O4qz8WCwDEaxtfnPO6gkaLrnuXusrGSPyhIGPezr1HM7ZH0CFaUTY9PJEQ==
+"@testing-library/jest-dom@^6.1.4":
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/@testing-library/jest-dom/-/jest-dom-6.1.4.tgz#cf0835c33bc5ef00befb9e672b1e3e6a710e30e3"
+  integrity sha512-wpoYrCYwSZ5/AxcrjLxJmCU6I5QAJXslEeSiMQqaWmP2Kzpd1LvF/qxmAIW2qposULGWq2gw30GgVNFLSc2Jnw==
   dependencies:
-    "@adobe/css-tools" "^4.3.0"
+    "@adobe/css-tools" "^4.3.1"
     "@babel/runtime" "^7.9.2"
     aria-query "^5.0.0"
     chalk "^3.0.0"

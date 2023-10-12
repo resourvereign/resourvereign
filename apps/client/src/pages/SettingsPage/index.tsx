@@ -12,7 +12,7 @@ import EditPlugin from './EditPlugin';
 import UserPluginsList from './UserPluginsList';
 
 const SettingsPage = () => {
-  const { plugins } = usePlugins();
+  const { data: plugins } = usePlugins();
   const { remove } = useMyPlugins();
   const [selectedPlugin, setSelectedPlugin] = useState<Plugin>();
   const [editingPlugin, setEditingPlugin] = useState<[PluginSchema, MyPluginData]>();
@@ -41,8 +41,10 @@ const SettingsPage = () => {
 
   const handlePluginEdit = useCallback(
     (plugin: MyPlugin) => {
-      const pluginSchema = plugins.find((p) => p.name === plugin.name)!.schema;
-      setEditingPlugin([pluginSchema, plugin]);
+      const pluginSchema = plugins?.find((p) => p.name === plugin.name)?.schema;
+      if (pluginSchema) {
+        setEditingPlugin([pluginSchema, plugin]);
+      }
     },
     [plugins],
   );

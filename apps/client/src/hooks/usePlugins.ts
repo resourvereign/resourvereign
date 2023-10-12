@@ -5,8 +5,6 @@ import { listPlugins } from '../api/plugins';
 const usePlugins = createFetchHook({
   fetcher: listPlugins,
   swrKey: 'listPlugins',
-  dataKey: 'plugins',
-  defaultData: [],
 });
 
 export default usePlugins;

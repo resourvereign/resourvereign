@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Tag } from 'primereact/tag';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { LogLevel, MyLog } from '../../api/me/logs';
@@ -30,15 +32,34 @@ const levelTemplate = (log: MyLog) => {
 };
 
 const LogsPage = () => {
-  const { myLogs } = useMyLogs();
+  const [{ page, first }, setPagination] = useState({ page: 0, first: 0 });
+  const { data: { data, pageSize, total } = {} } = useMyLogs(page);
   const { t } = useTranslation('pages', { keyPrefix: 'logs' });
+  const handlePageChange = useCallback((e: PaginatorPageChangeEvent) => {
+    setPagination({ page: e.page, first: e.first });
+  }, []);
 
   return (
-    <DataTable value={myLogs} size="small" stripedRows>
-      <Column field="level" header={t('fields.level')} body={levelTemplate} />
-      <Column field="created" header={t('fields.date')} />
-      <Column field="message" header={t('fields.message')} />
-    </DataTable>
+    <div className="h-full flex flex-column">
+      <DataTable
+        value={data}
+        size="small"
+        stripedRows
+        scrollable
+        scrollHeight="flex"
+        className="h-full overflow-y-hidden"
+      >
+        <Column field="level" header={t('fields.level')} body={levelTemplate} />
+        <Column field="created" header={t('fields.date')} />
+        <Column field="message" header={t('fields.message')} />
+      </DataTable>
+      <Paginator
+        first={first}
+        rows={pageSize}
+        totalRecords={total}
+        onPageChange={handlePageChange}
+      />
+    </div>
   );
 };
 

@@ -31,13 +31,11 @@
         "submit": "Sign in"
       }
     },
-    "calendar": {
-      "title": "Calendar",
-      "body": "Welcome to the calendar page!"
-    },
+    "calendar": {},
     "settings": {
-      "title": "Settings",
-      "body": "Welcome to the settings page!"
+      "tabs": {
+        "resource": "Resources"
+      }
     },
     "logs": {
       "fields": {

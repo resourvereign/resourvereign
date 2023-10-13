@@ -1,95 +1,31 @@
-import { Button } from 'primereact/button';
-import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { useCallback, useState } from 'react';
+import { TabPanel, TabView } from 'primereact/tabview';
+import { useTranslation } from 'react-i18next';
 
-import { MyPlugin, MyPluginData } from '../../api/me/plugins';
-import { Plugin } from '../../api/plugins';
-import { PluginSchema } from '../../api/plugins';
-import useMyPlugins from '../../hooks/useMyPlugins';
-import usePlugins from '../../hooks/usePlugins';
+import { PluginType } from '../../api/plugins';
 
-import EditPlugin from './EditPlugin';
-import UserPluginsList from './UserPluginsList';
+import PluginTypeSection from './PluginTypeSection';
+
+const tabIcons = {
+  [PluginType.Resource]: 'pi pi-box',
+};
 
 const SettingsPage = () => {
-  const { data: plugins } = usePlugins();
-  const { remove } = useMyPlugins();
-  const [selectedPlugin, setSelectedPlugin] = useState<Plugin>();
-  const [editingPlugin, setEditingPlugin] = useState<[PluginSchema, MyPluginData]>();
-
-  const handlePluginChange = useCallback((e: DropdownChangeEvent) => {
-    setSelectedPlugin(e.value);
-  }, []);
-
-  const handleAddPlugin = useCallback(() => {
-    if (selectedPlugin) {
-      setEditingPlugin([
-        selectedPlugin.schema,
-        {
-          type: selectedPlugin.type,
-          name: selectedPlugin.name,
-          label: '',
-          config: {},
-        },
-      ]);
-    }
-  }, [selectedPlugin]);
-
-  const handleEditPluginFinished = useCallback(() => {
-    setEditingPlugin(undefined);
-  }, []);
-
-  const handlePluginEdit = useCallback(
-    (plugin: MyPlugin) => {
-      const pluginSchema = plugins?.find((p) => p.name === plugin.name)?.schema;
-      if (pluginSchema) {
-        setEditingPlugin([pluginSchema, plugin]);
-      }
-    },
-    [plugins],
-  );
-
-  const handlePluginDelete = useCallback(
-    (plugin: MyPlugin) => {
-      if (window.confirm(`Are you sure you want to delete ${plugin.label}?`)) {
-        remove(plugin);
-      }
-    },
-    [remove],
-  );
+  const { t } = useTranslation('pages', { keyPrefix: 'settings' });
 
   return (
     <div className="flex h-full">
-      <div className="w-full text-center flex flex-column align-items-center justify-content-center">
-        <UserPluginsList onPluginEdit={handlePluginEdit} onPluginDelete={handlePluginDelete} />
-
-        <div className="mt-3">
-          <Dropdown
-            options={plugins}
-            value={selectedPlugin}
-            optionLabel="name"
-            onChange={handlePluginChange}
-            className="mr-2"
-            placeholder="Select a plugin"
-          />
-          <Button
-            icon="pi pi-plus"
-            disabled={selectedPlugin === undefined}
-            onClick={handleAddPlugin}
-          />
-        </div>
-      </div>
-      <div className="mx-3 min-h-full border-left-1 surface-border" />
-      <div className="w-full flex align-items-center justify-content-center">
-        {editingPlugin && (
-          <EditPlugin
-            key={(editingPlugin as any).id}
-            schema={editingPlugin[0]}
-            plugin={editingPlugin[1]}
-            onFinished={handleEditPluginFinished}
-          />
-        )}
-      </div>
+      <TabView className="w-full h-full flex flex-column" panelContainerClassName="h-full">
+        {Object.values(PluginType).map((type) => (
+          <TabPanel
+            key={type}
+            header={t(`tabs.${type}`)}
+            leftIcon={tabIcons[type]}
+            contentClassName="h-full flex"
+          >
+            <PluginTypeSection pluginType={type} />
+          </TabPanel>
+        ))}
+      </TabView>
     </div>
   );
 };

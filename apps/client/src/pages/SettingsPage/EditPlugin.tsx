@@ -23,7 +23,7 @@ type EditionValues = {
 };
 
 const EditPlugin = ({ plugin, schema, onFinished }: EditPluginProps) => {
-  const { add, update } = useMyPlugins();
+  const { create, update } = useMyPlugins();
   const { register, handleSubmit, control } = useForm<EditionValues>({
     defaultValues: { label: plugin.label, config: plugin.config },
   });
@@ -37,7 +37,7 @@ const EditPlugin = ({ plugin, schema, onFinished }: EditPluginProps) => {
             ...data,
           });
         } else {
-          await add({
+          await create({
             ...plugin,
             ...data,
           });
@@ -49,11 +49,11 @@ const EditPlugin = ({ plugin, schema, onFinished }: EditPluginProps) => {
         console.log(err);
       }
     },
-    [add, onFinished, plugin, update],
+    [create, onFinished, plugin, update],
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full grid formgrid p-fluid">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full grid formgrid p-fluid flex">
       <div className="field col-12 text-900 font-medium text-xl text-center">{plugin.name}</div>
       <div className="field col-12">
         <label htmlFor="name">Label</label>

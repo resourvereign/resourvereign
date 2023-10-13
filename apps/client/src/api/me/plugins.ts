@@ -28,6 +28,6 @@ export const updateMyPlugin = async (plugin: MyPluginUpdate) => {
   return await putRequest<MyPluginInput, MyPluginFromServer>(`${basePath}/${id}`, rest);
 };
 
-export const removeMyPlugin = async (plugin: MyPlugin) => {
-  await deleteRequest(`${basePath}/${plugin.id}`);
+export const removeMyPlugin = async (id: MyPlugin['id']) => {
+  await deleteRequest(`${basePath}/${id}`);
 };

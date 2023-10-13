@@ -1,10 +1,11 @@
-import { format } from 'date-fns';
+import { format, startOfDay } from 'date-fns';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyIntent, MyIntentData } from '../../../api/me/intents';
+import { MyIntentData } from '../../../api/me/intents';
+import { PluginType } from '../../../api/plugins';
 import useMyIntents from '../../../hooks/useMyIntents';
 import useMyPlugins from '../../../hooks/useMyPlugins';
 
@@ -18,8 +19,8 @@ type EditIntentFormValues = {
 };
 
 const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
-  const { resources } = useMyPlugins();
-  const { add, update, remove } = useMyIntents();
+  const resources = useMyPlugins().byType[PluginType.Resource];
+  const { create, update, remove } = useMyIntents(startOfDay(intent.date));
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
     defaultValues: { resource: intent.resource },
   });
@@ -27,19 +28,18 @@ const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
   const onSubmit = useCallback(
     async (data: EditIntentFormValues) => {
       if ('id' in intent) {
-        update({ ...intent, ...data });
+        await update({ ...intent, ...data });
       } else {
-        add({ ...intent, ...data });
+        await create({ ...intent, ...data });
       }
       onFinished?.();
     },
-    [add, intent, onFinished, update],
+    [create, intent, onFinished, update],
   );
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     if ('id' in intent) {
-      // TODO: fix this
-      remove(intent as unknown as MyIntent);
+      await remove(intent.id);
     }
     onFinished?.();
   }, [intent, onFinished, remove]);

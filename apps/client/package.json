@@ -25,7 +25,7 @@
     "@heroicons/react": "^2.0.18",
     "@resourvereign/common": "1.0.0",
     "@slangy/client": "^1.5.0",
-    "@slangy/react": "^2.1.0",
+    "@slangy/react": "^2.2.0",
     "classnames": "^2.3.2",
     "date-fns": "^2.30.0",
     "formik": "^2.4.4",
@@ -39,7 +39,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.47.0",
-    "react-i18next": "^13.2.2",
+    "react-i18next": "^13.3.0",
     "react-router-dom": "^6.16.0",
     "swr": "^2.2.4",
     "zustand": "^4.4.3"

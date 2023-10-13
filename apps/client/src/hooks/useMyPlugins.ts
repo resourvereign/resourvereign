@@ -1,3 +1,6 @@
+import createCrudHook from '@slangy/react/hooks/createCrudHook.js';
+import createCrudStore from '@slangy/react/stores/createCrudStore.js';
+
 import {
   MyPlugin,
   PluginType,
@@ -6,22 +9,24 @@ import {
   removeMyPlugin,
   updateMyPlugin,
 } from '../api/me/plugins';
-import { itemsStoreFactory } from '../stores/itemsStore';
 
-import createDataHook from './useData';
+const myPluginsStore = createCrudStore<MyPlugin>();
 
-const myPluginsStore = itemsStoreFactory<MyPlugin>({});
-
-const useMyPlugins = createDataHook({
-  extraPropertiesFactory: (plugins) => ({
-    resources: plugins.filter((plugin) => plugin.type === PluginType.Resource),
+const useMyPlugins = createCrudHook({
+  extra: (plugins) => ({
+    byType: Object.values(PluginType).reduce(
+      (acc, type) => ({
+        ...acc,
+        [type]: plugins.filter((plugin) => plugin.type === type),
+      }),
+      {} as Record<PluginType, MyPlugin[]>,
+    ),
   }),
-  key: 'myPlugins',
   store: myPluginsStore,
-  fetcher: listMyPlugins,
-  creator: createMyPlugin,
-  updater: updateMyPlugin,
-  remover: removeMyPlugin,
+  read: listMyPlugins,
+  create: createMyPlugin,
+  update: updateMyPlugin,
+  remove: removeMyPlugin,
 });
 
 export default useMyPlugins;

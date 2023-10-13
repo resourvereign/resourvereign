@@ -31,13 +31,13 @@
         "submit": "Iniciar sesión"
       }
     },
-    "calendar": {
-      "title": "Calendario",
-      "body": "Bienvenido a la página de calendario."
-    },
+    "calendar": {},
     "settings": {
-      "title": "Configuración",
-      "body": "Bienvenido a la página de configuración."
+      "settings": {
+        "tabs": {
+          "resource": "Recursos"
+        }
+      }
     },
     "logs": {
       "fields": {

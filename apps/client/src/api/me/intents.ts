@@ -4,8 +4,8 @@ import {
   MyIntentInput,
 } from '@resourvereign/common/api/me/intents.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
-import { Merge } from '@slangy/client/types.js';
-import { Serialized } from '@slangy/client/types.js';
+// TODO: Can type-fest be used instead (Merge and Jsonify)?
+import { Merge, Serialized } from '@slangy/client/types.js';
 
 export type MyIntent = Merge<Serialized<MyIntentFromServer>, ReturnType<typeof parseIntent>>;
 
@@ -21,9 +21,13 @@ const parseIntent = (intent: Serialized<MyIntentFromServer>) => ({
   date: new Date(intent.date),
 });
 
-// TODO: add pagination
-export const listMyIntents = () =>
-  getRequest<MyIntentFromServer[]>(basePath).then((intents) => intents.map(parseIntent));
+export const listMyIntents = (month: Date) => {
+  const searchParams = new URLSearchParams({ month: month.toISOString() });
+
+  return getRequest<MyIntentFromServer[]>(`${basePath}?${searchParams.toString()}`).then(
+    (intents) => intents.map(parseIntent),
+  );
+};
 
 export const createMyIntent = async (intent: MyIntentCreate) =>
   await postRequest<MyIntentInput, MyIntentFromServer>(basePath, intent).then(parseIntent);
@@ -35,6 +39,6 @@ export const updateMyIntent = async (intent: MyIntentUpdate) => {
   );
 };
 
-export const removeMyIntent = async (intent: MyIntent) => {
-  await deleteRequest(`${basePath}/${intent.id}`);
+export const removeMyIntent = async (id: MyIntent['id']) => {
+  await deleteRequest(`${basePath}/${id}`);
 };

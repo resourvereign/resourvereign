@@ -1,3 +1,6 @@
+import createCrudHook from '@slangy/react/hooks/createCrudHook.js';
+import createCrudStore from '@slangy/react/stores/createCrudStore.js';
+
 import {
   MyIntent,
   createMyIntent,
@@ -5,19 +8,15 @@ import {
   removeMyIntent,
   updateMyIntent,
 } from '../api/me/intents';
-import { itemsStoreFactory } from '../stores/itemsStore';
 
-import createDataHook from './useData';
+const myIntentsStore = createCrudStore<MyIntent>();
 
-const myIntentsStore = itemsStoreFactory<MyIntent>({});
-
-const useMyIntents = createDataHook({
-  key: 'myIntents',
+const useMyIntents = createCrudHook({
   store: myIntentsStore,
-  fetcher: listMyIntents,
-  creator: createMyIntent,
-  updater: updateMyIntent,
-  remover: removeMyIntent,
+  read: listMyIntents,
+  create: createMyIntent,
+  update: updateMyIntent,
+  remove: removeMyIntent,
 });
 
 export default useMyIntents;

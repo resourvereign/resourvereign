@@ -3,11 +3,13 @@ import controller, {
   RequestWithBody,
   RequestWithFields,
   RequestWithParams,
+  RequestWithQuery,
   ResponseWithBody,
 } from '@slangy/server/helpers/express/controller.js';
 import { ClientErrorBadRequest, ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
+import { endOfMonth, startOfMonth } from 'date-fns';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
 import PluginModel from '../../../../models/plugin.js';
@@ -29,13 +31,26 @@ export const intentById = controller<
   return next();
 });
 
-// TODO: add pagination
-export const getIntents = controller<RequestWithFields<JwtData>, ResponseWithBody<MyIntent[]>>(
-  async (req, res) => {
-    const intents = await IntentModel.find({ user: req.jwtUser.id }).populate('resource').exec();
-    return res.status(SuccessStatusCode.SuccessOK).send(intents.map((log) => log.toJSON()));
-  },
-);
+export const getIntents = controller<
+  RequestWithQuery<{ month?: string }, RequestWithFields<JwtData>>,
+  ResponseWithBody<MyIntent[]>
+>(async (req, res) => {
+  const month = req.query.month ? new Date(req.query.month) : new Date();
+  const monthStart = startOfMonth(month);
+  const monthEnd = endOfMonth(month);
+
+  const intents = await IntentModel.find({
+    user: req.jwtUser.id,
+    date: {
+      $gte: monthStart,
+      $lte: monthEnd,
+    },
+  })
+    .populate('resource')
+    .exec();
+
+  return res.status(SuccessStatusCode.SuccessOK).send(intents.map((log) => log.toJSON()));
+});
 
 export const createIntent = controller<
   RequestWithBody<MyIntentInput, RequestWithFields<JwtData>>,

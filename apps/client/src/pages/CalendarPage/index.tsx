@@ -12,7 +12,7 @@ import styles from './index.module.css';
 const CalendarPage = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [editingIntent, setEditingIntent] = useState<MyIntentData | undefined>(undefined);
-  const { data: myIntents } = useMyIntents();
+  const { data: myIntents } = useMyIntents(currentMonth);
 
   const handleEventClick = useCallback((event: CalendarEvent<MyIntent>) => {
     setEditingIntent({

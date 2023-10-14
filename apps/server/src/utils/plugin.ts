@@ -15,12 +15,14 @@ type DefaultPluginConfig = {
   [key: string]: unknown;
 };
 
+type BasePlugin<Schema = PluginSchema> = {
+  schema: Schema;
+};
+
 type ResourcePlugin<
-  Schema = PluginSchema,
   Config extends DefaultPluginConfig = DefaultPluginConfig,
   BookOverrides extends Config = Config,
-> = {
-  schema: Schema;
+> = BasePlugin & {
   initialize: (
     config: Config,
     logger: Logger,
@@ -29,14 +31,25 @@ type ResourcePlugin<
   }>;
 };
 
-export type Plugin = ResourcePlugin;
+type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> = BasePlugin & {
+  initialize: (
+    config: Config,
+    logger: Logger,
+  ) => Promise<{
+    sendMessage(msg: string): Promise<boolean>;
+  }>;
+};
+
+export type Plugin = ResourcePlugin | NotificationsPlugin;
 
 type PluginRegistry = {
   [PluginType.Resource]: Record<string, ResourcePlugin>;
+  [PluginType.Notifications]: Record<string, ResourcePlugin>;
 };
 
 const pluginRegistry: PluginRegistry = {
   resource: {},
+  notifications: {},
 };
 
 function findNodeModules(startDir: string) {

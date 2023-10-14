@@ -35,7 +35,8 @@
     "settings": {
       "settings": {
         "tabs": {
-          "resource": "Recursos"
+          "resource": "Recursos",
+          "notifications": "Notificaciones"
         }
       }
     },

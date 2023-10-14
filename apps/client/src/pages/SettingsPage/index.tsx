@@ -6,7 +6,7 @@ import { PluginType } from '../../api/plugins';
 import PluginTypeSection from './PluginTypeSection';
 
 const tabIcons = {
-  [PluginType.Resource]: 'pi pi-box',
+  [PluginType.Integration]: 'pi pi-box',
   [PluginType.Notifications]: 'pi pi-send',
 };
 

@@ -46,7 +46,7 @@ export const getIntents = controller<
       $lte: monthEnd,
     },
   })
-    .populate('resource')
+    .populate('integration')
     .exec();
 
   return res.status(SuccessStatusCode.SuccessOK).send(intents.map((log) => log.toJSON()));
@@ -56,7 +56,7 @@ export const createIntent = controller<
   RequestWithBody<MyIntentInput, RequestWithFields<JwtData>>,
   ResponseWithBody<MyIntent>
 >(async (req, res) => {
-  const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
+  const plugin = await PluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
 
   if (!plugin) {
     throw new ClientErrorBadRequest();
@@ -64,7 +64,7 @@ export const createIntent = controller<
 
   const intent = await (
     await IntentModel.create({ ...req.body, user: req.jwtUser.id })
-  ).populate('resource');
+  ).populate('integration');
 
   scheduleIntent(intent);
 
@@ -75,7 +75,7 @@ export const updateIntent = controller<
   RequestWithBody<MyIntentInput, RequestWithFields<JwtData & { intent: IntentDocument }>>,
   ResponseWithBody<MyIntent>
 >(async (req, res) => {
-  const plugin = await PluginModel.findOne({ _id: req.body.resource, user: req.jwtUser.id });
+  const plugin = await PluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
 
   if (!plugin) {
     throw new ClientErrorBadRequest();
@@ -85,7 +85,7 @@ export const updateIntent = controller<
 
   intent.set({
     ...req.body,
-    resource: plugin,
+    integration: plugin,
   });
   await intent.save();
 

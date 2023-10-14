@@ -19,7 +19,7 @@ type BasePlugin<Schema = PluginSchema> = {
   schema: Schema;
 };
 
-type ResourcePlugin<
+type IntegrationPlugin<
   Config extends DefaultPluginConfig = DefaultPluginConfig,
   BookOverrides extends Config = Config,
 > = BasePlugin & {
@@ -40,16 +40,13 @@ type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfi
   }>;
 };
 
-export type Plugin = ResourcePlugin | NotificationsPlugin;
+export type Plugin = IntegrationPlugin | NotificationsPlugin;
 
-type PluginRegistry = {
-  [PluginType.Resource]: Record<string, ResourcePlugin>;
-  [PluginType.Notifications]: Record<string, ResourcePlugin>;
-};
+type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string] | undefined;
 
-const pluginRegistry: PluginRegistry = {
-  resource: {},
-  notifications: {},
+const pluginRegistry = {
+  [PluginType.Integration]: {} as Record<string, IntegrationPlugin>,
+  [PluginType.Notifications]: {} as Record<string, NotificationsPlugin>,
 };
 
 function findNodeModules(startDir: string) {
@@ -89,7 +86,7 @@ const importPlugins = async () => {
       pluginModules.map(async (moduleName) => {
         pluginRegistry[pluginType][moduleName.replace(pluginPrefix, '')] = (await import(
           moduleName
-        )) as ResourcePlugin;
+        )) as IntegrationPlugin;
       }),
     );
   }
@@ -101,11 +98,12 @@ export const initializePlugins = async () => {
 
 export const getPluginsByType = (type: PluginType) => Object.values(pluginRegistry[type]);
 
-export const getPlugin = (type: PluginType, name: string) => pluginRegistry[type][name];
+export const getPlugin = <Type extends PluginType>(type: Type, name: string) =>
+  pluginRegistry[type][name] as PluginByType<Type>;
 
 export const getAllPlugins = () =>
   Object.entries(pluginRegistry).flatMap(([type, plugins]) =>
     Object.entries(plugins).map(([name, plugin]) => ({ name, type: type as PluginType, plugin })),
   );
 
-export const isPluginAvailable = (type: PluginType, name: string) => !!pluginRegistry[type][name];
+export const isPluginAvailable = (type: PluginType, name: string) => !!pluginRegistry[type]?.[name];

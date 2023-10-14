@@ -17,7 +17,7 @@ const CalendarPage = () => {
   const handleEventClick = useCallback((event: CalendarEvent<MyIntent>) => {
     setEditingIntent({
       ...event.data,
-      resource: event.data.resource.id,
+      integration: event.data.integration.id,
     });
   }, []);
 
@@ -28,7 +28,7 @@ const CalendarPage = () => {
   const handleDayClick = useCallback((day: Date) => {
     setEditingIntent({
       date: day,
-      resource: '',
+      integration: '',
       satisfied: false,
     });
   }, []);
@@ -46,7 +46,7 @@ const CalendarPage = () => {
           onEventClick={handleEventClick}
           events={myIntents.map((intent) => ({
             date: intent.date,
-            text: `${intent.resource.label} (${intent.resource.name})`,
+            text: `${intent.integration.label} (${intent.integration.name})`,
             data: intent,
             className: classNames({
               // TODO: maybe consider showing disabled plugins in a different way

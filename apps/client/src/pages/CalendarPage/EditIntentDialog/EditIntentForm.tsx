@@ -1,7 +1,7 @@
-import { format, startOfDay } from 'date-fns';
+import { format, startOfMonth } from 'date-fns';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { MyIntentData } from '../../../api/me/intents';
@@ -19,11 +19,17 @@ type EditIntentFormValues = {
 };
 
 const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
+  // TODO: probably a non-listing version of useMyIntents is needed to avoid unnecessary calls to listing intents.
+  const [month, setMonth] = useState(startOfMonth(intent.date));
   const resources = useMyPlugins().byType[PluginType.Resource];
-  const { create, update, remove } = useMyIntents(startOfDay(intent.date));
+  const { create, update, remove } = useMyIntents(month);
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
     defaultValues: { resource: intent.resource },
   });
+
+  useEffect(() => {
+    setMonth(startOfMonth(intent.date));
+  }, [intent.date]);
 
   const onSubmit = useCallback(
     async (data: EditIntentFormValues) => {

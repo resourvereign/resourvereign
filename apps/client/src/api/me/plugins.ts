@@ -5,12 +5,12 @@ import {
   PluginConfig,
 } from '@resourvereign/common/api/me/plugins.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
-import { Serialized } from '@slangy/client/types.js';
+import { Jsonify } from 'type-fest';
 export { PluginStatus, PluginType } from '@resourvereign/common/api/me/plugins.js';
 
 const basePath = '/api/me/plugins';
 
-export type MyPlugin<T extends PluginConfig = PluginConfig> = Serialized<MyPluginFromServer<T>>;
+export type MyPlugin<T extends PluginConfig = PluginConfig> = Jsonify<MyPluginFromServer<T>>;
 
 export type MyPluginUpdate<T extends PluginConfig = PluginConfig> = ApiModel<MyPluginInput<T>>;
 export type MyPluginCreate<T extends PluginConfig = PluginConfig> = MyPluginInput<T>;

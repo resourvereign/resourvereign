@@ -4,10 +4,9 @@ import {
   MyIntentInput,
 } from '@resourvereign/common/api/me/intents.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
-// TODO: Can type-fest be used instead (Merge and Jsonify)?
-import { Merge, Serialized } from '@slangy/client/types.js';
+import { Jsonify, Merge } from 'type-fest';
 
-export type MyIntent = Merge<Serialized<MyIntentFromServer>, ReturnType<typeof parseIntent>>;
+export type MyIntent = Merge<Jsonify<MyIntentFromServer>, ReturnType<typeof parseIntent>>;
 
 export type MyIntentUpdate = ApiModel<MyIntentInput>;
 export type MyIntentCreate = MyIntentInput;
@@ -16,7 +15,7 @@ export type MyIntentData = MyIntentUpdate | MyIntentCreate;
 
 const basePath = '/api/me/intents';
 
-const parseIntent = (intent: Serialized<MyIntentFromServer>) => ({
+const parseIntent = (intent: Jsonify<MyIntentFromServer>) => ({
   ...intent,
   date: new Date(intent.date),
 });

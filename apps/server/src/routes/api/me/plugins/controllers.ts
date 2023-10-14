@@ -71,6 +71,7 @@ export const updatePlugin = controller<
   return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
 });
 
+// TODO: probably we should handle dependant intents at least
 export const deletePlugin = controller<RequestWithFields<{ plugin: PluginDocument<never> }>>(
   async (req, res) => {
     const plugin = req.plugin;

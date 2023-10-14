@@ -34,7 +34,7 @@
     "calendar": {},
     "settings": {
       "tabs": {
-        "resource": "Resources",
+        "integration": "Integrations",
         "notifications": "Notifications"
       }
     },

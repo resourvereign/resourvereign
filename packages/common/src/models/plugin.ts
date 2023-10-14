@@ -1,8 +1,7 @@
 import { WithTimestamps } from '@slangy/common/model/timestamps.js';
 
 export enum PluginType {
-  // TODO: maybe rename to providers
-  Resource = 'resource',
+  Integration = 'integration',
   Notifications = 'notifications',
 }
 

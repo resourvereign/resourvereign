@@ -15,16 +15,16 @@ type EditIntentFormProps = {
 };
 
 type EditIntentFormValues = {
-  resource: string;
+  integration: string;
 };
 
 const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
   // TODO: probably a non-listing version of useMyIntents is needed to avoid unnecessary calls to listing intents.
   const [month, setMonth] = useState(startOfMonth(intent.date));
-  const resources = useMyPlugins().byType[PluginType.Resource];
+  const integrations = useMyPlugins().byType[PluginType.Integration];
   const { create, update, remove } = useMyIntents(month);
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
-    defaultValues: { resource: intent.resource },
+    defaultValues: { integration: intent.integration },
   });
 
   useEffect(() => {
@@ -57,11 +57,11 @@ const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
       </div>
       <div className="field col-12 text-900 font-medium text-xl text-center">
         <Controller
-          name="resource"
+          name="integration"
           control={control}
           render={({ field }) => (
             <Dropdown
-              options={resources}
+              options={integrations}
               optionLabel="label"
               optionValue="id"
               placeholder="Select a resource"

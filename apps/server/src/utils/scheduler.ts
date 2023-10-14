@@ -1,3 +1,4 @@
+import { PluginType } from '@resourvereign/common/models/plugin.js';
 import config from 'config';
 import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { scheduleJob } from 'node-schedule';
@@ -30,7 +31,9 @@ export const scheduleIntent = (intent: IntentDocument) => {
 
   // Schedule job
   const job = scheduleJob(schedulerCron, async () => {
-    const updatedIntent = await IntentModel.findOne({ _id: intent.id }).populate('resource').exec();
+    const updatedIntent = await IntentModel.findOne({ _id: intent.id })
+      .populate('integration')
+      .exec();
 
     // If intent is not found, is satisfied or is scheduled for the past cancel job
     if (!updatedIntent || !isIntentSchedulable(intent)) {
@@ -38,11 +41,11 @@ export const scheduleIntent = (intent: IntentDocument) => {
       return;
     }
 
-    const plugin = getPlugin(updatedIntent.resource.type, updatedIntent.resource.name);
+    const integrationPlugin = getPlugin(PluginType.Integration, updatedIntent.integration.name);
 
-    if (plugin) {
-      const instance = await plugin.initialize(
-        { ...intent.resource.config },
+    if (integrationPlugin) {
+      const instance = await integrationPlugin.initialize(
+        { ...intent.integration.config },
         loggerForUser(intent.user.toString()),
       );
 
@@ -79,7 +82,7 @@ export const initializeScheduler = async () => {
   // Filter intents that are not satisfied and are scheduled for the future
   const yesterdayEndOfDay = endOfDay(subDays(new Date(), 1));
   const intents = await IntentModel.find({ date: { $gte: yesterdayEndOfDay }, satisfied: false })
-    .populate('resource')
+    .populate('integration')
     .exec();
 
   // Schedule intents

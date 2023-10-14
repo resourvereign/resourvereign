@@ -2,6 +2,7 @@ import { WithTimestamps } from '@slangy/common/model/timestamps.js';
 
 export enum PluginType {
   Integration = 'integration',
+  Scheduling = 'scheduling',
   Notifications = 'notifications',
 }
 

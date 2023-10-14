@@ -8,6 +8,7 @@ import PluginTypeSection from './PluginTypeSection';
 const tabIcons = {
   [PluginType.Integration]: 'pi pi-box',
   [PluginType.Notifications]: 'pi pi-send',
+  [PluginType.Scheduling]: 'pi pi-clock',
 };
 
 const SettingsPage = () => {

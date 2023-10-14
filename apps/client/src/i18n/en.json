@@ -35,6 +35,7 @@
     "settings": {
       "tabs": {
         "integration": "Integrations",
+        "scheduling": "Scheduling",
         "notifications": "Notifications"
       }
     },

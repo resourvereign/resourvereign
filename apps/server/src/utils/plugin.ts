@@ -40,13 +40,23 @@ type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfi
   }>;
 };
 
-export type Plugin = IntegrationPlugin | NotificationsPlugin;
+type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> = BasePlugin & {
+  initialize: (
+    config: Config,
+    logger: Logger,
+  ) => Promise<{
+    sendMessage(msg: string): Promise<boolean>;
+  }>;
+};
+
+export type Plugin = IntegrationPlugin | NotificationsPlugin | SchedulingPlugin;
 
 type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string] | undefined;
 
 const pluginRegistry = {
   [PluginType.Integration]: {} as Record<string, IntegrationPlugin>,
   [PluginType.Notifications]: {} as Record<string, NotificationsPlugin>,
+  [PluginType.Scheduling]: {} as Record<string, SchedulingPlugin>,
 };
 
 function findNodeModules(startDir: string) {

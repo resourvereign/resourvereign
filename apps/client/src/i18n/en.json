@@ -34,7 +34,8 @@
     "calendar": {},
     "settings": {
       "tabs": {
-        "resource": "Resources"
+        "resource": "Resources",
+        "notifications": "Notifications"
       }
     },
     "logs": {

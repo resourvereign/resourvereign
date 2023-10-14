@@ -7,6 +7,7 @@ import PluginTypeSection from './PluginTypeSection';
 
 const tabIcons = {
   [PluginType.Resource]: 'pi pi-box',
+  [PluginType.Notifications]: 'pi pi-send',
 };
 
 const SettingsPage = () => {

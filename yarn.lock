@@ -1664,45 +1664,43 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@slangy/client@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@slangy/client/-/client-1.5.0.tgz#00d411127985b8246fd41ee40fc63d1b815a16c7"
-  integrity sha512-x9hI+XljML78eKNYTFoaqGstU5gIEBj57FpbOskye47RIJAUHN2cRuXrUnhJWLSlILuWiqmhgeSD0yTabeO9bg==
+"@slangy/client@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@slangy/client/-/client-2.0.1.tgz#3ef1e552c174ddc4e02883ec8ea79da14201716d"
+  integrity sha512-jzhFTWxzqoAUZ8+hMLhBl6yZRkIyB6I7Pj39RyZuWLupo+/CX9bs8Nv8Awr/dQ6SI28A0ZlRTDTFj1eM7FAsTQ==
   dependencies:
-    "@slangy/common" "1.5.0"
+    "@slangy/common" "2.0.1"
     qs "^6.11.2"
+    type-fest "^4.4.0"
 
-"@slangy/common@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@slangy/common/-/common-1.4.0.tgz#58e50725c04745f217f603390e09211e31563ce0"
-  integrity sha512-/iVYf0p3Jy/o3mR+n3qHLtHAr9N9UvI3pClJSByw5NkjKX5mROpXlw2AeEpEV298kc78X0P110yztbxdn9I5SA==
-
-"@slangy/common@1.5.0", "@slangy/common@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@slangy/common/-/common-1.5.0.tgz#9dbd119b43034b22c8642bfea2f1d131b6f3c4b1"
-  integrity sha512-r8eQUBqhhIkQ3ksSaE+bDhHmNnBTyA67EG/QOwfqHx1PPYfvAlyQ3ANVDJE+gstoR9qOwAwPjjosVzSpHV5n/w==
-
-"@slangy/mongo@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@slangy/mongo/-/mongo-2.0.0.tgz#54151f48b38b1b1a062aaf8a355a0d8281f827d6"
-  integrity sha512-AF49RmWXHWhGMC8mrOh9F08xt8Dtf+/qVT/uT60bclmdXKgAYtA1JuZEcEUAWsJkXGB4DBjQHjDDB61KSC2kKQ==
+"@slangy/common@2.0.1", "@slangy/common@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@slangy/common/-/common-2.0.1.tgz#132fae3a626770b13a37819a2d8255a5bc2a96b2"
+  integrity sha512-MnCQ6QkokzJR084JWvYCqc3z1yZlGo/QdEXmX2QpeXKr+exRaIsZRScKJaRHeiE+JhhRT2ZwLyThOOyoLT7Clg==
   dependencies:
-    "@slangy/common" "1.4.0"
+    type-fest "^4.4.0"
+
+"@slangy/mongo@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@slangy/mongo/-/mongo-3.0.1.tgz#7cf3c43a72872f64e9a2726b106a87633e46f0a7"
+  integrity sha512-8amM+n1r7/74OTZmxiQG4k5HllFrLe3KCYwcJUIJmlyFGofkGX4H0dv3eDnnET+1DbAFFSlOk6+KE9rBUBJgBA==
+  dependencies:
+    "@slangy/common" "2.0.1"
     bcrypt "^5.1.1"
     chalk "^5.3.0"
-    mongodb-memory-server "^9.0.0"
+    mongodb-memory-server "^9.0.1"
 
 "@slangy/react@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@slangy/react/-/react-2.2.0.tgz#0d13329aba18b818207f0bc38d39db1450ecab71"
   integrity sha512-kK2o+c8Yz0Fw0DNr2LP6ppli8G8VUs/400bDELhdFhMZPd5kb1GbClKbRCJ2KH0xmYMVh6LJxS26SqpQNnJbQQ==
 
-"@slangy/server@^1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@slangy/server/-/server-1.6.0.tgz#e34b71d80dea36006a78ddb918e64e6edf3a7685"
-  integrity sha512-3yuSRjueLWOuxaIts8skPxcr6jhpuTIjQuNaYwBHb8Dqse74yjCvkeNWKjegeQ28iiK+c1/P/gxZBsyulUgsLA==
+"@slangy/server@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@slangy/server/-/server-2.0.1.tgz#f6908b64bf17fc0bdea3fc286759c9f2aa9f4b30"
+  integrity sha512-5nmxh7BqBA+EFSpO0gKTKXmrcKGm3LEOOapufXmQblRO2NI97TSTL/o+bC8hX1yTgc146GIzRZnAjzgN2uM3NA==
   dependencies:
-    "@slangy/common" "1.4.0"
+    "@slangy/common" "2.0.1"
     config "^3.3.8"
     express-validator "^7.0.1"
     helmet "^7.0.0"
@@ -1717,6 +1715,7 @@
     passport-jwt "^4.0.1"
     socket.io "^4.7.2"
     supertest "^6.3.3"
+    type-fest "^4.4.0"
 
 "@socket.io/component-emitter@~3.1.0":
   version "3.1.0"
@@ -6081,7 +6080,7 @@ mongodb-memory-server-core@9.0.1:
     tslib "^2.6.2"
     yauzl "^2.10.0"
 
-mongodb-memory-server@^9.0.0:
+mongodb-memory-server@^9.0.1:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/mongodb-memory-server/-/mongodb-memory-server-9.0.1.tgz#1c9f94a2ed76ba7d0a39bfea23bb22346ad41847"
   integrity sha512-Qqph8PoJHtHjvP8JynWMx9K9N4Eh0GDj+bexL/vB6jtvzw1nUcARnxidPvaKFzU+hDULz9sgTUqYJmjqowmXTQ==
@@ -7792,6 +7791,11 @@ type-fest@^1.0.2:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-1.4.0.tgz#e9fb813fe3bf1744ec359d55d1affefa76f14be1"
   integrity sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==
+
+type-fest@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.4.0.tgz#061cd10ff55664bb7174218cdf78c28c48f71c69"
+  integrity sha512-HT3RRs7sTfY22KuPQJkD/XjbTbxgP2Je5HPt6H6JEGvcjHd5Lqru75EbrP3tb4FYjNJ+DjLp+MNQTFQU0mhXNw==
 
 type-is@~1.6.18:
   version "1.6.18"

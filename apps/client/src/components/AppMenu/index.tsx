@@ -21,8 +21,8 @@ const AppMenu = () => {
     },
 
     {
-      label: t('items.settings'),
-      to: routes.settings,
+      label: t('items.plugins'),
+      to: routes.plugins,
       icon: 'pi-cog',
     },
     {

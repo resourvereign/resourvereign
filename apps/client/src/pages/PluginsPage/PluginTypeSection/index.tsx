@@ -1,6 +1,7 @@
 import { PluginType } from '../../../api/plugins';
+import EditionFormDialog from '../../../components/EditionFormDialog';
 
-import EditPluginDialog from './EditPluginDialog';
+import EditPluginForm from './EditPluginForm';
 import PluginDropdown from './PluginDropdown';
 import PluginList from './PluginList';
 import usePluginActions from './usePluginActions';
@@ -22,7 +23,11 @@ const PluginTypeSection = ({ pluginType }: PluginTypeSectionProps) => {
 
   return (
     <div className="h-full w-full text-center flex flex-column align-items-center justify-content-between">
-      <EditPluginDialog schemaAndPlugin={editingMyPlugin} onFinished={handleEditMyPluginFinished} />
+      <EditionFormDialog
+        data={editingMyPlugin}
+        onEditionFinished={handleEditMyPluginFinished}
+        form={EditPluginForm}
+      />
       <PluginList
         type={pluginType}
         onPluginEdit={handleMyPluginEdit}

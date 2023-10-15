@@ -11,7 +11,7 @@ const tabIcons = {
   [PluginType.Scheduling]: 'pi pi-clock',
 };
 
-const SettingsPage = () => {
+const PluginsPage = () => {
   const { t } = useTranslation('pages', { keyPrefix: 'settings' });
 
   return (
@@ -32,4 +32,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default PluginsPage;

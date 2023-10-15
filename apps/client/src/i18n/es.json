@@ -3,7 +3,7 @@
     "items": {
       "home": "Inicio",
       "calendar": "Calendario",
-      "settings": "Configuración",
+      "plugins": "Plugins",
       "logs": "Logs"
     }
   },

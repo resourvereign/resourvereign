@@ -3,7 +3,7 @@
     "items": {
       "home": "Home",
       "calendar": "Calendar",
-      "settings": "Settings",
+      "plugins": "Plugins",
       "logs": "Logs"
     }
   },

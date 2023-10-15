@@ -15,14 +15,17 @@ const PluginsPage = () => {
   const { t } = useTranslation('pages', { keyPrefix: 'settings' });
 
   return (
-    <div className="flex h-full">
-      <TabView className="w-full h-full flex flex-column" panelContainerClassName="h-full">
+    <div className="flex h-full test">
+      <TabView
+        className="w-full h-full flex flex-column"
+        panelContainerClassName="flex-1 overflow-auto"
+      >
         {Object.values(PluginType).map((type) => (
           <TabPanel
             key={type}
             header={t(`tabs.${type}`)}
             leftIcon={tabIcons[type]}
-            contentClassName="h-full flex"
+            className="h-full"
           >
             <PluginTypeSection pluginType={type} />
           </TabPanel>

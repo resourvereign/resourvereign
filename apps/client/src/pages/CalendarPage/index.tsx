@@ -4,9 +4,10 @@ import { useCallback, useState } from 'react';
 
 import { MyIntent, MyIntentData } from '../../api/me/intents';
 import Calendar, { CalendarEvent } from '../../components/Calendar';
+import EditionFormDialog from '../../components/EditionFormDialog';
 import useMyIntents from '../../hooks/useMyIntents';
 
-import EditIntentDialog from './EditIntentDialog';
+import EditIntentForm from './EditIntentForm';
 import styles from './index.module.css';
 
 const CalendarPage = () => {
@@ -37,7 +38,11 @@ const CalendarPage = () => {
 
   return (
     <>
-      <EditIntentDialog intent={editingIntent} onFinished={handleEditionFinished} />
+      <EditionFormDialog
+        data={editingIntent}
+        onEditionFinished={handleEditionFinished}
+        form={EditIntentForm}
+      />
       <div className="h-full">
         <Calendar
           month={currentMonth}

@@ -6,14 +6,13 @@ import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyPluginData } from '../../../../api/me/plugins';
-import { PluginSchema } from '../../../../api/plugins';
-import useMyPlugins from '../../../../hooks/useMyPlugins';
-import styles from '../../../SignInPage/index.module.css';
+import { MyPluginData } from '../../../api/me/plugins';
+import { PluginSchema } from '../../../api/plugins';
+import useMyPlugins from '../../../hooks/useMyPlugins';
+import styles from '../../SignInPage/index.module.css';
 
 type EditPluginFormProps = {
-  plugin: MyPluginData;
-  schema: PluginSchema;
+  data: [PluginSchema, MyPluginData];
   onFinished?: () => void;
 };
 
@@ -22,7 +21,7 @@ type EditionValues = {
   config: Record<string, string>;
 };
 
-const EditPluginForm = ({ plugin, schema, onFinished }: EditPluginFormProps) => {
+const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormProps) => {
   const { create, update } = useMyPlugins();
   const { register, handleSubmit, control } = useForm<EditionValues>({
     defaultValues: { label: plugin.label, config: plugin.config },
@@ -84,8 +83,10 @@ const EditPluginForm = ({ plugin, schema, onFinished }: EditPluginFormProps) => 
         </div>
       ))}
       <div className="col-12">
-        <Button className="w-auto">{'id' in plugin ? 'Save' : 'Add'}</Button>
-        <Button className="w-auto mr-2" severity="danger" onClick={onFinished}>
+        <Button type="submit" className="w-auto mr-2">
+          {'id' in plugin ? 'Save' : 'Add'}
+        </Button>
+        <Button type="button" className="w-auto" severity="danger" onClick={onFinished}>
           Cancel
         </Button>
       </div>

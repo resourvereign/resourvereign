@@ -4,13 +4,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyIntentData } from '../../../api/me/intents';
-import { PluginType } from '../../../api/plugins';
-import useMyIntents from '../../../hooks/useMyIntents';
-import useMyPlugins from '../../../hooks/useMyPlugins';
+import { MyIntentData } from '../../api/me/intents';
+import { PluginType } from '../../api/plugins';
+import useMyIntents from '../../hooks/useMyIntents';
+import useMyPlugins from '../../hooks/useMyPlugins';
 
 type EditIntentFormProps = {
-  intent: MyIntentData;
+  data: MyIntentData;
   onFinished?: () => void;
 };
 
@@ -18,7 +18,7 @@ type EditIntentFormValues = {
   integration: string;
 };
 
-const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
+const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
   // TODO: probably a non-listing version of useMyIntents is needed to avoid unnecessary calls to listing intents.
   const [month, setMonth] = useState(startOfMonth(intent.date));
   const integrations = useMyPlugins().byType[PluginType.Integration];
@@ -74,12 +74,14 @@ const EditIntentForm = ({ intent, onFinished }: EditIntentFormProps) => {
         />
       </div>
       <div className="col-12">
-        <Button className="w-auto mr-2">{'id' in intent ? 'Save' : 'Add'}</Button>
-        <Button className="w-auto mr-2" severity="danger" onClick={onFinished}>
+        <Button type="submit" className="w-auto mr-2">
+          {'id' in intent ? 'Save' : 'Add'}
+        </Button>
+        <Button type="button" className="w-auto mr-2" severity="danger" onClick={onFinished}>
           Cancel
         </Button>
         {'id' in intent && (
-          <Button className="w-auto" severity="danger" onClick={handleDelete}>
+          <Button type="button" className="w-auto" severity="danger" onClick={handleDelete}>
             Delete
           </Button>
         )}

@@ -18,7 +18,7 @@ const intentSchema = new Schema<IntetWithUser>(
     integration: {
       type: Types.ObjectId,
       required: true,
-      ref: 'Plugin',
+      ref: 'UserPlugin',
       index: true,
     },
     satisfied: {

@@ -1,19 +1,19 @@
 import { useCallback, useState } from 'react';
 
-import { MyPlugin, MyPluginData } from '../../../api/me/plugins';
+import { UserPlugin, UserPluginData } from '../../../api/me/plugins';
 import { Plugin, PluginSchema, PluginType } from '../../../api/plugins';
-import useMyPlugins from '../../../hooks/useMyPlugins';
 import usePlugins from '../../../hooks/usePlugins';
+import useUserPlugins from '../../../hooks/useUserPlugins';
 
 const usePluginActions = (pluginType: PluginType) => {
   const plugins = usePlugins().data?.[pluginType];
-  const { remove } = useMyPlugins();
+  const { remove } = useUserPlugins();
   const [selectedPlugin, setSelectedPlugin] = useState<Plugin>();
-  const [editingMyPlugin, setEditingMyPlugin] = useState<[PluginSchema, MyPluginData]>();
+  const [editingUserPlugin, setEditingUserPlugin] = useState<[PluginSchema, UserPluginData]>();
 
-  const handleAddMyPlugin = useCallback(() => {
+  const onUserPluginCreate = useCallback(() => {
     if (selectedPlugin) {
-      setEditingMyPlugin([
+      setEditingUserPlugin([
         selectedPlugin.schema,
         {
           type: selectedPlugin.type,
@@ -25,22 +25,22 @@ const usePluginActions = (pluginType: PluginType) => {
     }
   }, [selectedPlugin]);
 
-  const handleEditMyPluginFinished = useCallback(() => {
-    setEditingMyPlugin(undefined);
+  const onUserPluginEditFinish = useCallback(() => {
+    setEditingUserPlugin(undefined);
   }, []);
 
-  const handleMyPluginEdit = useCallback(
-    (plugin: MyPlugin) => {
+  const onUserPluginEdit = useCallback(
+    (plugin: UserPlugin) => {
       const pluginSchema = plugins?.find((p) => p.name === plugin.name)?.schema;
       if (pluginSchema) {
-        setEditingMyPlugin([pluginSchema, plugin]);
+        setEditingUserPlugin([pluginSchema, plugin]);
       }
     },
     [plugins],
   );
 
-  const handleMyPluginDelete = useCallback(
-    (plugin: MyPlugin) => {
+  const onUserPluginDelete = useCallback(
+    (plugin: UserPlugin) => {
       if (window.confirm(`Are you sure you want to delete ${plugin.label}?`)) {
         remove(plugin.id);
       }
@@ -52,11 +52,11 @@ const usePluginActions = (pluginType: PluginType) => {
     plugins,
     selectedPlugin,
     setSelectedPlugin,
-    editingMyPlugin,
-    handleAddMyPlugin,
-    handleEditMyPluginFinished,
-    handleMyPluginEdit,
-    handleMyPluginDelete,
+    editingUserPlugin,
+    onUserPluginCreate,
+    onUserPluginEditFinish,
+    onUserPluginEdit,
+    onUserPluginDelete,
   };
 };
 

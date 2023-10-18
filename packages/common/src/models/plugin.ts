@@ -1,5 +1,3 @@
-import { WithTimestamps } from '@slangy/common/model/timestamps.js';
-
 export enum PluginType {
   Integration = 'integration',
   Scheduling = 'scheduling',
@@ -19,15 +17,4 @@ export type PluginSchema = {
       };
     };
   };
-};
-
-export type PluginConfig = {
-  [key: string]: string;
-};
-
-export type Plugin<Config extends PluginConfig = PluginConfig> = WithTimestamps & {
-  type: PluginType;
-  name: string;
-  label: string;
-  config: Config;
 };

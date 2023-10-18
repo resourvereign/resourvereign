@@ -1,9 +1,9 @@
 import { WithTimestamps } from '@slangy/common/model/timestamps.js';
 
-import { Plugin } from './plugin.js';
+import { UserPlugin } from './userPlugin.js';
 
 export type Intent = WithTimestamps & {
   date: Date;
-  integration: Plugin;
+  integration: UserPlugin;
   satisfied: boolean;
 };

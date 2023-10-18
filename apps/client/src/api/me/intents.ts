@@ -1,43 +1,40 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
-import {
-  MyIntent as MyIntentFromServer,
-  MyIntentInput,
-} from '@resourvereign/common/api/me/intents.js';
+import { Intent as IntentFromServer, IntentInput } from '@resourvereign/common/api/me/intents.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
 import { Jsonify, Merge } from 'type-fest';
 
-export type MyIntent = Merge<Jsonify<MyIntentFromServer>, ReturnType<typeof parseIntent>>;
+export type Intent = Merge<Jsonify<IntentFromServer>, ReturnType<typeof parseIntent>>;
 
-export type MyIntentUpdate = ApiModel<MyIntentInput>;
-export type MyIntentCreate = MyIntentInput;
+export type IntentUpdate = ApiModel<IntentInput>;
+export type IntentCreate = IntentInput;
 
-export type MyIntentData = MyIntentUpdate | MyIntentCreate;
+export type IntentData = IntentUpdate | IntentCreate;
 
 const basePath = '/api/me/intents';
 
-const parseIntent = (intent: Jsonify<MyIntentFromServer>) => ({
+const parseIntent = (intent: Jsonify<IntentFromServer>) => ({
   ...intent,
   date: new Date(intent.date),
 });
 
-export const listMyIntents = (month: Date) => {
+export const listIntents = (month: Date) => {
   const searchParams = new URLSearchParams({ month: month.toISOString() });
 
-  return getRequest<MyIntentFromServer[]>(`${basePath}?${searchParams.toString()}`).then(
-    (intents) => intents.map(parseIntent),
+  return getRequest<IntentFromServer[]>(`${basePath}?${searchParams.toString()}`).then((intents) =>
+    intents.map(parseIntent),
   );
 };
 
-export const createMyIntent = async (intent: MyIntentCreate) =>
-  await postRequest<MyIntentInput, MyIntentFromServer>(basePath, intent).then(parseIntent);
+export const createIntent = async (intent: IntentCreate) =>
+  await postRequest<IntentInput, IntentFromServer>(basePath, intent).then(parseIntent);
 
-export const updateMyIntent = async (intent: MyIntentUpdate) => {
+export const updateIntent = async (intent: IntentUpdate) => {
   const { id, ...rest } = intent;
-  return await putRequest<MyIntentInput, MyIntentFromServer>(`${basePath}/${id}`, rest).then(
+  return await putRequest<IntentInput, IntentFromServer>(`${basePath}/${id}`, rest).then(
     parseIntent,
   );
 };
 
-export const removeMyIntent = async (id: MyIntent['id']) => {
+export const removeIntent = async (id: Intent['id']) => {
   await deleteRequest(`${basePath}/${id}`);
 };

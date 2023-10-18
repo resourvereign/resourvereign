@@ -8,11 +8,11 @@ type EditionFormProps<T> = {
 
 type EditionFormDialogProps<T> = {
   data?: T;
-  onEditionFinished: () => void;
+  onEditionFinish: () => void;
   form: FC<EditionFormProps<T>>;
 };
 
-const EditionFormDialog = <T,>({ data, onEditionFinished, form }: EditionFormDialogProps<T>) => {
+const EditionFormDialog = <T,>({ data, onEditionFinish, form }: EditionFormDialogProps<T>) => {
   const [visible, setVisible] = useState(!!data);
   const Form = form;
 
@@ -25,7 +25,7 @@ const EditionFormDialog = <T,>({ data, onEditionFinished, form }: EditionFormDia
   }, [data]);
 
   return (
-    <Dialog visible={visible} closable={false} onHide={onEditionFinished} className="m-3">
+    <Dialog visible={visible} closable={false} onHide={onEditionFinish} className="m-3">
       {data && <Form data={data} onFinished={handleDialogHide} />}
     </Dialog>
   );

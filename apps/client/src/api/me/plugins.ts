@@ -1,8 +1,8 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
 import {
-  MyPlugin as MyPluginFromServer,
-  MyPluginInput,
   PluginConfig,
+  UserPlugin as UserPluginFromServer,
+  UserPluginInput,
 } from '@resourvereign/common/api/me/plugins.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
 import { Jsonify } from 'type-fest';
@@ -10,24 +10,24 @@ export { PluginStatus, PluginType } from '@resourvereign/common/api/me/plugins.j
 
 const basePath = '/api/me/plugins';
 
-export type MyPlugin<T extends PluginConfig = PluginConfig> = Jsonify<MyPluginFromServer<T>>;
+export type UserPlugin<T extends PluginConfig = PluginConfig> = Jsonify<UserPluginFromServer<T>>;
 
-export type MyPluginUpdate<T extends PluginConfig = PluginConfig> = ApiModel<MyPluginInput<T>>;
-export type MyPluginCreate<T extends PluginConfig = PluginConfig> = MyPluginInput<T>;
+export type UserPluginUpdate<T extends PluginConfig = PluginConfig> = ApiModel<UserPluginInput<T>>;
+export type UserPluginCreate<T extends PluginConfig = PluginConfig> = UserPluginInput<T>;
 
-export type MyPluginData<T extends PluginConfig = PluginConfig> =
-  | MyPluginUpdate<T>
-  | MyPluginCreate<T>;
+export type UserPluginData<T extends PluginConfig = PluginConfig> =
+  | UserPluginUpdate<T>
+  | UserPluginCreate<T>;
 
-export const listMyPlugins = async () => await getRequest<MyPluginFromServer[]>(basePath);
-export const createMyPlugin = async (plugin: MyPluginCreate) =>
-  await postRequest<MyPluginInput, MyPluginFromServer>(basePath, plugin);
+export const listUserPlugins = async () => await getRequest<UserPluginFromServer[]>(basePath);
+export const createUserPlugin = async (plugin: UserPluginCreate) =>
+  await postRequest<UserPluginInput, UserPluginFromServer>(basePath, plugin);
 
-export const updateMyPlugin = async (plugin: MyPluginUpdate) => {
+export const updateUserPlugin = async (plugin: UserPluginUpdate) => {
   const { id, ...rest } = plugin;
-  return await putRequest<MyPluginInput, MyPluginFromServer>(`${basePath}/${id}`, rest);
+  return await putRequest<UserPluginInput, UserPluginFromServer>(`${basePath}/${id}`, rest);
 };
 
-export const removeMyPlugin = async (id: MyPlugin['id']) => {
+export const removeUserPlugin = async (id: UserPlugin['id']) => {
   await deleteRequest(`${basePath}/${id}`);
 };

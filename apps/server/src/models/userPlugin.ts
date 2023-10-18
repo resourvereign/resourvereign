@@ -1,14 +1,15 @@
-import { Plugin, PluginConfig, PluginType } from '@resourvereign/common/models/plugin.js';
+import { PluginType } from '@resourvereign/common/models/plugin.js';
+import { PluginConfig, UserPlugin } from '@resourvereign/common/models/userPlugin.js';
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
 import { HydratedDocument, Schema, model } from 'mongoose';
 
-export type PluginDocument<Config extends PluginConfig = PluginConfig> = HydratedDocument<
-  Plugin<Config>
+export type UserPluginDocument<Config extends PluginConfig = PluginConfig> = HydratedDocument<
+  UserPlugin<Config>
 >;
 
-const pluginSchema = new Schema<Plugin>(
+const userPluginSchema = new Schema<UserPlugin>(
   {
     type: {
       type: String,
@@ -33,10 +34,10 @@ const pluginSchema = new Schema<Plugin>(
       default: {},
     },
   },
-  { collection: 'plugins', minimize: false },
+  { collection: 'userPlugins', minimize: false },
 )
   .plugin(owner)
   .plugin(timestamps)
   .plugin(normalizeJson, { remove: ['password', '__v', 'user'] });
 
-export default model('Plugin', pluginSchema);
+export default model('UserPlugin', userPluginSchema);

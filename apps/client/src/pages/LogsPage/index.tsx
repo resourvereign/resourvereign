@@ -6,8 +6,8 @@ import { Tag } from 'primereact/tag';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { LogLevel, MyLog } from '../../api/me/logs';
-import useMyLogs from '../../hooks/useMyLogs';
+import { Log, LogLevel } from '../../api/me/logs';
+import useLogs from '../../hooks/useLogs';
 
 const logLevelToSeverityMap = {
   [LogLevel.DEBUG]: 'success' as 'success',
@@ -23,7 +23,7 @@ const logLevelToIconMap = {
   [LogLevel.ERROR]: 'pi-ban',
 };
 
-const levelTemplate = (log: MyLog) => {
+const levelTemplate = (log: Log) => {
   return (
     <Tag severity={logLevelToSeverityMap[log.level]}>
       <i className={classNames('pi', logLevelToIconMap[log.level])} />
@@ -33,7 +33,7 @@ const levelTemplate = (log: MyLog) => {
 
 const LogsPage = () => {
   const [{ page, first }, setPagination] = useState({ page: 0, first: 0 });
-  const { data: { data, pageSize, total } = {} } = useMyLogs(page);
+  const { data: { data, pageSize, total } = {} } = useLogs(page);
   const { t } = useTranslation('pages', { keyPrefix: 'logs' });
   const handlePageChange = useCallback((e: PaginatorPageChangeEvent) => {
     setPagination({ page: e.page, first: e.first });

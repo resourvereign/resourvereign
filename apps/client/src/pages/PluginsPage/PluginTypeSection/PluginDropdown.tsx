@@ -15,7 +15,7 @@ const PluginDropdown = <T,>({
   onSelectionChange,
   onAdd,
 }: PluginDropdownProps<T>) => {
-  const handleOnChange = useCallback(
+  const handleChange = useCallback(
     (e: DropdownChangeEvent) => {
       onSelectionChange(e.value);
     },
@@ -28,7 +28,7 @@ const PluginDropdown = <T,>({
         options={items}
         value={selectedItem}
         optionLabel="name"
-        onChange={handleOnChange}
+        onChange={handleChange}
         className="mr-2"
         placeholder="Select a plugin"
       />

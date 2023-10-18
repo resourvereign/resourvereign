@@ -13,7 +13,7 @@ type NotFoundPageProps = {
 const NotFoundPage = ({ homeTo }: NotFoundPageProps) => {
   const { t } = useTranslation('pages', { keyPrefix: 'notFound' });
   const navigate = useNavigate();
-  const onGoBack = useCallback(() => {
+  const handleGoBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
@@ -23,7 +23,11 @@ const NotFoundPage = ({ homeTo }: NotFoundPageProps) => {
       title={t('title')}
       footer={
         <div className="flex flex-wrap justify-content-end gap-2">
-          <Button label={t('buttons.goBack')} icon="pi pi-chevron-circle-left" onClick={onGoBack} />
+          <Button
+            label={t('buttons.goBack')}
+            icon="pi pi-chevron-circle-left"
+            onClick={handleGoBack}
+          />
           <LinkButton
             to={homeTo}
             label={t('buttons.goHome')}

@@ -1,4 +1,4 @@
-import { MyIntent, MyIntentInput } from '@resourvereign/common/api/me/intents.js';
+import { Intent, IntentInput } from '@resourvereign/common/api/me/intents.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -12,7 +12,7 @@ import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 import { endOfMonth, startOfMonth } from 'date-fns';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
-import PluginModel from '../../../../models/plugin.js';
+import UserPluginModel from '../../../../models/userPlugin.js';
 import { cancel, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const intentById = controller<
@@ -33,7 +33,7 @@ export const intentById = controller<
 
 export const getIntents = controller<
   RequestWithQuery<{ month?: string }, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyIntent[]>
+  ResponseWithBody<Intent[]>
 >(async (req, res) => {
   const month = req.query.month ? new Date(req.query.month) : new Date();
   const monthStart = startOfMonth(month);
@@ -53,10 +53,10 @@ export const getIntents = controller<
 });
 
 export const createIntent = controller<
-  RequestWithBody<MyIntentInput, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyIntent>
+  RequestWithBody<IntentInput, RequestWithFields<JwtData>>,
+  ResponseWithBody<Intent>
 >(async (req, res) => {
-  const plugin = await PluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
+  const plugin = await UserPluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
 
   if (!plugin) {
     throw new ClientErrorBadRequest();
@@ -72,10 +72,10 @@ export const createIntent = controller<
 });
 
 export const updateIntent = controller<
-  RequestWithBody<MyIntentInput, RequestWithFields<JwtData & { intent: IntentDocument }>>,
-  ResponseWithBody<MyIntent>
+  RequestWithBody<IntentInput, RequestWithFields<JwtData & { intent: IntentDocument }>>,
+  ResponseWithBody<Intent>
 >(async (req, res) => {
-  const plugin = await PluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
+  const plugin = await UserPluginModel.findOne({ _id: req.body.integration, user: req.jwtUser.id });
 
   if (!plugin) {
     throw new ClientErrorBadRequest();

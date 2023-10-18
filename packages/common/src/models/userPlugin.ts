@@ -10,5 +10,6 @@ export type UserPlugin<Config extends PluginConfig = PluginConfig> = WithTimesta
   type: PluginType;
   name: string;
   label: string;
+  color: string;
   config: Config;
 };

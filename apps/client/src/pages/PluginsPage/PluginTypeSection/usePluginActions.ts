@@ -19,6 +19,7 @@ const usePluginActions = (pluginType: PluginType) => {
           type: selectedPlugin.type,
           name: selectedPlugin.name,
           label: '',
+          color: Math.floor(Math.random() * 16777215).toString(16),
           config: {},
         },
       ]);

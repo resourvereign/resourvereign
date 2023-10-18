@@ -53,6 +53,7 @@ const CalendarPage = () => {
             date: intent.date,
             text: `${intent.integration.label} (${intent.integration.name})`,
             data: intent,
+            color: `#${intent.integration.color}`,
             className: classNames({
               // TODO: maybe consider showing disabled plugins in a different way
               [styles.satisfied]: intent.satisfied,

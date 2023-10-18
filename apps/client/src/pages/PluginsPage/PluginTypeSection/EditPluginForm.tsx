@@ -1,6 +1,7 @@
 import { toStartCase } from '@slangy/client/string.js';
 import classNames from 'classnames';
 import { Button } from 'primereact/button';
+import { ColorPicker } from 'primereact/colorpicker';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { useCallback } from 'react';
@@ -9,7 +10,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { UserPluginData } from '../../../api/me/plugins';
 import { PluginSchema } from '../../../api/plugins';
 import useUserPlugins from '../../../hooks/useUserPlugins';
-import styles from '../../SignInPage/index.module.css';
+
+import styles from './EditPluginForm.module.css';
 
 type EditPluginFormProps = {
   data: [PluginSchema, UserPluginData];
@@ -18,13 +20,18 @@ type EditPluginFormProps = {
 
 type EditionValues = {
   label: string;
+  color: string;
   config: Record<string, string>;
 };
 
 const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormProps) => {
   const { create, update } = useUserPlugins();
   const { register, handleSubmit, control } = useForm<EditionValues>({
-    defaultValues: { label: plugin.label, config: plugin.config },
+    defaultValues: {
+      label: plugin.label,
+      color: plugin.color,
+      config: plugin.config,
+    },
   });
 
   const handleFormSubmit = useCallback(
@@ -54,10 +61,28 @@ const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormPr
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="grid formgrid p-fluid flex">
       <div className="field col-12 text-900 font-medium text-xl text-center">{plugin.name}</div>
-      <div className="field col-12">
+      <div className="field col-12 ">
         <label htmlFor="name">Label</label>
-        <InputText className="w-full mb-3" {...register('label')} />
+        <div className="p-inputgroup w-full">
+          <div>
+            <Controller
+              name="color"
+              control={control}
+              rules={{ required: 'Color is required.' }}
+              render={({ field }) => (
+                <ColorPicker
+                  name="color"
+                  value={field.value}
+                  className={classNames(styles.colorPicker)}
+                  onChange={(e) => field.onChange(e.value)}
+                />
+              )}
+            />
+          </div>
+          <InputText className="w-full" {...register('label')} />
+        </div>
       </div>
+
       {Object.entries(schema.properties).map(([name, definition]) => (
         <div key={name} className="field col-12">
           <label htmlFor={name}>{toStartCase(name)}</label>
@@ -67,7 +92,7 @@ const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormPr
               control={control}
               render={({ field }) => (
                 <Password
-                  className={classNames(styles.password, 'w-full mb-3')}
+                  className={classNames('w-full mb-3')}
                   inputClassName="w-full"
                   feedback={false}
                   toggleMask

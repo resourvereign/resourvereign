@@ -28,6 +28,12 @@ const userPluginSchema = new Schema<UserPlugin>(
       trim: true,
       index: true,
     },
+    color: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
     config: {
       required: true,
       type: Object,

@@ -52,7 +52,7 @@ const SignInPage = () => {
     msgs.current && msgs.current.clear();
   }, []);
 
-  const onSubmit = useCallback(
+  const handleFormSubmit = useCallback(
     async (data: SignInValues) => {
       try {
         setError(false);
@@ -77,7 +77,7 @@ const SignInPage = () => {
 
       <Messages ref={msgs} />
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(handleFormSubmit)}>
         <label className="block text-900 font-medium mb-2" htmlFor="email">
           {t('form.email.label')}
         </label>

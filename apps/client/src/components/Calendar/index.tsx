@@ -43,7 +43,7 @@ const Calendar = <EventData = never,>({
   const cellClassNames = ['flex align-items-center flex-column', styles.cell];
   const rowClassNames = ['flex flex-row', styles.row];
 
-  const handleWheel = useCallback(
+  const handleCalendarScroll = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
       onMonthChange?.(addMonths(month, event.deltaY > 0 ? 1 : -1));
     },
@@ -133,7 +133,7 @@ const Calendar = <EventData = never,>({
   };
 
   return (
-    <div className="flex flex-column w-full h-full" onWheel={handleWheel}>
+    <div className="flex flex-column w-full h-full" onWheel={handleCalendarScroll}>
       {renderHeader()}
       {renderDates()}
     </div>

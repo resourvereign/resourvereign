@@ -2,31 +2,31 @@ import createCrudHook from '@slangy/react/hooks/createCrudHook.js';
 import createCrudStore from '@slangy/react/stores/createCrudStore.js';
 
 import {
-  MyPlugin,
   PluginType,
-  createMyPlugin,
-  listMyPlugins,
-  removeMyPlugin,
-  updateMyPlugin,
+  UserPlugin,
+  createUserPlugin,
+  listUserPlugins,
+  removeUserPlugin,
+  updateUserPlugin,
 } from '../api/me/plugins';
 
-const myPluginsStore = createCrudStore<MyPlugin>();
+const pluginsStore = createCrudStore<UserPlugin>();
 
-const useMyPlugins = createCrudHook({
+const useUserPlugins = createCrudHook({
   extra: (plugins) => ({
     byType: Object.values(PluginType).reduce(
       (acc, type) => ({
         ...acc,
         [type]: plugins.filter((plugin) => plugin.type === type),
       }),
-      {} as Record<PluginType, MyPlugin[]>,
+      {} as Record<PluginType, UserPlugin[]>,
     ),
   }),
-  store: myPluginsStore,
-  read: listMyPlugins,
-  create: createMyPlugin,
-  update: updateMyPlugin,
-  remove: removeMyPlugin,
+  store: pluginsStore,
+  read: listUserPlugins,
+  create: createUserPlugin,
+  update: updateUserPlugin,
+  remove: removeUserPlugin,
 });
 
-export default useMyPlugins;
+export default useUserPlugins;

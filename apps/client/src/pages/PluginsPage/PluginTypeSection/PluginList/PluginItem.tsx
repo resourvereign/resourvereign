@@ -4,16 +4,16 @@ import { Menu } from 'primereact/menu';
 import { useCallback, useRef } from 'react';
 import { MouseEvent } from 'react';
 
-import { MyPlugin, PluginStatus } from '../../../../api/me/plugins';
+import { PluginStatus, UserPlugin } from '../../../../api/me/plugins';
 
 type PluginActions = {
   onEdit: () => void;
   onDelete: () => void;
 };
 
-const PluginItem = ({ status, label, name, onEdit, onDelete }: MyPlugin & PluginActions) => {
+const PluginItem = ({ status, label, name, onEdit, onDelete }: UserPlugin & PluginActions) => {
   const menu = useRef<Menu>(null);
-  const handleMenuClicked = useCallback((e: MouseEvent) => {
+  const handleMenuClick = useCallback((e: MouseEvent) => {
     menu.current?.toggle(e);
   }, []);
 
@@ -55,7 +55,7 @@ const PluginItem = ({ status, label, name, onEdit, onDelete }: MyPlugin & Plugin
             raised
             outlined
             severity="secondary"
-            onClick={handleMenuClicked}
+            onClick={handleMenuClick}
           />
         </div>
       </div>

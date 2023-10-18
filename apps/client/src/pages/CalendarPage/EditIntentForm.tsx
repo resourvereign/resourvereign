@@ -4,13 +4,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyIntentData } from '../../api/me/intents';
+import { IntentData } from '../../api/me/intents';
 import { PluginType } from '../../api/plugins';
-import useMyIntents from '../../hooks/useMyIntents';
-import useMyPlugins from '../../hooks/useMyPlugins';
+import useIntents from '../../hooks/useIntents';
+import useUserPlugins from '../../hooks/useUserPlugins';
 
 type EditIntentFormProps = {
-  data: MyIntentData;
+  data: IntentData;
   onFinished?: () => void;
 };
 
@@ -19,10 +19,10 @@ type EditIntentFormValues = {
 };
 
 const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
-  // TODO: probably a non-listing version of useMyIntents is needed to avoid unnecessary calls to listing intents.
+  // TODO: probably a non-listing version of useIntents is needed to avoid unnecessary calls to listing intents.
   const [month, setMonth] = useState(startOfMonth(intent.date));
-  const integrations = useMyPlugins().byType[PluginType.Integration];
-  const { create, update, remove } = useMyIntents(month);
+  const integrations = useUserPlugins().byType[PluginType.Integration];
+  const { create, update, remove } = useIntents(month);
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
     defaultValues: { integration: intent.integration },
   });
@@ -31,7 +31,7 @@ const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
     setMonth(startOfMonth(intent.date));
   }, [intent.date]);
 
-  const onSubmit = useCallback(
+  const handleFormSubmit = useCallback(
     async (data: EditIntentFormValues) => {
       if ('id' in intent) {
         await update({ ...intent, ...data });
@@ -51,7 +51,7 @@ const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
   }, [intent, onFinished, remove]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full grid formgrid p-fluid">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="w-full grid formgrid p-fluid">
       <div className="field col-12 text-900 font-medium text-xl text-center">
         {format(intent.date, 'yyyy-MM-dd')}
       </div>

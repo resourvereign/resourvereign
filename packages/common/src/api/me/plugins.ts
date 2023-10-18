@@ -1,20 +1,23 @@
-import { Plugin, PluginConfig } from '../../models/plugin.js';
+import { PluginConfig, UserPlugin as UserPluginModel } from '../../models/userPlugin.js';
 import { ApiModel } from '../common.js';
 
-export { PluginType, PluginConfig } from '../../models/plugin.js';
+export type { PluginConfig } from '../../models/userPlugin.js';
+export { PluginType } from '../../models/plugin.js';
 
 export enum PluginStatus {
   enabled = 'enabled',
   disabled = 'disabled',
 }
 
-export type MyPluginWithoutStatus<T extends PluginConfig = PluginConfig> = ApiModel<Plugin<T>>;
+export type UserPluginWithoutStatus<T extends PluginConfig = PluginConfig> = ApiModel<
+  UserPluginModel<T>
+>;
 
-export type MyPlugin<T extends PluginConfig = PluginConfig> = MyPluginWithoutStatus<T> & {
+export type UserPlugin<T extends PluginConfig = PluginConfig> = UserPluginWithoutStatus<T> & {
   status: PluginStatus;
 };
 
-export type MyPluginInput<T extends PluginConfig = PluginConfig> = Omit<
-  Plugin<T>,
-  'created' | 'updated' | 'user'
+export type UserPluginInput<T extends PluginConfig = PluginConfig> = Omit<
+  UserPluginWithoutStatus<T>,
+  'id' | 'created' | 'updated' | 'user'
 >;

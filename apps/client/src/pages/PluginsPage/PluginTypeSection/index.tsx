@@ -12,32 +12,32 @@ type PluginTypeSectionProps = {
 const PluginTypeSection = ({ pluginType }: PluginTypeSectionProps) => {
   const {
     plugins,
-    editingMyPlugin,
+    editingUserPlugin,
     selectedPlugin,
     setSelectedPlugin,
-    handleAddMyPlugin,
-    handleEditMyPluginFinished,
-    handleMyPluginEdit,
-    handleMyPluginDelete,
+    onUserPluginCreate,
+    onUserPluginEditFinish,
+    onUserPluginEdit,
+    onUserPluginDelete,
   } = usePluginActions(pluginType);
 
   return (
     <div className="h-full w-full text-center flex flex-column align-items-center justify-content-between">
       <EditionFormDialog
-        data={editingMyPlugin}
-        onEditionFinished={handleEditMyPluginFinished}
+        data={editingUserPlugin}
+        onEditionFinish={onUserPluginEditFinish}
         form={EditPluginForm}
       />
       <PluginList
         type={pluginType}
-        onPluginEdit={handleMyPluginEdit}
-        onPluginDelete={handleMyPluginDelete}
+        onPluginEdit={onUserPluginEdit}
+        onPluginDelete={onUserPluginDelete}
       />
       <PluginDropdown
         items={plugins}
         selectedItem={selectedPlugin}
         onSelectionChange={setSelectedPlugin}
-        onAdd={handleAddMyPlugin}
+        onAdd={onUserPluginCreate}
       />
     </div>
   );

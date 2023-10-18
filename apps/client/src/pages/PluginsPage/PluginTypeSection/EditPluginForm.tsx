@@ -6,13 +6,13 @@ import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { MyPluginData } from '../../../api/me/plugins';
+import { UserPluginData } from '../../../api/me/plugins';
 import { PluginSchema } from '../../../api/plugins';
-import useMyPlugins from '../../../hooks/useMyPlugins';
+import useUserPlugins from '../../../hooks/useUserPlugins';
 import styles from '../../SignInPage/index.module.css';
 
 type EditPluginFormProps = {
-  data: [PluginSchema, MyPluginData];
+  data: [PluginSchema, UserPluginData];
   onFinished?: () => void;
 };
 
@@ -22,12 +22,12 @@ type EditionValues = {
 };
 
 const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormProps) => {
-  const { create, update } = useMyPlugins();
+  const { create, update } = useUserPlugins();
   const { register, handleSubmit, control } = useForm<EditionValues>({
     defaultValues: { label: plugin.label, config: plugin.config },
   });
 
-  const onSubmit = useCallback(
+  const handleFormSubmit = useCallback(
     async (data: EditionValues) => {
       try {
         if ('id' in plugin) {
@@ -52,7 +52,7 @@ const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormPr
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid formgrid p-fluid flex">
+    <form onSubmit={handleSubmit(handleFormSubmit)} className="grid formgrid p-fluid flex">
       <div className="field col-12 text-900 font-medium text-xl text-center">{plugin.name}</div>
       <div className="field col-12">
         <label htmlFor="name">Label</label>

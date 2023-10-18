@@ -1,4 +1,4 @@
-import { MyLogPage } from '@resourvereign/common/api/me/logs.js';
+import { LogPage } from '@resourvereign/common/api/me/logs.js';
 import { PageQuery } from '@slangy/server/api/pagination.js';
 import controller, {
   RequestWithFields,
@@ -16,7 +16,7 @@ const limit = config.get<number>('paginationLimits.logs');
 // TODO: add pagination
 export const getLogs = controller<
   RequestWithQuery<PageQuery, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyLogPage>
+  ResponseWithBody<LogPage>
 >(async (req, res) => {
   const page = req.query.page ? Number(req.query.page) : 0;
   const skip = page * limit;

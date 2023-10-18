@@ -1,4 +1,4 @@
-import { MyPlugin, MyPluginInput, PluginStatus } from '@resourvereign/common/api/me/plugins.js';
+import { PluginStatus, UserPlugin, UserPluginInput } from '@resourvereign/common/api/me/plugins.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -9,13 +9,13 @@ import { ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
-import PluginModel, { PluginDocument } from '../../../../models/plugin.js';
+import UserPluginModel, { UserPluginDocument } from '../../../../models/userPlugin.js';
 import { isPluginAvailable } from '../../../../utils/plugin.js';
 
 export const pluginById = controller<
-  RequestWithParams<{ id: string }, RequestWithFields<JwtData & { plugin: PluginDocument }>>
+  RequestWithParams<{ id: string }, RequestWithFields<JwtData & { plugin: UserPluginDocument }>>
 >(async (req, _, next) => {
-  const plugin = await PluginModel.findOne({
+  const plugin = await UserPluginModel.findOne({
     _id: req.params.id,
     user: req.jwtUser.id,
   });
@@ -28,9 +28,9 @@ export const pluginById = controller<
   return next();
 });
 
-export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBody<MyPlugin[]>>(
+export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBody<UserPlugin[]>>(
   async (req, res) => {
-    const plugins = await PluginModel.find({ user: req.jwtUser.id });
+    const plugins = await UserPluginModel.find({ user: req.jwtUser.id });
     return res.status(SuccessStatusCode.SuccessOK).send(
       plugins.map((plugin) => ({
         ...plugin.toJSON(),
@@ -43,19 +43,21 @@ export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBod
 );
 
 export const createPlugin = controller<
-  RequestWithBody<MyPluginInput, RequestWithFields<JwtData>>,
-  ResponseWithBody<MyPlugin>
+  RequestWithBody<UserPluginInput, RequestWithFields<JwtData>>,
+  ResponseWithBody<UserPlugin>
 >(async (req, res) => {
-  const plugin = await PluginModel.create({ ...req.body, user: req.jwtUser.id });
+  const plugin = await UserPluginModel.create({ ...req.body, user: req.jwtUser.id });
 
   return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
 });
 
 export const updatePlugin = controller<
-  RequestWithBody<MyPluginInput, RequestWithFields<{ plugin: PluginDocument<never> }>>,
-  ResponseWithBody<MyPlugin>
+  RequestWithBody<UserPluginInput, RequestWithFields<{ plugin: UserPluginDocument<never> }>>,
+  ResponseWithBody<UserPlugin>
 >(async (req, res) => {
   const plugin = req.plugin;
+
+  // TODO: probably it's worth refreshing the scheduling of all intents of this plugin
 
   plugin.set(req.body);
   await plugin.save();
@@ -64,11 +66,13 @@ export const updatePlugin = controller<
 });
 
 // TODO: probably we should handle dependant intents at least
-export const deletePlugin = controller<RequestWithFields<{ plugin: PluginDocument<never> }>>(
+export const deletePlugin = controller<RequestWithFields<{ plugin: UserPluginDocument<never> }>>(
   async (req, res) => {
     const plugin = req.plugin;
 
     await plugin.deleteOne();
+
+    // TODO: All intents of this plugin should be deleted as well
 
     return res.status(SuccessStatusCode.SuccessNoContent).send();
   },

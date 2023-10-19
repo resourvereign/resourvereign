@@ -1,4 +1,5 @@
 import { PluginStatus, UserPlugin, UserPluginInput } from '@resourvereign/common/api/me/plugins.js';
+import { PluginType } from '@resourvereign/common/models/plugin.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -9,8 +10,10 @@ import { ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
+import IntentModel from '../../../../models/intent.js';
 import UserPluginModel, { UserPluginDocument } from '../../../../models/userPlugin.js';
 import { isPluginAvailable } from '../../../../utils/plugin.js';
+import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const pluginById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { plugin: UserPluginDocument }>>
@@ -57,10 +60,19 @@ export const updatePlugin = controller<
 >(async (req, res) => {
   const plugin = req.plugin;
 
-  // TODO: probably it's worth refreshing the scheduling of all intents of this plugin
-
   plugin.set(req.body);
   await plugin.save();
+
+  // TODO: Extend update to other types of plugins
+  if (plugin.type === PluginType.Integration) {
+    const pluginIntents = await IntentModel.find({
+      integration: plugin._id,
+    });
+
+    pluginIntents.forEach((intent) => {
+      scheduleIntent(intent);
+    });
+  }
 
   return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
 });
@@ -70,9 +82,21 @@ export const deletePlugin = controller<RequestWithFields<{ plugin: UserPluginDoc
   async (req, res) => {
     const plugin = req.plugin;
 
-    await plugin.deleteOne();
+    // TODO: Consider clearing usage of extensions for other types of plugins
+    if (plugin.type === PluginType.Integration) {
+      const pluginIntents = await IntentModel.find({
+        integration: plugin._id,
+      });
 
-    // TODO: All intents of this plugin should be deleted as well
+      await Promise.all(
+        pluginIntents.map(async (intent) => {
+          cancelIntent(intent);
+          await intent.deleteOne();
+        }),
+      );
+    }
+
+    await plugin.deleteOne();
 
     return res.status(SuccessStatusCode.SuccessNoContent).send();
   },

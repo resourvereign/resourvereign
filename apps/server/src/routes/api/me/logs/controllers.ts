@@ -13,7 +13,7 @@ import LogModel from '../../../../models/log.js';
 
 const limit = config.get<number>('paginationLimits.logs');
 
-// TODO: add pagination
+// TODO: add filtering
 export const getLogs = controller<
   RequestWithQuery<PageQuery, RequestWithFields<JwtData>>,
   ResponseWithBody<LogPage>

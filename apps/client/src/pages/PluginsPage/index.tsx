@@ -6,9 +6,9 @@ import { PluginType } from '../../api/plugins';
 import PluginTypeSection from './PluginTypeSection';
 
 const tabIcons = {
-  [PluginType.Integration]: 'pi pi-box',
-  [PluginType.Notifications]: 'pi pi-send',
-  [PluginType.Scheduling]: 'pi pi-clock',
+  [PluginType.Integration]: 'pi pi-fw pi-box',
+  [PluginType.Notifications]: 'pi pi-fw pi-send',
+  [PluginType.Scheduling]: 'pi pi-fw pi-clock',
 };
 
 const PluginsPage = () => {

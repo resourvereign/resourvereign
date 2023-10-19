@@ -100,10 +100,13 @@ const Calendar = <EventData = never,>({
         days.push(
           <div
             key={day.toString()}
-            className={classNames(cellClassNames, { [styles.fillerDay]: !isSameMonth(day, month) })}
+            className={classNames(cellClassNames, {
+              [styles.fillerDay]: !isSameMonth(day, month),
+              [styles.today]: isSameDay(day, new Date()),
+            })}
             onClick={handleDayClick(cloneDay)}
           >
-            {formattedDate}
+            <div className={styles.dateLabel}>{formattedDate}</div>
             {eventsForDay.map((event, index) => (
               <div
                 key={`${event.date}-${event.text}-${index}`}

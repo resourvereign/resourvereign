@@ -12,7 +12,15 @@
 }
 
 .fillerDay {
-  color: darkgrey;
+  .date-label {
+    color: darkgrey;
+  }
+}
+
+.today {
+  .date-label {
+    font-weight: bold;
+  }
 }
 
 .headerCell {

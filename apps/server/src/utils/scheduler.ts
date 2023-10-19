@@ -70,7 +70,7 @@ export const scheduleIntent = (intent: IntentDocument) => {
   jobs.set(intent.id, disposer);
 };
 
-export const cancel = (intent: IntentDocument) => {
+export const cancelIntent = (intent: IntentDocument) => {
   const jobDisposer = jobs.get(intent.id);
 
   if (jobDisposer) {

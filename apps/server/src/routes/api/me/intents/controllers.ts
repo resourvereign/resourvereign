@@ -13,7 +13,7 @@ import { endOfMonth, startOfMonth } from 'date-fns';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
 import UserPluginModel from '../../../../models/userPlugin.js';
-import { cancel, scheduleIntent } from '../../../../utils/scheduler.js';
+import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const intentById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { intent: IntentDocument }>>
@@ -98,7 +98,7 @@ export const deleteIntent = controller<RequestWithFields<{ intent: IntentDocumen
   async (req, res) => {
     const intent = req.intent;
 
-    cancel(intent);
+    cancelIntent(intent);
     await intent.deleteOne();
 
     return res.status(SuccessStatusCode.SuccessNoContent).send();

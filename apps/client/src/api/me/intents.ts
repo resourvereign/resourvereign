@@ -17,7 +17,7 @@ const parseIntent = (intent: Jsonify<IntentFromServer>) => ({
   date: new Date(intent.date),
 });
 
-export const listIntents = (month: Date) => {
+export const listIntents = (month: Date): Promise<Intent[]> => {
   const searchParams = new URLSearchParams({ month: month.toISOString() });
 
   return getRequest<IntentFromServer[]>(`${basePath}?${searchParams.toString()}`).then((intents) =>
@@ -25,10 +25,10 @@ export const listIntents = (month: Date) => {
   );
 };
 
-export const createIntent = async (intent: IntentCreate) =>
+export const createIntent = async (intent: IntentCreate): Promise<Intent> =>
   await postRequest<IntentInput, IntentFromServer>(basePath, intent).then(parseIntent);
 
-export const updateIntent = async (intent: IntentUpdate) => {
+export const updateIntent = async (intent: IntentUpdate): Promise<Intent> => {
   const { id, ...rest } = intent;
   return await putRequest<IntentInput, IntentFromServer>(`${basePath}/${id}`, rest).then(
     parseIntent,

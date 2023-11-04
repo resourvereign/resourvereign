@@ -11,4 +11,4 @@ export type PluginSchema = Jsonify<PluginSchemaFromServer>;
 
 const basePath = '/api/plugins';
 
-export const listPlugins = () => getRequest<Plugin[]>(basePath);
+export const listPlugins = (): Promise<Plugin[]> => getRequest<PluginFromServer[]>(basePath);

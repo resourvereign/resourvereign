@@ -1,4 +1,9 @@
-import { PluginStatus, UserPlugin, UserPluginInput } from '@resourvereign/common/api/me/plugins.js';
+import {
+  PluginStatus,
+  UserPlugin,
+  UserPluginInput,
+  UserPluginWithStatus,
+} from '@resourvereign/common/api/me/plugins.js';
 import { PluginType } from '@resourvereign/common/models/plugin.js';
 import controller, {
   RequestWithBody,
@@ -31,19 +36,30 @@ export const pluginById = controller<
   return next();
 });
 
-export const getPlugins = controller<RequestWithFields<JwtData>, ResponseWithBody<UserPlugin[]>>(
-  async (req, res) => {
-    const plugins = await UserPluginModel.find({ user: req.jwtUser.id });
-    return res.status(SuccessStatusCode.SuccessOK).send(
-      plugins.map((plugin) => ({
-        ...plugin.toJSON(),
-        status: isPluginAvailable(plugin.type, plugin.name)
-          ? PluginStatus.enabled
-          : PluginStatus.disabled,
-      })),
-    );
-  },
-);
+const pluginResponse = async (plugin: UserPluginDocument): Promise<UserPluginWithStatus> => {
+  const status = isPluginAvailable(plugin.type, plugin.name)
+    ? PluginStatus.enabled
+    : PluginStatus.disabled;
+
+  if (plugin.type === PluginType.Integration) {
+    await plugin.populate('addons');
+  }
+
+  return {
+    ...plugin.toJSON(),
+    status,
+  };
+};
+
+export const getPlugins = controller<
+  RequestWithFields<JwtData>,
+  ResponseWithBody<UserPluginWithStatus[]>
+>(async (req, res) => {
+  const plugins = await UserPluginModel.find({ user: req.jwtUser.id });
+  return res
+    .status(SuccessStatusCode.SuccessOK)
+    .send(await Promise.all(plugins.map(pluginResponse)));
+});
 
 export const createPlugin = controller<
   RequestWithBody<UserPluginInput, RequestWithFields<JwtData>>,
@@ -51,7 +67,7 @@ export const createPlugin = controller<
 >(async (req, res) => {
   const plugin = await UserPluginModel.create({ ...req.body, user: req.jwtUser.id });
 
-  return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
+  return res.status(SuccessStatusCode.SuccessCreated).send(await pluginResponse(plugin));
 });
 
 export const updatePlugin = controller<
@@ -74,7 +90,7 @@ export const updatePlugin = controller<
     });
   }
 
-  return res.status(SuccessStatusCode.SuccessCreated).send(plugin.toJSON());
+  return res.status(SuccessStatusCode.SuccessCreated).send(await pluginResponse(plugin));
 });
 
 // TODO: probably we should handle dependant intents at least

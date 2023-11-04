@@ -1,9 +1,37 @@
 import { useCallback, useState } from 'react';
 
-import { UserPlugin, UserPluginData } from '../../../api/me/plugins';
+import {
+  IntegrationUserPluginData,
+  NotificationsUserPluginData,
+  SchedulingUserPluginData,
+  UserPlugin,
+  UserPluginData,
+} from '../../../api/me/plugins';
 import { Plugin, PluginSchema, PluginType } from '../../../api/plugins';
 import usePlugins from '../../../hooks/usePlugins';
 import useUserPlugins from '../../../hooks/useUserPlugins';
+
+const getDefaultUserPlugin = (plugin: Plugin): UserPluginData => {
+  const values = {
+    type: plugin.type,
+    name: plugin.name,
+    label: '',
+    config: {},
+  };
+
+  switch (plugin.type) {
+    case PluginType.Integration:
+      return {
+        ...values,
+        color: Math.floor(Math.random() * 16777215).toString(16),
+        addons: [],
+      } as IntegrationUserPluginData;
+    case PluginType.Notifications:
+      return values as NotificationsUserPluginData;
+    case PluginType.Scheduling:
+      return values as SchedulingUserPluginData;
+  }
+};
 
 const usePluginActions = (pluginType: PluginType) => {
   const plugins = usePlugins().data?.[pluginType];
@@ -13,16 +41,7 @@ const usePluginActions = (pluginType: PluginType) => {
 
   const onUserPluginCreate = useCallback(() => {
     if (selectedPlugin) {
-      setEditingUserPlugin([
-        selectedPlugin.schema,
-        {
-          type: selectedPlugin.type,
-          name: selectedPlugin.name,
-          label: '',
-          color: Math.floor(Math.random() * 16777215).toString(16),
-          config: {},
-        },
-      ]);
+      setEditingUserPlugin([selectedPlugin.schema, getDefaultUserPlugin(selectedPlugin)]);
     }
   }, [selectedPlugin]);
 
@@ -31,7 +50,7 @@ const usePluginActions = (pluginType: PluginType) => {
   }, []);
 
   const onUserPluginEdit = useCallback(
-    (plugin: UserPlugin) => {
+    (plugin: UserPluginData) => {
       const pluginSchema = plugins?.find((p) => p.name === plugin.name)?.schema;
       if (pluginSchema) {
         setEditingUserPlugin([pluginSchema, plugin]);

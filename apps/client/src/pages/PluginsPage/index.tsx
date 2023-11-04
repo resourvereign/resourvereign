@@ -4,12 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { PluginType } from '../../api/plugins';
 
 import PluginTypeSection from './PluginTypeSection';
-
-const tabIcons = {
-  [PluginType.Integration]: 'pi pi-fw pi-box',
-  [PluginType.Notifications]: 'pi pi-fw pi-send',
-  [PluginType.Scheduling]: 'pi pi-fw pi-clock',
-};
+import { iconForPluginType } from './icons';
 
 const PluginsPage = () => {
   const { t } = useTranslation('pages', { keyPrefix: 'settings' });
@@ -24,7 +19,7 @@ const PluginsPage = () => {
           <TabPanel
             key={type}
             header={t(`tabs.${type}`)}
-            leftIcon={tabIcons[type]}
+            leftIcon={`pi pi-fw ${iconForPluginType[type]}`}
             className="h-full"
           >
             <PluginTypeSection pluginType={type} />

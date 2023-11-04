@@ -1,13 +1,18 @@
 import { DataView } from 'primereact/dataview';
 
-import { PluginType, UserPlugin } from '../../../../api/me/plugins';
+import {
+  PluginType,
+  UserPlugin,
+  UserPluginData,
+  userPluginToUpdate,
+} from '../../../../api/me/plugins';
 import useUserPlugins from '../../../../hooks/useUserPlugins';
 
 import PluginItem from './PluginItem';
 
 type PluginListProps = {
   type: PluginType;
-  onPluginEdit: (plugin: UserPlugin) => void;
+  onPluginEdit: (plugin: UserPluginData) => void;
   onPluginDelete: (plugin: UserPlugin) => void;
 };
 
@@ -19,7 +24,7 @@ const PluginList = ({ type, onPluginEdit, onPluginDelete }: PluginListProps) => 
       className="w-full"
       value={userPlugins.map((p) => ({
         ...p,
-        onEdit: () => onPluginEdit(p),
+        onEdit: () => onPluginEdit(userPluginToUpdate(p)),
         onDelete: () => onPluginDelete(p),
       }))}
       itemTemplate={PluginItem}

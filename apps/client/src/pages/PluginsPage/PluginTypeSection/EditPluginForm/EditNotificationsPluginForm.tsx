@@ -1,52 +1,43 @@
 import { toStartCase } from '@slangy/client/string.js';
 import classNames from 'classnames';
 import { Button } from 'primereact/button';
-import { ColorPicker } from 'primereact/colorpicker';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { UserPluginData } from '../../../api/me/plugins';
-import { PluginSchema } from '../../../api/plugins';
-import useUserPlugins from '../../../hooks/useUserPlugins';
+import { NotificationsUserPluginData } from '../../../../api/me/plugins';
+import { PluginSchema } from '../../../../api/plugins';
+import useUserPlugins from '../../../../hooks/useUserPlugins';
 
-import styles from './EditPluginForm.module.css';
-
-type EditPluginFormProps = {
-  data: [PluginSchema, UserPluginData];
+type EditNotificationsPluginFormProps = {
+  data: [PluginSchema, NotificationsUserPluginData];
   onFinished?: () => void;
 };
 
-type EditionValues = {
-  label: string;
-  color: string;
-  config: Record<string, string>;
-};
-
-const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormProps) => {
+const EditNotificationsPluginForm = ({
+  data: [schema, plugin],
+  onFinished,
+}: EditNotificationsPluginFormProps) => {
   const { create, update } = useUserPlugins();
-  const { register, handleSubmit, control } = useForm<EditionValues>({
+  const { register, handleSubmit, control } = useForm<NotificationsUserPluginData>({
     defaultValues: {
-      label: plugin.label,
-      color: plugin.color,
-      config: plugin.config,
+      ...plugin,
     },
   });
 
   const handleFormSubmit = useCallback(
-    async (data: EditionValues) => {
+    async (data: NotificationsUserPluginData) => {
       try {
-        if ('id' in plugin) {
-          await update({
-            ...plugin,
-            ...data,
-          });
+        const newValues = {
+          ...plugin,
+          ...data,
+        };
+
+        if ('id' in newValues) {
+          await update(newValues);
         } else {
-          await create({
-            ...plugin,
-            ...data,
-          });
+          await create(newValues);
         }
         if (onFinished) {
           onFinished();
@@ -63,24 +54,7 @@ const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormPr
       <div className="field col-12 text-900 font-medium text-xl text-center">{plugin.name}</div>
       <div className="field col-12 ">
         <label htmlFor="name">Label</label>
-        <div className="p-inputgroup w-full">
-          <div>
-            <Controller
-              name="color"
-              control={control}
-              rules={{ required: 'Color is required.' }}
-              render={({ field }) => (
-                <ColorPicker
-                  name="color"
-                  value={field.value}
-                  className={classNames(styles.colorPicker)}
-                  onChange={(e) => field.onChange(e.value)}
-                />
-              )}
-            />
-          </div>
-          <InputText className="w-full" {...register('label')} />
-        </div>
+        <InputText className="w-full" {...register('label')} />
       </div>
 
       {Object.entries(schema.properties).map(([name, definition]) => (
@@ -119,4 +93,4 @@ const EditPluginForm = ({ data: [schema, plugin], onFinished }: EditPluginFormPr
   );
 };
 
-export default EditPluginForm;
+export default EditNotificationsPluginForm;

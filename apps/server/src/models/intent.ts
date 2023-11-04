@@ -4,11 +4,11 @@ import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
 import { HydratedDocument, Schema, Types, model } from 'mongoose';
 
-type IntetWithUser = Intent & { user: Types.ObjectId };
+type IntentWithUser = Intent & { user: Types.ObjectId };
 
-export type IntentDocument = HydratedDocument<IntetWithUser>;
+export type IntentDocument = HydratedDocument<IntentWithUser>;
 
-const intentSchema = new Schema<IntetWithUser>(
+const intentSchema = new Schema<IntentWithUser>(
   {
     date: {
       type: Date,
@@ -33,4 +33,5 @@ const intentSchema = new Schema<IntetWithUser>(
   .plugin(timestamps)
   .plugin(normalizeJson, { remove: ['password', '__v', 'user'] });
 
-export default model<IntetWithUser>('Intent', intentSchema);
+// TODO: Is the type hint necessary?
+export default model<IntentWithUser>('Intent', intentSchema);

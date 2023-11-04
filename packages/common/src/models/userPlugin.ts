@@ -6,10 +6,30 @@ export type PluginConfig = {
   [key: string]: string;
 };
 
-export type UserPlugin<Config extends PluginConfig = PluginConfig> = WithTimestamps & {
+export type BaseUserPlugin<Config extends PluginConfig = PluginConfig> = WithTimestamps & {
   type: PluginType;
   name: string;
   label: string;
-  color: string;
   config: Config;
 };
+
+export type NotificationsUserPlugin<Config extends PluginConfig = PluginConfig> =
+  BaseUserPlugin<Config> & {
+    type: PluginType.Notifications;
+  };
+
+export type SchedulingUserPlugin<Config extends PluginConfig = PluginConfig> =
+  BaseUserPlugin<Config> & {
+    type: PluginType.Scheduling;
+  };
+
+export type UserPluginAddon<Config extends PluginConfig = PluginConfig> =
+  | NotificationsUserPlugin<Config>
+  | SchedulingUserPlugin<Config>;
+
+export type IntegrationUserPlugin<Config extends PluginConfig = PluginConfig> =
+  BaseUserPlugin<Config> & {
+    type: PluginType.Integration;
+    color: string;
+    addons: UserPluginAddon[];
+  };

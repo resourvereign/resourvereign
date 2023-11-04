@@ -26,7 +26,7 @@ const PluginTypeSection = ({ pluginType }: PluginTypeSectionProps) => {
       <EditionFormDialog
         data={editingUserPlugin}
         onEditionFinish={onUserPluginEditFinish}
-        form={EditPluginForm}
+        form={(props) => <EditPluginForm type={pluginType} {...props} />}
       />
       <PluginList
         type={pluginType}

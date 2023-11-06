@@ -1,6 +1,6 @@
 import { UserRole } from '@resourvereign/common/models/user.js';
 import { setToken } from '@slangy/client/rest/init.js';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 
 import { generateToken, renewToken } from '../api/auth';

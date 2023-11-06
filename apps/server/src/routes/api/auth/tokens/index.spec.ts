@@ -4,7 +4,7 @@ import { ClientErrorStatusCode, Method, SuccessStatusCode } from '@slangy/server
 import { generateToken } from '@slangy/server/middleware/express/auth/jwt.js';
 import routes from '@slangy/server/test-utils/routes.js';
 import server from '@slangy/server/test-utils/server.js';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 import UserModel from '../../../../models/user.js';
 import { getTokenPayload } from '../../../../utils/auth.js';
@@ -88,7 +88,7 @@ describe('/api/auth/tokens', () => {
           email: 'test@email.com',
           password: 'testTest1.',
         });
-        const decodedValues = jwtDecode.default(response.body.token);
+        const decodedValues = jwtDecode(response.body.token);
 
         expect(response.statusCode).toBe(SuccessStatusCode.SuccessCreated);
         expect(response.type).toBe('application/json');
@@ -147,7 +147,7 @@ describe('/api/auth/tokens', () => {
         const token = await generateToken(getTokenPayload(user));
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);
 
-        const decodedValues = jwtDecode.default(response.body.token);
+        const decodedValues = jwtDecode(response.body.token);
 
         expect(response.statusCode).toBe(SuccessStatusCode.SuccessOK);
         expect(response.type).toBe('application/json');

@@ -9,13 +9,17 @@ import {
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
-import { HydratedDocument, Schema, model } from 'mongoose';
+import { HydratedDocument, Schema, Types, model } from 'mongoose';
+
+type UserPluginWithUser<Config extends PluginConfig = PluginConfig> = BaseUserPlugin<Config> & {
+  user: Types.ObjectId;
+};
 
 export type UserPluginDocument<Config extends PluginConfig = PluginConfig> = HydratedDocument<
-  BaseUserPlugin<Config>
+  UserPluginWithUser<Config>
 >;
 
-const userPluginSchema = new Schema<BaseUserPlugin>(
+const userPluginSchema = new Schema<UserPluginWithUser>(
   {
     type: {
       type: String,
@@ -49,10 +53,15 @@ const userPluginSchema = new Schema<BaseUserPlugin>(
 const UserPluginModel = model('UserPlugin', userPluginSchema);
 
 // Integration plugin
-export type IntegrationUserPluginDocument<Config extends PluginConfig = PluginConfig> =
-  HydratedDocument<IntegrationUserPlugin<Config>>;
+type IntegrationUserPluginWithUser<Config extends PluginConfig = PluginConfig> =
+  IntegrationUserPlugin<Config> & {
+    user: Types.ObjectId;
+  };
 
-const IntegrationUserPluginSchema = new Schema({
+export type IntegrationUserPluginDocument<Config extends PluginConfig = PluginConfig> =
+  HydratedDocument<IntegrationUserPluginWithUser<Config>>;
+
+const IntegrationUserPluginSchema = new Schema<IntegrationUserPluginWithUser>({
   color: {
     type: String,
     required: true,
@@ -69,19 +78,27 @@ const IntegrationUserPluginSchema = new Schema({
 UserPluginModel.discriminator(PluginType.Integration, IntegrationUserPluginSchema);
 
 // Notifications plugin
-export type NotificationsPluginDocument<Config extends PluginConfig = PluginConfig> =
-  HydratedDocument<NotificationsUserPlugin<Config>>;
+export type NotificationsUserPluginWithUser<Config extends PluginConfig = PluginConfig> =
+  NotificationsUserPlugin<Config> & {
+    user: Types.ObjectId;
+  };
 
-const NotificationsUserPluginSchema = new Schema({});
+export type NotificationsUserPluginDocument<Config extends PluginConfig = PluginConfig> =
+  HydratedDocument<NotificationsUserPluginWithUser<Config>>;
+
+const NotificationsUserPluginSchema = new Schema<NotificationsUserPluginWithUser>({});
 
 UserPluginModel.discriminator(PluginType.Notifications, NotificationsUserPluginSchema);
 
 // Scheduling plugin
-export type SchedulingPluginDocument<Config extends PluginConfig = PluginConfig> = HydratedDocument<
-  SchedulingUserPlugin<Config>
->;
+export type SchedulingUserPluginWithUser<Config extends PluginConfig = PluginConfig> =
+  SchedulingUserPlugin<Config> & {
+    user: Types.ObjectId;
+  };
+export type SchedulingUserPluginDocument<Config extends PluginConfig = PluginConfig> =
+  HydratedDocument<SchedulingUserPluginWithUser<Config>>;
 
-const SchedulingUserPluginSchema = new Schema({});
+const SchedulingUserPluginSchema = new Schema<SchedulingUserPluginWithUser>({});
 
 UserPluginModel.discriminator(PluginType.Scheduling, SchedulingUserPluginSchema);
 

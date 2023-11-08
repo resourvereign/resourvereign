@@ -19,7 +19,7 @@ type BasePlugin<Schema = PluginSchema> = {
   schema: Schema;
 };
 
-type IntegrationPlugin<
+export type IntegrationPlugin<
   Config extends DefaultPluginConfig = DefaultPluginConfig,
   BookOverrides extends Config = Config,
 > = BasePlugin & {
@@ -31,23 +31,25 @@ type IntegrationPlugin<
   }>;
 };
 
-type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> = BasePlugin & {
-  initialize: (
-    config: Config,
-    logger: Logger,
-  ) => Promise<{
-    sendMessage(msg: string): Promise<boolean>;
-  }>;
-};
+export type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
+  BasePlugin & {
+    initialize: (
+      config: Config,
+      logger: Logger,
+    ) => Promise<{
+      notify(msg: string): Promise<boolean>;
+    }>;
+  };
 
-type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> = BasePlugin & {
-  initialize: (
-    config: Config,
-    logger: Logger,
-  ) => Promise<{
-    sendMessage(msg: string): Promise<boolean>;
-  }>;
-};
+export type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
+  BasePlugin & {
+    initialize: (
+      config: Config,
+      logger: Logger,
+    ) => Promise<{
+      sendMessage(msg: string): Promise<boolean>;
+    }>;
+  };
 
 export type Plugin = IntegrationPlugin | NotificationsPlugin | SchedulingPlugin;
 

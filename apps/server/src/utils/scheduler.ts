@@ -4,9 +4,14 @@ import { endOfDay, startOfDay, subDays } from 'date-fns';
 import { scheduleJob } from 'node-schedule';
 
 import IntentModel, { IntentDocument } from '../models/intent.js';
+import {
+  IntegrationUserPluginDocument,
+  NotificationsUserPluginDocument,
+  UserPluginDocument,
+} from '../models/userPlugin.js';
 
 import { loggerForUser } from './logger.js';
-import { getPlugin } from './plugin.js';
+import { IntegrationPlugin, NotificationsPlugin, getPlugin } from './plugin.js';
 
 const schedulerCron = config.get<string>('scheduler.cron');
 
@@ -16,6 +21,25 @@ const isIntentSchedulable = (intent: IntentDocument) => {
   const todayStartOfDay = startOfDay(new Date());
 
   return !intent.satisfied && intent.date >= todayStartOfDay;
+};
+
+const getPluginInstance = async <UserPluginType extends UserPluginDocument>(
+  userPlugin: UserPluginType,
+) => {
+  const plugin = getPlugin(userPlugin.type, userPlugin.name);
+
+  if (plugin) {
+    return (await plugin.initialize(
+      { ...userPlugin.config },
+      loggerForUser(userPlugin.user.toString()),
+    )) as UserPluginType extends IntegrationUserPluginDocument
+      ? ReturnType<IntegrationPlugin['initialize']>
+      : UserPluginType extends NotificationsUserPluginDocument
+      ? ReturnType<NotificationsPlugin['initialize']>
+      : unknown;
+  }
+
+  return null;
 };
 
 export const scheduleIntent = (intent: IntentDocument) => {
@@ -41,18 +65,27 @@ export const scheduleIntent = (intent: IntentDocument) => {
       return;
     }
 
-    const integrationPlugin = getPlugin(PluginType.Integration, updatedIntent.integration.name);
+    const integrationInstance = await getPluginInstance(updatedIntent.integration);
 
-    if (integrationPlugin) {
-      const instance = await integrationPlugin.initialize(
-        { ...intent.integration.config },
-        loggerForUser(intent.user.toString()),
-      );
+    if (integrationInstance) {
+      const result = await integrationInstance.book(intent.date);
 
-      const result = await instance.book(intent.date);
       if (result) {
         updatedIntent.satisfied = true;
         await updatedIntent.save();
+
+        // Loop through notification plugins and send notification
+        await updatedIntent.integration.populate('addons');
+        for (const notificationPlugin of updatedIntent.integration.addons.filter(
+          (addon) => addon.type === PluginType.Notifications,
+        ) as NotificationsUserPluginDocument[]) {
+          const notificationInstance = await getPluginInstance(notificationPlugin);
+
+          // TODO: improve notification message
+          await notificationInstance?.notify(
+            `${intent.integration.label} successfully booked for ${intent.date}`,
+          );
+        }
         disposer();
       }
     }

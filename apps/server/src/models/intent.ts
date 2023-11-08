@@ -4,7 +4,12 @@ import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
 import { HydratedDocument, Schema, Types, model } from 'mongoose';
 
-type IntentWithUser = Intent & { user: Types.ObjectId };
+import { IntegrationUserPluginDocument } from './userPlugin.js';
+
+type IntentWithUser = Omit<Intent, 'integration'> & {
+  user: Types.ObjectId;
+  integration: IntegrationUserPluginDocument;
+};
 
 export type IntentDocument = HydratedDocument<IntentWithUser>;
 

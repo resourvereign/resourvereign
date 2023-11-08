@@ -1,6 +1,5 @@
 import {
   PluginStatus,
-  UserPlugin,
   UserPluginInput,
   UserPluginWithStatus,
 } from '@resourvereign/common/api/me/plugins.js';
@@ -23,10 +22,11 @@ import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
 export const pluginById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { plugin: UserPluginDocument }>>
 >(async (req, _, next) => {
-  const plugin = await UserPluginModel.findOne({
+  const plugin = (await UserPluginModel.findOne({
     _id: req.params.id,
     user: req.jwtUser.id,
-  });
+    // TODO: Investigate why type assertion is needed and findOne return type is not compatible with UserPluginDocument
+  })) as UserPluginDocument;
 
   if (!plugin) {
     return next(new ClientErrorNotFound());
@@ -55,7 +55,8 @@ export const getPlugins = controller<
   RequestWithFields<JwtData>,
   ResponseWithBody<UserPluginWithStatus[]>
 >(async (req, res) => {
-  const plugins = await UserPluginModel.find({ user: req.jwtUser.id });
+  // TODO: Investigate why type assertion is needed and findOne return type is not compatible with UserPluginDocument
+  const plugins = (await UserPluginModel.find({ user: req.jwtUser.id })) as UserPluginDocument[];
   return res
     .status(SuccessStatusCode.SuccessOK)
     .send(await Promise.all(plugins.map(pluginResponse)));
@@ -63,16 +64,20 @@ export const getPlugins = controller<
 
 export const createPlugin = controller<
   RequestWithBody<UserPluginInput, RequestWithFields<JwtData>>,
-  ResponseWithBody<UserPlugin>
+  ResponseWithBody<UserPluginWithStatus>
 >(async (req, res) => {
-  const plugin = await UserPluginModel.create({ ...req.body, user: req.jwtUser.id });
+  const plugin = (await UserPluginModel.create({
+    ...req.body,
+    user: req.jwtUser.id,
+    // TODO: Investigate why type assertion is needed and findOne return type is not compatible with UserPluginDocument
+  })) as UserPluginDocument;
 
   return res.status(SuccessStatusCode.SuccessCreated).send(await pluginResponse(plugin));
 });
 
 export const updatePlugin = controller<
-  RequestWithBody<UserPluginInput, RequestWithFields<{ plugin: UserPluginDocument<never> }>>,
-  ResponseWithBody<UserPlugin>
+  RequestWithBody<UserPluginInput, RequestWithFields<{ plugin: UserPluginDocument }>>,
+  ResponseWithBody<UserPluginWithStatus>
 >(async (req, res) => {
   const plugin = req.plugin;
 

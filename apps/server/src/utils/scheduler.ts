@@ -35,8 +35,8 @@ const getPluginInstance = async <UserPluginType extends UserPluginDocument>(
     )) as UserPluginType extends IntegrationUserPluginDocument
       ? ReturnType<IntegrationPlugin['initialize']>
       : UserPluginType extends NotificationsUserPluginDocument
-      ? ReturnType<NotificationsPlugin['initialize']>
-      : unknown;
+        ? ReturnType<NotificationsPlugin['initialize']>
+        : unknown;
   }
 
   return null;

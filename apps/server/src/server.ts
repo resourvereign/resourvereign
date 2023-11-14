@@ -8,7 +8,7 @@ import chalk from 'chalk';
 import config from 'config';
 import { gracefulShutdown } from 'node-schedule';
 
-import routes from './routes/index.js';
+import api from './routes/api/index.js';
 import { initializePlugins } from './utils/plugin.js';
 import { initializeScheduler } from './utils/scheduler.js';
 
@@ -23,7 +23,7 @@ await server({
   jsonBodyParserLimits: config.get<string>('server.bodyParserLimits.json'),
   staticsPath: resolve(__dirname, 'public'),
   spaFilePath: join(__dirname, 'public', 'index.html'),
-  routes: [['/', routes]],
+  routes: [['/api', api]],
   init: async () => {
     await connectMongoose();
   },

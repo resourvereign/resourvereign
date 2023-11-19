@@ -9,6 +9,7 @@ import usePluginActions from './usePluginActions';
 type PluginTypeSectionProps = {
   pluginType: PluginType;
 };
+
 const PluginTypeSection = ({ pluginType }: PluginTypeSectionProps) => {
   const {
     plugins,
@@ -26,7 +27,9 @@ const PluginTypeSection = ({ pluginType }: PluginTypeSectionProps) => {
       <EditionFormDialog
         data={editingUserPlugin}
         onEditionFinish={onUserPluginEditFinish}
-        form={(props) => <EditPluginForm type={pluginType} {...props} />}
+        renderForm={({ data, onFinished }) => (
+          <EditPluginForm type={pluginType} data={data} onFinished={onFinished} />
+        )}
       />
       <PluginList
         type={pluginType}

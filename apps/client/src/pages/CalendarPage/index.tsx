@@ -41,7 +41,9 @@ const CalendarPage = () => {
       <EditionFormDialog
         data={editingIntent}
         onEditionFinish={handleEditionFinish}
-        form={EditIntentForm}
+        renderForm={({ data, onFinished }) => (
+          <EditIntentForm data={data} onFinished={onFinished} />
+        )}
       />
       <div className="h-full">
         <Calendar

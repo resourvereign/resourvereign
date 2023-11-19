@@ -18,10 +18,10 @@ type EditPluginFormProps<Type extends PluginType> = {
     Type extends PluginType.Integration
       ? IntegrationUserPluginData
       : Type extends PluginType.Notifications
-      ? NotificationsUserPluginData
-      : Type extends PluginType.Scheduling
-      ? SchedulingUserPluginData
-      : UserPluginData,
+        ? NotificationsUserPluginData
+        : Type extends PluginType.Scheduling
+          ? SchedulingUserPluginData
+          : UserPluginData,
   ];
   onFinished?: () => void;
 };

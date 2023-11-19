@@ -8,7 +8,7 @@ import { SuccessStatusCode } from '@slangy/server/http.js';
 import { getAllPlugins } from '../../../utils/plugin.js';
 
 export const getPlugins = controller<Request, ResponseWithBody<Plugin[]>>(async (_req, res) => {
-  return res.status(SuccessStatusCode.SuccessCreated).send(
+  return res.status(SuccessStatusCode.SuccessOK).send(
     getAllPlugins().map(({ name, type, plugin }) => ({
       name,
       type,

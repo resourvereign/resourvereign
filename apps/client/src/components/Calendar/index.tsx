@@ -45,7 +45,7 @@ const Calendar = <EventData = never,>({
 
   const handleCalendarScroll = useCallback(
     (event: React.WheelEvent<HTMLDivElement>) => {
-      onMonthChange?.(addMonths(month, event.deltaY > 0 ? 1 : -1));
+      onMonthChange?.(addMonths(startOfMonth(month), event.deltaY > 0 ? 1 : -1));
     },
     [month, onMonthChange],
   );

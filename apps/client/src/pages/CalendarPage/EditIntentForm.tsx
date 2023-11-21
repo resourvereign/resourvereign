@@ -1,4 +1,4 @@
-import { format, startOfMonth } from 'date-fns';
+import { format } from 'date-fns';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { useCallback, useEffect, useState } from 'react';
@@ -8,6 +8,8 @@ import { IntentData } from '../../api/me/intents';
 import { PluginType } from '../../api/plugins';
 import useIntents from '../../hooks/useIntents';
 import useUserPlugins from '../../hooks/useUserPlugins';
+
+import { rangeFromMonth } from './utils';
 
 type EditIntentFormProps = {
   data: IntentData;
@@ -20,15 +22,16 @@ type EditIntentFormValues = {
 
 const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
   // TODO: probably a non-listing version of useIntents is needed to avoid unnecessary calls to listing intents.
-  const [month, setMonth] = useState(startOfMonth(intent.date));
+  const [range, setRange] = useState(rangeFromMonth(intent.date));
   const integrations = useUserPlugins().byType[PluginType.Integration];
-  const { create, update, remove } = useIntents(month);
+
+  const { create, update, remove } = useIntents(range.start, range.end);
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
     defaultValues: { integration: intent.integration },
   });
 
   useEffect(() => {
-    setMonth(startOfMonth(intent.date));
+    setRange(rangeFromMonth(intent.date));
   }, [intent.date]);
 
   const handleFormSubmit = useCallback(

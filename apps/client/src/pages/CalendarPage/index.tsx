@@ -9,11 +9,12 @@ import useIntents from '../../hooks/useIntents';
 
 import EditIntentForm from './EditIntentForm';
 import styles from './index.module.css';
+import { rangeFromMonth } from './utils';
 
 const CalendarPage = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [range, setRange] = useState(rangeFromMonth(new Date()));
   const [editingIntent, setEditingIntent] = useState<IntentData | undefined>(undefined);
-  const { data: intents } = useIntents(currentMonth);
+  const { data: intents } = useIntents(range.start, range.end);
 
   const handleEventClick = useCallback((event: CalendarEvent<Intent>) => {
     setEditingIntent({
@@ -34,6 +35,10 @@ const CalendarPage = () => {
     });
   }, []);
 
+  const handleMonthChange = useCallback((month: Date) => {
+    setRange(rangeFromMonth(month));
+  }, []);
+
   const beginningOfCurrentDay = startOfDay(new Date());
 
   return (
@@ -47,8 +52,8 @@ const CalendarPage = () => {
       />
       <div className="h-full">
         <Calendar
-          month={currentMonth}
-          onMonthChange={setCurrentMonth}
+          month={range.start}
+          onMonthChange={handleMonthChange}
           onDayClick={handleDayClick}
           onEventClick={handleEventClick}
           events={intents.map((intent) => ({

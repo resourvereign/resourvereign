@@ -9,7 +9,6 @@ import controller, {
 import { ClientErrorBadRequest, ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
 import { SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
-import { endOfMonth, startOfMonth } from 'date-fns';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
 import UserPluginModel from '../../../../models/userPlugin.js';
@@ -32,18 +31,17 @@ export const intentById = controller<
 });
 
 export const getIntents = controller<
-  RequestWithQuery<{ month?: string }, RequestWithFields<JwtData>>,
+  RequestWithQuery<{ from: string; to: string }, RequestWithFields<JwtData>>,
   ResponseWithBody<Intent[]>
 >(async (req, res) => {
-  const month = req.query.month ? new Date(req.query.month) : new Date();
-  const monthStart = startOfMonth(month);
-  const monthEnd = endOfMonth(month);
+  const from = new Date(req.query.from);
+  const to = new Date(req.query.to);
 
   const intents = await IntentModel.find({
     user: req.jwtUser.id,
     date: {
-      $gte: monthStart,
-      $lte: monthEnd,
+      $gte: from,
+      $lte: to,
     },
   })
     .populate('integration')

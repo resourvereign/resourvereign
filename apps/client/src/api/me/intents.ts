@@ -17,8 +17,8 @@ const parseIntent = (intent: Jsonify<IntentFromServer>) => ({
   date: new Date(intent.date),
 });
 
-export const listIntents = (month: Date): Promise<Intent[]> => {
-  const searchParams = new URLSearchParams({ month: month.toISOString() });
+export const listIntents = (from: Date, to: Date): Promise<Intent[]> => {
+  const searchParams = new URLSearchParams({ from: from.toISOString(), to: to.toISOString() });
 
   return getRequest<IntentFromServer[]>(`${basePath}?${searchParams.toString()}`).then((intents) =>
     intents.map(parseIntent),

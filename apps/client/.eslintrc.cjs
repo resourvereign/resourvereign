@@ -8,7 +8,6 @@ module.exports = {
     "plugin:import/typescript",
     "plugin:react/recommended",
     "react-app",
-    "react-app/jest",
     "plugin:react-hooks/recommended",
     "plugin:react/jsx-runtime",
     "prettier",

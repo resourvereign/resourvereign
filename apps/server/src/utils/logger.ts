@@ -1,4 +1,5 @@
 import { LogLevel } from '@resourvereign/common/models/log.js';
+import { Logger } from '@resourvereign/plugin-types/logger.js';
 
 import LogModel from '../models/log.js';
 
@@ -10,9 +11,7 @@ const log = (user: string, level: LogLevel, message: string) => {
   });
 };
 
-export type Logger = ReturnType<typeof loggerForUser>;
-
-export const loggerForUser = (user: string, prefix: string) => {
+export const loggerForUser = (user: string, prefix: string): Logger => {
   return {
     debug: (message: string) => log(user, LogLevel.DEBUG, `[${prefix}]:: ${message}`),
     info: (message: string) => log(user, LogLevel.INFO, `[${prefix}]:: ${message}`),

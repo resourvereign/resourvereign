@@ -1,5 +1,5 @@
 {
-  "name": "@resourvereign/common",
+  "name": "@resourvereign/plugin-types",
   "private": true,
   "version": "1.0.0",
   "author": {
@@ -23,8 +23,8 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\""
   },
   "dependencies": {
-    "@resourvereign/plugin-types": "1.0.0",
-    "@slangy/common": "^2.0.1"
+    "@slangy/common": "^2.0.1",
+    "type-fest": "^4.8.2"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.12.0",

@@ -2,67 +2,15 @@ import { existsSync, readdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
-import { PluginSchema, PluginType } from '@resourvereign/common/models/plugin.js';
-import { Promisable } from 'type-fest';
-
-import { IntentDocument } from '../models/intent.js';
-
-import { Logger } from './logger.js';
+import { PluginType } from '@resourvereign/plugin-types/plugin/index.js';
+import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integration.js';
+import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
+import { SchedulingPlugin } from '@resourvereign/plugin-types/plugin/scheduling.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const pluginPattern = 'resourvereign-plugin';
-
-type DefaultPluginConfig = {
-  [key: string]: unknown;
-};
-
-type BasePlugin<Schema = PluginSchema> = {
-  schema: Schema;
-};
-
-export type IntegrationPlugin<
-  Config extends DefaultPluginConfig = DefaultPluginConfig,
-  BookOverrides extends Config = Config,
-> = BasePlugin & {
-  initialize: (
-    config: Config,
-    logger: Logger,
-  ) => Promise<{
-    book(date: Date, overrides?: BookOverrides): Promise<boolean>;
-  }>;
-};
-
-export type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
-  BasePlugin & {
-    initialize: (
-      config: Config,
-      logger: Logger,
-    ) => Promise<{
-      notify(msg: string): Promise<boolean>;
-    }>;
-  };
-
-export type ScheduleMiddlewareContext = {
-  intent: IntentDocument;
-  date?: Date;
-};
-
-export type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
-  BasePlugin & {
-    initialize: (
-      config: Config,
-      logger: Logger,
-    ) => Promise<{
-      scheduleMiddleware(
-        context: ScheduleMiddlewareContext,
-        next: () => Promisable<void>,
-      ): Promisable<void>;
-    }>;
-  };
-
-export type Plugin = IntegrationPlugin | NotificationsPlugin | SchedulingPlugin;
 
 type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string] | undefined;
 

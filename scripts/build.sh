@@ -3,7 +3,7 @@
 yarn;
 yarn clean:build;
 
-yarn build:common;
+yarn build:libs;
 yarn build:apps;
 
 SERVER_PUBLIC="./apps/server/dist/public";

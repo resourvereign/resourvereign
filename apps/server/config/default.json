@@ -21,6 +21,6 @@
     "cron": "*/10 * * * *"
   },
   "paginationLimits": {
-    "logs": 10
+    "logs": 50
   }
 }

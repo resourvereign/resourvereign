@@ -5,6 +5,7 @@ import { generateToken } from '@slangy/server/middleware/express/auth/jwt.js';
 import routes from '@slangy/server/test-utils/routes.js';
 import server from '@slangy/server/test-utils/server.js';
 import { jwtDecode } from 'jwt-decode';
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 
 import UserModel from '../../../../models/user.js';
 import { getTokenPayload } from '../../../../utils/auth.js';

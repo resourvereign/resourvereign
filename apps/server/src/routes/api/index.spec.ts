@@ -1,6 +1,7 @@
 import { ServerErrorStatusCode } from '@slangy/server/http.js';
 import routes from '@slangy/server/test-utils/routes.js';
 import server from '@slangy/server/test-utils/server.js';
+import { describe, expect, it } from 'vitest';
 
 import router from './index.js';
 

@@ -89,7 +89,7 @@
     "src/**/*.{ts,tsx}": [
       "yarn prettify",
       "yarn lint:fix --max-warnings=0",
-      "yarn test"
+      "vitest related --run"
     ]
   }
 }

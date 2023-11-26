@@ -19,7 +19,11 @@ const AppMenu = () => {
       to: routes.calendar,
       icon: 'pi-calendar',
     },
-
+    {
+      label: t('items.tasks'),
+      to: routes.tasks,
+      icon: 'pi-sync',
+    },
     {
       label: t('items.plugins'),
       to: routes.plugins,

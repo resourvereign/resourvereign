@@ -24,9 +24,10 @@ type Task = {
   date: Date;
   disposer: () => void;
   job: Job;
+  intent: IntentDocument;
 };
 
-const tasks = new Map<string, Task>();
+const userTasks = new Map<string, Map<string, Task>>();
 
 const minSecondsInFuture = 1;
 
@@ -89,7 +90,17 @@ const getNextDate = async (intent: IntentDocument) => {
     : undefined;
 };
 
+const getUserTasksMap = (userId: string) => {
+  if (!userTasks.has(userId)) {
+    userTasks.set(userId, new Map());
+  }
+
+  return userTasks.get(userId)!;
+};
+
 export const scheduleIntent = async (intent: IntentDocument) => {
+  const tasks = getUserTasksMap(intent.user.toString());
+
   // Cancel previous schedule if exists
   if (tasks.has(intent.id)) {
     const task = tasks.get(intent.id)!;
@@ -157,12 +168,14 @@ export const scheduleIntent = async (intent: IntentDocument) => {
         date: nextDate,
         disposer,
         job,
+        intent,
       });
     }
   }
 };
 
 export const cancelIntent = (intent: IntentDocument) => {
+  const tasks = getUserTasksMap(intent.user.toString());
   const task = tasks.get(intent.id);
 
   if (task) {
@@ -180,5 +193,14 @@ export const initializeScheduler = async () => {
   // Schedule intents
   intents.forEach((intent) => {
     scheduleIntent(intent);
+  });
+};
+
+export const getUserTasks = (userId: string) => {
+  const tasks = getUserTasksMap(userId);
+
+  return Array.from(tasks.values()).map((task) => {
+    const { date, intent } = task;
+    return { date, intent };
   });
 };

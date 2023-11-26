@@ -3,6 +3,7 @@ const routes = {
   signIn: '/sign-in',
   calendar: '/calendar',
   plugins: '/plugins',
+  tasks: '/tasks',
   logs: '/logs',
 };
 

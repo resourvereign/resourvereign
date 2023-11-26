@@ -11,6 +11,7 @@ import LogsPage from './pages/LogsPage';
 import NotFoundPage from './pages/NotFoundPage';
 import PluginsPage from './pages/PluginsPage';
 import SignInPage from './pages/SignInPage';
+import TasksPage from './pages/TasksPage';
 import routes from './shared/routes';
 
 function ResourVereignApp() {
@@ -21,6 +22,7 @@ function ResourVereignApp() {
           <Route element={<DefaultLayout />}>
             <Route path={routes.home} element={<HomePage />} />
             <Route path={routes.calendar} element={<CalendarPage />} />
+            <Route path={routes.tasks} element={<TasksPage />} />
             <Route path={routes.plugins} element={<PluginsPage />} />
             <Route path={routes.logs} element={<LogsPage />} />
           </Route>

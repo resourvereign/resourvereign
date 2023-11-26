@@ -10,7 +10,7 @@ import { getUserTasks } from '../../../../utils/scheduler.js';
 
 export const getTasks = controller<RequestWithFields<JwtData>, ResponseWithBody<UserTask[]>>(
   async (req, res) => {
-    const tasks = getUserTasks(req.params.id);
+    const tasks = getUserTasks(req.jwtUser.id).sort((a, b) => a.date.getTime() - b.date.getTime());
 
     return res.status(SuccessStatusCode.SuccessOK).send(
       tasks.map((t) => {

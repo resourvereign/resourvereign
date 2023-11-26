@@ -33,6 +33,12 @@
       }
     },
     "calendar": {},
+    "tasks": {
+      "fields": {
+        "date": "Fecha",
+        "task": "Tarea"
+      }
+    },
     "settings": {
       "settings": {
         "tabs": {

@@ -1,4 +1,10 @@
 import { PluginType } from '@resourvereign/common/models/plugin.js';
+import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integration.js';
+import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
+import {
+  ScheduleMiddlewareContext,
+  SchedulingPlugin,
+} from '@resourvereign/plugin-types/plugin/scheduling.js';
 import { addSeconds, endOfDay, startOfDay, subDays } from 'date-fns';
 import { Job, scheduleJob } from 'node-schedule';
 
@@ -12,13 +18,7 @@ import {
 
 import { loggerForUser } from './logger.js';
 import { MiddlewareChain } from './middlewareChain.js';
-import {
-  IntegrationPlugin,
-  NotificationsPlugin,
-  ScheduleMiddlewareContext,
-  SchedulingPlugin,
-  getPlugin,
-} from './plugin.js';
+import { getPlugin } from './plugin.js';
 
 type Task = {
   date: Date;

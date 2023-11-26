@@ -1,4 +1,4 @@
-import { PluginSchema, PluginType } from '../models/plugin.js';
+import { PluginSchema, PluginType } from '@resourvereign/plugin-types/plugin/index.js';
 
 export type { PluginSchema };
 export { PluginType };

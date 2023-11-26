@@ -8,7 +8,7 @@ import {
 import { ApiModel } from '../common.js';
 
 export type { PluginConfig } from '../../models/userPlugin.js';
-export { PluginType } from '../../models/plugin.js';
+export { PluginType } from '@resourvereign/plugin-types/plugin/index.js';
 
 export enum PluginStatus {
   enabled = 'enabled',

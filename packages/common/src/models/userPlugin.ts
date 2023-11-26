@@ -1,6 +1,5 @@
+import { PluginType } from '@resourvereign/plugin-types/plugin/index.js';
 import { WithTimestamps } from '@slangy/common/model/timestamps.js';
-
-import { PluginType } from './plugin.js';
 
 export type PluginConfig = {
   [key: string]: string;

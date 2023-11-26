@@ -2,6 +2,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn build:check
+yarn workspace @resourvereign/plugin-types lint-staged
+yarn workspace @resourvereign/common lint-staged
 yarn workspace @resourvereign/client lint-staged
 yarn workspace @resourvereign/server lint-staged
-yarn workspace @resourvereign/common lint-staged

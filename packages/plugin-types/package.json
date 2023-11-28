@@ -1,6 +1,6 @@
 {
   "name": "@resourvereign/plugin-types",
-  "private": true,
+  "private": false,
   "version": "1.0.0",
   "author": {
     "name": "Dani Lupión",

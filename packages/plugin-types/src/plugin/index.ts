@@ -10,6 +10,7 @@ export enum PluginType {
 
 export enum PluginSchemaPropertyType {
   string = 'string',
+  uint32 = 'uint32',
 }
 
 export type PluginSchema = {

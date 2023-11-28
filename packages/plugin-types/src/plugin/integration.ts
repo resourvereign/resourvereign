@@ -1,3 +1,5 @@
+import { Promisable } from 'type-fest';
+
 import { Logger } from '../logger.js';
 
 import { BasePlugin, DefaultPluginConfig } from './index.js';
@@ -10,6 +12,7 @@ export type IntegrationPlugin<
     config: Config,
     logger: Logger,
   ) => Promise<{
-    book(date: Date, overrides?: BookOverrides): Promise<boolean>;
+    validate: () => Promisable<boolean>;
+    book(date: Date, overrides?: BookOverrides): Promisable<boolean>;
   }>;
 };

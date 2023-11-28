@@ -1,9 +1,7 @@
-import { toStartCase } from '@slangy/client/string.js';
 import classNames from 'classnames';
 import { Button } from 'primereact/button';
 import { ColorPicker } from 'primereact/colorpicker';
 import { InputText } from 'primereact/inputtext';
-import { Password } from 'primereact/password';
 import { useCallback } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
@@ -14,6 +12,7 @@ import useUserPlugins from '../../../../hooks/useUserPlugins';
 import { iconForPluginType } from '../../icons';
 
 import styles from './EditIntegrationPluginForm.module.css';
+import PluginConfigForm from './PluginConfigForm';
 
 type EditIntegrationPluginFormProps = {
   data: [PluginSchema, IntegrationUserPluginData];
@@ -81,30 +80,7 @@ const EditIntegrationPluginForm = ({
         </div>
       </div>
 
-      {Object.entries(schema.properties).map(([name, definition]) => (
-        <div key={name} className="field col-12">
-          <label htmlFor={name}>{toStartCase(name)}</label>
-          {definition.metadata?.secret ? (
-            <Controller
-              name={`config.${name}`}
-              control={control}
-              render={({ field }) => (
-                <Password
-                  className={classNames('w-full mb-3')}
-                  inputClassName="w-full"
-                  feedback={false}
-                  toggleMask
-                  inputRef={field.ref}
-                  {...field}
-                  value={field.value || ''}
-                />
-              )}
-            />
-          ) : (
-            <InputText className="w-full mb-3" {...register(`config.${name}`)} />
-          )}
-        </div>
-      ))}
+      <PluginConfigForm schema={schema} register={register} control={control} />
 
       <div className="field col-12 ">
         <label>Addons</label>

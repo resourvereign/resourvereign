@@ -2,10 +2,15 @@ import { existsSync, readdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
+import { PluginConfig } from '@resourvereign/common/models/userPlugin.js';
 import { PluginType } from '@resourvereign/plugin-types/plugin/index.js';
 import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integration.js';
 import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
 import { SchedulingPlugin } from '@resourvereign/plugin-types/plugin/scheduling.js';
+
+import { UserPluginDocument } from '../models/userPlugin.js';
+
+import { loggerForUser } from './logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -55,9 +60,9 @@ const importPlugins = async () => {
 
     await Promise.all(
       pluginModules.map(async (moduleName) => {
-        pluginRegistry[pluginType][moduleName.replace(pluginPrefix, '')] = (await import(
-          moduleName
-        )) as IntegrationPlugin;
+        pluginRegistry[pluginType][moduleName.replace(pluginPrefix, '')] = (
+          await import(moduleName)
+        ).default;
       }),
     );
   }
@@ -66,8 +71,6 @@ const importPlugins = async () => {
 export const initializePlugins = async () => {
   await importPlugins();
 };
-
-export const getPluginsByType = (type: PluginType) => Object.values(pluginRegistry[type]);
 
 export const getPlugin = <Type extends PluginType>(type: Type, name: string) =>
   pluginRegistry[type][name] as PluginByType<Type>;
@@ -78,3 +81,36 @@ export const getAllPlugins = () =>
   );
 
 export const isPluginAvailable = (type: PluginType, name: string) => !!pluginRegistry[type]?.[name];
+
+type PluginInstance<Type extends PluginType> = Type extends PluginType.Integration
+  ? ReturnType<IntegrationPlugin['initialize']>
+  : Type extends PluginType.Notifications
+    ? ReturnType<NotificationsPlugin['initialize']>
+    : Type extends PluginType.Scheduling
+      ? ReturnType<SchedulingPlugin['initialize']>
+      : unknown;
+
+export const getPluginInstance = async <Type extends PluginType, Config extends PluginConfig>(
+  params: { type: Type; name: string; config: Config },
+  userId: string,
+) => {
+  const plugin = getPlugin(params.type, params.name);
+
+  if (plugin) {
+    return (await plugin.initialize(
+      { ...params.config },
+      loggerForUser(userId, params.name),
+    )) as PluginInstance<Type>;
+  }
+
+  return null;
+};
+
+export const getPluginInstanceFromUserPlugin = async <
+  UserPluginType extends UserPluginDocument,
+  Type extends UserPluginType['type'],
+>(
+  userPlugin: UserPluginType,
+) => {
+  return (await getPluginInstance(userPlugin, userPlugin.user.toString())) as PluginInstance<Type>;
+};

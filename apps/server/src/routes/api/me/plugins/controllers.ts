@@ -11,12 +11,12 @@ import controller, {
   ResponseWithBody,
 } from '@slangy/server/helpers/express/controller.js';
 import { ClientErrorNotFound } from '@slangy/server/helpers/httpError.js';
-import { SuccessStatusCode } from '@slangy/server/http.js';
+import { ClientErrorStatusCode, SuccessStatusCode } from '@slangy/server/http.js';
 import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
 import IntentModel from '../../../../models/intent.js';
 import UserPluginModel, { UserPluginDocument } from '../../../../models/userPlugin.js';
-import { isPluginAvailable } from '../../../../utils/plugin.js';
+import { getPluginInstance, isPluginAvailable } from '../../../../utils/plugin.js';
 import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const pluginById = controller<
@@ -66,6 +66,12 @@ export const createPlugin = controller<
   RequestWithBody<UserPluginInput, RequestWithFields<JwtData>>,
   ResponseWithBody<UserPluginWithStatus>
 >(async (req, res) => {
+  const instance = await getPluginInstance(req.body, req.jwtUser.id);
+  const result = await instance?.validate();
+  if (!result) {
+    return res.status(ClientErrorStatusCode.ClientErrorBadRequest).send();
+  }
+
   const plugin = (await UserPluginModel.create({
     ...req.body,
     user: req.jwtUser.id,
@@ -80,6 +86,12 @@ export const updatePlugin = controller<
   ResponseWithBody<UserPluginWithStatus>
 >(async (req, res) => {
   const plugin = req.plugin;
+
+  const instance = await getPluginInstance(req.body, plugin.user.toString());
+  const result = await instance?.validate();
+  if (!result) {
+    return res.status(ClientErrorStatusCode.ClientErrorBadRequest).send();
+  }
 
   plugin.set(req.body);
   await plugin.save();

@@ -17,6 +17,7 @@ export type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginC
       config: Config,
       logger: Logger,
     ) => Promise<{
+      validate: () => Promisable<boolean>;
       scheduleMiddleware(
         context: ScheduleMiddlewareContext,
         next: () => Promisable<void>,

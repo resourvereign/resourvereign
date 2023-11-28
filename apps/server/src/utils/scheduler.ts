@@ -1,24 +1,16 @@
 import { PluginType } from '@resourvereign/common/models/plugin.js';
-import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integration.js';
-import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
-import {
-  ScheduleMiddlewareContext,
-  SchedulingPlugin,
-} from '@resourvereign/plugin-types/plugin/scheduling.js';
+import { ScheduleMiddlewareContext } from '@resourvereign/plugin-types/plugin/scheduling.js';
 import { addSeconds, endOfDay, startOfDay, subDays } from 'date-fns';
 import { Job, scheduleJob } from 'node-schedule';
 
 import IntentModel, { IntentDocument } from '../models/intent.js';
 import {
-  IntegrationUserPluginDocument,
   NotificationsUserPluginDocument,
   SchedulingUserPluginDocument,
-  UserPluginDocument,
 } from '../models/userPlugin.js';
 
-import { loggerForUser } from './logger.js';
 import { MiddlewareChain } from './middlewareChain.js';
-import { getPlugin } from './plugin.js';
+import { getPluginInstanceFromUserPlugin } from './plugin.js';
 
 type Task = {
   date: Date;
@@ -37,28 +29,8 @@ const isIntentSchedulable = (intent: IntentDocument) => {
   return !intent.satisfied && intent.date >= todayStartOfDay;
 };
 
-const getPluginInstance = async <UserPluginType extends UserPluginDocument>(
-  userPlugin: UserPluginType,
-) => {
-  const plugin = getPlugin(userPlugin.type, userPlugin.name);
-
-  if (plugin) {
-    return (await plugin.initialize(
-      { ...userPlugin.config },
-      loggerForUser(userPlugin.user.toString(), userPlugin.name),
-    )) as UserPluginType extends IntegrationUserPluginDocument
-      ? ReturnType<IntegrationPlugin['initialize']>
-      : UserPluginType extends NotificationsUserPluginDocument
-        ? ReturnType<NotificationsPlugin['initialize']>
-        : UserPluginType extends SchedulingUserPluginDocument
-          ? ReturnType<SchedulingPlugin['initialize']>
-          : unknown;
-  }
-
-  return null;
-};
-
 const getNextDate = async (intent: IntentDocument) => {
+  await intent.populate('integration');
   await intent.integration.populate('addons');
 
   const now = new Date();
@@ -69,9 +41,9 @@ const getNextDate = async (intent: IntentDocument) => {
   for (const notificationPlugin of intent.integration.addons.filter(
     (addon) => addon.type === PluginType.Scheduling,
   ) as SchedulingUserPluginDocument[]) {
-    const notificationInstance = await getPluginInstance(notificationPlugin);
-    if (notificationInstance) {
-      middlewareChain.use(notificationInstance.scheduleMiddleware);
+    const schedulingInstance = await getPluginInstanceFromUserPlugin(notificationPlugin);
+    if (schedulingInstance) {
+      middlewareChain.use(schedulingInstance.scheduleMiddleware);
     }
   }
 
@@ -126,7 +98,7 @@ export const scheduleIntent = async (intent: IntentDocument) => {
         return;
       }
 
-      const integrationInstance = await getPluginInstance(updatedIntent.integration);
+      const integrationInstance = await getPluginInstanceFromUserPlugin(updatedIntent.integration);
 
       if (integrationInstance) {
         const result = await integrationInstance.book(intent.date);
@@ -140,7 +112,7 @@ export const scheduleIntent = async (intent: IntentDocument) => {
           for (const notificationPlugin of updatedIntent.integration.addons.filter(
             (addon) => addon.type === PluginType.Notifications,
           ) as NotificationsUserPluginDocument[]) {
-            const notificationInstance = await getPluginInstance(notificationPlugin);
+            const notificationInstance = await getPluginInstanceFromUserPlugin(notificationPlugin);
 
             // TODO: improve notification message
             await notificationInstance?.notify(

@@ -1,5 +1,8 @@
 import { PluginType } from '@resourvereign/common/models/plugin.js';
-import { ScheduleMiddlewareContext } from '@resourvereign/plugin-types/plugin/scheduling.js';
+import {
+  ScheduleMiddlewareContext,
+  SchedulingReason,
+} from '@resourvereign/plugin-types/plugin/scheduling.js';
 import { addSeconds, endOfDay, startOfDay, subDays } from 'date-fns';
 import { Job, scheduleJob } from 'node-schedule';
 
@@ -29,7 +32,7 @@ const isIntentSchedulable = (intent: IntentDocument) => {
   return !intent.satisfied && intent.date >= todayStartOfDay;
 };
 
-const getNextDate = async (intent: IntentDocument) => {
+const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.intentCreation) => {
   await intent.populate('integration');
   await intent.integration.populate('addons');
 
@@ -48,6 +51,7 @@ const getNextDate = async (intent: IntentDocument) => {
   }
 
   const context: ScheduleMiddlewareContext = {
+    reason,
     intent,
     date: now,
   };
@@ -70,7 +74,10 @@ const getUserTasksMap = (userId: string) => {
   return userTasks.get(userId)!;
 };
 
-export const scheduleIntent = async (intent: IntentDocument) => {
+export const scheduleIntent = async (
+  intent: IntentDocument,
+  reason = SchedulingReason.intentCreation,
+) => {
   const tasks = getUserTasksMap(intent.user.toString());
 
   // Cancel previous schedule if exists
@@ -83,7 +90,7 @@ export const scheduleIntent = async (intent: IntentDocument) => {
     return;
   }
 
-  const nextDate = await getNextDate(intent);
+  const nextDate = await getNextDate(intent, reason);
 
   if (nextDate) {
     // Schedule job
@@ -120,6 +127,10 @@ export const scheduleIntent = async (intent: IntentDocument) => {
             );
           }
           disposer();
+        } else {
+          disposer();
+          // Schedule again
+          await scheduleIntent(intent, SchedulingReason.intentFailure);
         }
       }
     });

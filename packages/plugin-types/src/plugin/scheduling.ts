@@ -4,7 +4,13 @@ import { Logger } from '../logger.js';
 
 import { BasePlugin, DefaultPluginConfig } from './index.js';
 
+export enum SchedulingReason {
+  intentCreation = 'intentCreation',
+  intentFailure = 'intentFailure',
+}
+
 export type ScheduleMiddlewareContext = {
+  reason: SchedulingReason;
   intent: {
     date: Date;
   };

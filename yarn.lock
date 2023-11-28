@@ -1580,6 +1580,14 @@
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.13.0.tgz#7e29c4ee85176d9c08cb0f4456bff74d092c5065"
   integrity sha512-5dMOnVnefRsl4uRnAdoWjtVTdh8e6aZqgM4puy9nmEADH72ck+uXwzpJLEKE9Q6F8ZljNewLgmTfkxUrBdv4WA==
 
+"@resourvereign/plugin-types@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@resourvereign/plugin-types/-/plugin-types-1.0.0.tgz#0b3251f8816ed4f868caa90322617cda0541f2fc"
+  integrity sha512-hq20toDc2JIa+EcENXbgB3kjC8+YBhz7GFaa+Ed+XS25qR2F19ztnFCeaBqqBtu6LV3ugh0cSxobI4jSUu0ezg==
+  dependencies:
+    "@slangy/common" "^2.0.1"
+    type-fest "^4.8.2"
+
 "@rollup/pluginutils@^5.0.5":
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.0.5.tgz#bbb4c175e19ebfeeb8c132c2eea0ecb89941a66c"

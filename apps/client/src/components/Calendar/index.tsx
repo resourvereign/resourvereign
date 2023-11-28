@@ -11,6 +11,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
+import { Button } from 'primereact/button';
 import { MouseEvent, useCallback } from 'react';
 
 import styles from './index.module.css';
@@ -50,6 +51,13 @@ const Calendar = <EventData = never,>({
     [month, onMonthChange],
   );
 
+  const handleMonthChange = useCallback(
+    (monthDelta: number) => () => {
+      onMonthChange?.(addMonths(startOfMonth(month), monthDelta));
+    },
+    [month, onMonthChange],
+  );
+
   const handleDayClick = useCallback(
     (day: Date) => () => {
       onDayClick?.(day);
@@ -67,8 +75,17 @@ const Calendar = <EventData = never,>({
 
   const renderHeader = () => (
     <>
-      <div className={classNames(rowClassNames, styles.headerRow, 'justify-content-center')}>
-        {format(month, 'MMMM yyyy')}
+      <div
+        className={classNames(
+          rowClassNames,
+          styles.headerRow,
+          'justify-content-center',
+          'align-items-center',
+        )}
+      >
+        <Button rounded outlined icon="pi pi-arrow-left" onClick={handleMonthChange(-1)} />
+        <span className="mx-2">{format(month, 'MMMM yyyy')}</span>
+        <Button rounded outlined icon="pi pi-arrow-right" onClick={handleMonthChange(1)} />
       </div>
       <div className={classNames(rowClassNames, styles.weekDaysRow)}>
         {daysOfWeek.map((day) => (

@@ -18,8 +18,9 @@ const TasksPage = () => {
         scrollHeight="flex"
         className="h-full overflow-y-hidden"
       >
-        <Column field="date" header={t('fields.date')} />
-        <Column field="title" header={t('fields.task')} />
+        <Column field="date" header={t('fields.execution')} />
+        <Column field="title" header={t('fields.integration')} />
+        <Column field="intent.date" header={t('fields.intentDate')} />
       </DataTable>
     </div>
   );

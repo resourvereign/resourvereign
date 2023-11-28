@@ -35,8 +35,9 @@
     "calendar": {},
     "tasks": {
       "fields": {
-        "date": "Date",
-        "task": "Task"
+        "execution": "Next execution",
+        "integration": "Integration",
+        "intentDate": "Intent date"
       }
     },
     "settings": {

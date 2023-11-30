@@ -12,6 +12,7 @@ import {
   SchedulingUserPluginDocument,
 } from '../models/userPlugin.js';
 
+import { fromTimezone, toTimezone } from './date.js';
 import { MiddlewareChain } from './middlewareChain.js';
 import { getPluginInstanceFromUserPlugin } from './plugin.js';
 
@@ -33,10 +34,10 @@ const isIntentSchedulable = (intent: IntentDocument) => {
 };
 
 const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.intentCreation) => {
-  await intent.populate('integration');
+  await intent.populate('user integration');
   await intent.integration.populate('addons');
 
-  const now = new Date();
+  const now = toTimezone(new Date(), intent.user.timezone);
 
   const middlewareChain = new MiddlewareChain<ScheduleMiddlewareContext>();
 
@@ -52,7 +53,9 @@ const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.int
 
   const context: ScheduleMiddlewareContext = {
     reason,
-    intent,
+    intent: {
+      date: toTimezone(intent.date, intent.user.timezone),
+    },
     date: now,
   };
 
@@ -61,7 +64,10 @@ const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.int
   // Guarantee that date is in the future
   return context.date
     ? new Date(
-        Math.max(context.date.getTime(), addSeconds(new Date(), minSecondsInFuture).getTime()),
+        Math.max(
+          fromTimezone(context.date, intent.user.timezone).getTime(),
+          addSeconds(new Date(), minSecondsInFuture).getTime(),
+        ),
       )
     : undefined;
 };

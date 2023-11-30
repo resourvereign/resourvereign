@@ -35,6 +35,7 @@ describe('/api/auth/tokens', () => {
         await UserModel.create({
           username: 'test',
           email: 'test@email.com',
+          timezone: 'Europe/Madrid',
         });
 
         const response = await server(router).post('/').send({ email: 'test@email.com' });
@@ -49,6 +50,7 @@ describe('/api/auth/tokens', () => {
           username: 'test',
           email: 'test@email.com',
           password: 'testTest1.',
+          timezone: 'Europe/Madrid',
         });
 
         const response = await server(router)
@@ -65,6 +67,7 @@ describe('/api/auth/tokens', () => {
           username: 'test',
           email: 'test@email.com',
           password: 'testTest1.',
+          timezone: 'Europe/Madrid',
         });
 
         const response = await server(router)
@@ -83,6 +86,7 @@ describe('/api/auth/tokens', () => {
           email: 'test@email.com',
           password: 'testTest1.',
           role: UserRole.user,
+          timezone: 'Europe/Madrid',
         });
 
         const response = await server(router).post('/').send({
@@ -111,6 +115,7 @@ describe('/api/auth/tokens', () => {
           email: 'putTestFail@email.com',
           password: 'putTestFailTest1.',
           role: UserRole.user,
+          timezone: 'Europe/Madrid',
         });
         const token = await generateToken(getTokenPayload(user), { expiresIn: -50 });
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);
@@ -126,6 +131,7 @@ describe('/api/auth/tokens', () => {
           email: 'putTestFail@email.com',
           password: 'putTestFailTest1.',
           role: UserRole.user,
+          timezone: 'Europe/Madrid',
         });
         const token = await generateToken(getTokenPayload(user));
         await UserModel.deleteMany({ _id: user._id }).exec();
@@ -144,6 +150,7 @@ describe('/api/auth/tokens', () => {
           email: 'putTestOk@email.com',
           password: 'putTestOkTest1.',
           role: UserRole.user,
+          timezone: 'Europe/Madrid',
         });
         const token = await generateToken(getTokenPayload(user));
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);

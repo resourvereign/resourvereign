@@ -1,9 +1,13 @@
 import { ApiModel } from '@resourvereign/common/api/common.js';
 import { Intent as IntentFromServer, IntentInput } from '@resourvereign/common/api/me/intents.js';
 import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
-import { Jsonify, Merge } from 'type-fest';
+import { Jsonify } from 'type-fest';
 
-export type Intent = Merge<Jsonify<IntentFromServer>, ReturnType<typeof parseIntent>>;
+import { WithParsedDate } from '../../shared/types';
+
+type RawIntent = Jsonify<IntentFromServer>;
+
+export type Intent = WithParsedDate<RawIntent>;
 
 export type IntentUpdate = ApiModel<IntentInput>;
 export type IntentCreate = IntentInput;
@@ -12,7 +16,7 @@ export type IntentData = IntentUpdate | IntentCreate;
 
 const basePath = '/api/me/intents';
 
-const parseIntent = (intent: Jsonify<IntentFromServer>) => ({
+const parseIntent = (intent: RawIntent) => ({
   ...intent,
   date: new Date(intent.date),
 });

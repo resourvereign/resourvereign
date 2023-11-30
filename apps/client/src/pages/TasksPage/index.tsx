@@ -3,6 +3,7 @@ import { DataTable } from 'primereact/datatable';
 import { useTranslation } from 'react-i18next';
 
 import useTasks from '../../hooks/useTasks';
+import { formatDate } from '../../shared/dates';
 
 const TasksPage = () => {
   const { data } = useTasks();
@@ -18,9 +19,9 @@ const TasksPage = () => {
         scrollHeight="flex"
         className="h-full overflow-y-hidden"
       >
-        <Column field="date" header={t('fields.execution')} />
+        <Column header={t('fields.execution')} body={(data) => formatDate(data.date)} />
         <Column field="title" header={t('fields.integration')} />
-        <Column field="intent.date" header={t('fields.intentDate')} />
+        <Column header={t('fields.intentDate')} body={(data) => formatDate(data.intent.date)} />
       </DataTable>
     </div>
   );

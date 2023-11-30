@@ -10,4 +10,5 @@ export type User = WithEmail &
   WithTimestamps & {
     username: string;
     role: UserRole;
+    timezone: string;
   };

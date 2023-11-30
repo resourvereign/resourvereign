@@ -22,6 +22,10 @@ const userSchema = new Schema<User & WithPassword>(
       enum: Object.values(UserRole),
       default: UserRole.user,
     },
+    timezone: {
+      type: String,
+      required: true,
+    },
   },
   { collection: 'users', minimize: false },
 )

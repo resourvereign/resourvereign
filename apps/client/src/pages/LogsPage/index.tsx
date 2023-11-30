@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Log, LogLevel } from '../../api/me/logs';
 import useLogs from '../../hooks/useLogs';
+import { formatDate } from '../../shared/dates';
 
 const logLevelToSeverityMap = {
   [LogLevel.DEBUG]: 'success' as 'success',
@@ -50,7 +51,7 @@ const LogsPage = () => {
         className="h-full overflow-y-hidden"
       >
         <Column field="level" header={t('fields.level')} body={levelTemplate} />
-        <Column field="created" header={t('fields.date')} />
+        <Column header={t('fields.date')} body={(data) => formatDate(data.created)} />
         <Column field="message" header={t('fields.message')} />
       </DataTable>
       <Paginator

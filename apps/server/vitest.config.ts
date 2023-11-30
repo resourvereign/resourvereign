@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     passWithNoTests: true,
     globals: true,
-    environment: 'jsdom',
+    environment: 'node',
     coverage: {
       provider: 'v8',
       enabled: true,

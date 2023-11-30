@@ -23,7 +23,7 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\""
   },
   "dependencies": {
-    "@resourvereign/plugin-types": "1.0.0",
+    "@resourvereign/plugin-types": "1.1.0",
     "@slangy/common": "^2.0.1"
   },
   "devDependencies": {

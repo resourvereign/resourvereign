@@ -9,10 +9,11 @@ type CreateUserOptions = {
   username: string;
   email: string;
   password: string;
+  timezone: string;
   admin: boolean;
 };
 
-export const command = 'user-create <email> <username> <password> [-a]';
+export const command = 'user-create <email> <username> <password> <timezone> [-a]';
 
 export const describe = 'creates a user';
 
@@ -30,18 +31,23 @@ export const builder: BuilderCallback<CreateUserOptions, CreateUserOptions> = (y
       describe: 'Password to be used',
       type: 'string',
     })
+    .positional('timezone', {
+      describe: 'Timezone to be used',
+      type: 'string',
+    })
     .alias('a', 'admin')
     .describe('a', 'Should the user be admin?');
 
 export const handler = async (argv: CreateUserOptions) => {
-  const { username, email, password, admin } = argv;
+  const { username, email, password, timezone, admin } = argv;
 
   try {
     await connectMongoose();
     await UserModel.create({
-      username: username as string,
-      email: email as string,
-      password: password as string,
+      username,
+      email,
+      password,
+      timezone,
       role: admin ? UserRole.admin : UserRole.user,
       created: new Date(),
     });

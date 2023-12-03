@@ -1,5 +1,6 @@
 import { UserRole } from '@resourvereign/common/models/user.js';
 import { setToken } from '@slangy/client/rest/init.js';
+import { UnauthorizedErrorEvent } from '@slangy/client/rest/request.js';
 import { jwtDecode } from 'jwt-decode';
 import { create } from 'zustand';
 
@@ -100,6 +101,20 @@ export const authStoreFactory = () =>
 
     const user = token ? userFromToken(token) : undefined;
 
+    const logout = () => {
+      localStorage.removeItem(TOKEN_KEY);
+      sessionStorage.removeItem(TOKEN_KEY);
+      setToken(undefined);
+      stopRefreshTokenInterval();
+      rememberMe = false;
+
+      set({ token: undefined, user: undefined });
+    };
+
+    window.addEventListener(UnauthorizedErrorEvent, () => {
+      logout();
+    });
+
     return {
       user,
       isAdmin: user?.role === UserRole.admin,
@@ -115,14 +130,6 @@ export const authStoreFactory = () =>
         }
         return false;
       },
-      logout: () => {
-        localStorage.removeItem(TOKEN_KEY);
-        sessionStorage.removeItem(TOKEN_KEY);
-        setToken(undefined);
-        stopRefreshTokenInterval();
-        rememberMe = false;
-
-        set({ token: undefined, user: undefined });
-      },
+      logout,
     };
   });

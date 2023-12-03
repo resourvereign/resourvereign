@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { sign } from 'jsonwebtoken';
-import { afterEach, describe, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { generateToken, renewToken } from '../api/auth';
 

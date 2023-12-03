@@ -1,3 +1,5 @@
+import { Type } from 'jtd';
+
 import { IntegrationPlugin } from './integration.js';
 import { NotificationsPlugin } from './notifications.js';
 import { SchedulingPlugin } from './scheduling.js';
@@ -8,10 +10,7 @@ export enum PluginType {
   Notifications = 'notifications',
 }
 
-export enum PluginSchemaPropertyType {
-  string = 'string',
-  uint32 = 'uint32',
-}
+export type PluginSchemaPropertyType = Type;
 
 export type PluginSchema = {
   properties: {

@@ -1,10 +1,17 @@
 {
   "name": "resourvereign",
   "private": true,
-  "repository": "git@github.com:danilupion/resourvereign.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/resourvereign/resourvereign.git"
+  },
   "author": {
     "name": "Dani Lupión",
     "email": "danilupion@gmail.com"
+  },
+  "description": "Pluggable resources allocation automation platform",
+  "engines": {
+    "node": ">=20.10.0"
   },
   "license": "Apache-2.0",
   "workspaces": {

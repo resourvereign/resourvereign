@@ -5118,6 +5118,11 @@ jsonwebtoken@^9.0.0, jsonwebtoken@^9.0.2:
     object.assign "^4.1.4"
     object.values "^1.1.6"
 
+jtd@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/jtd/-/jtd-0.1.1.tgz#ee8449f464bb096a90f34afabec3c0b8c33fa976"
+  integrity sha512-D1unKfAE0A/sVLqJZs8mCSW812w651GJuV94WcXRAbx0Xv2j2yjW8qeO5pugXbTMX4k2/ojIH8kQ06LGj9QcaA==
+
 jwa@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/jwa/-/jwa-1.4.1.tgz#743c32985cb9e98655530d53641b66c8645b039a"

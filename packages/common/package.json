@@ -23,7 +23,7 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\""
   },
   "dependencies": {
-    "@resourvereign/plugin-types": "1.1.0",
+    "@resourvereign/plugin-types": "2.0.0",
     "@slangy/common": "^2.0.1"
   },
   "devDependencies": {
@@ -37,7 +37,7 @@
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-vitest": "^0.3.10",
-    "lint-staged": "^15.1.0",
+    "lint-staged": "^15.2.0",
     "nodemon": "^3.0.2",
     "prettier": "^3.1.0",
     "typescript": "^5.3.2",

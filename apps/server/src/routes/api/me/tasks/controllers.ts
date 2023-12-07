@@ -16,7 +16,11 @@ export const getTasks = controller<RequestWithFields<JwtData>, ResponseWithBody<
       tasks.map((t) => {
         const { date, intent } = t;
 
-        return { date, title: intent.integration.label, intent: { date: intent.date } };
+        return {
+          date,
+          integration: { label: intent.integration.label },
+          intent: { date: intent.date },
+        };
       }),
     );
   },

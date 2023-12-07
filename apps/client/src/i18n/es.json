@@ -36,8 +36,7 @@
     "tasks": {
       "fields": {
         "execution": "Siguiente ejecución",
-        "integration": "Integración",
-        "intentDate": "Fecha de uso"
+        "intent": "Intención"
       }
     },
     "settings": {

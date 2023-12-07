@@ -20,8 +20,10 @@ const TasksPage = () => {
         className="h-full overflow-y-hidden"
       >
         <Column header={t('fields.execution')} body={(data) => formatDate(data.date)} />
-        <Column field="title" header={t('fields.integration')} />
-        <Column header={t('fields.intentDate')} body={(data) => formatDate(data.intent.date)} />
+        <Column
+          header={t('fields.intent')}
+          body={(data) => `${formatDate(data.intent.date)} - ${data.integration.label}`}
+        />
       </DataTable>
     </div>
   );

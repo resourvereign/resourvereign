@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
 import ResourVereignApp from './ResourVereignApp';
+import NotificationsProvider from './contexts/notifications/NotificationsProvider';
 import './i18n';
 import './index.css';
 
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <BrowserRouter>
       <PrimeReactProvider>
         <DndProvider backend={HTML5Backend}>
-          <ResourVereignApp />
+          <NotificationsProvider>
+            <ResourVereignApp />
+          </NotificationsProvider>
         </DndProvider>
       </PrimeReactProvider>
     </BrowserRouter>

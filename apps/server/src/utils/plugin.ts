@@ -8,6 +8,7 @@ import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integratio
 import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
 import { SchedulingPlugin } from '@resourvereign/plugin-types/plugin/scheduling.js';
 
+import { IntentDocument } from '../models/intent.js';
 import { UserPluginDocument } from '../models/userPlugin.js';
 
 import { loggerForUser } from './logger.js';
@@ -113,4 +114,10 @@ export const getPluginInstanceFromUserPlugin = async <
   userPlugin: UserPluginType,
 ) => {
   return (await getPluginInstance(userPlugin, userPlugin.user.toString())) as PluginInstance<Type>;
+};
+
+export const getIntegrationInstanceFromIntent = async (intent: IntentDocument) => {
+  const updatedIntent = await intent.populate('integration');
+
+  return await getPluginInstanceFromUserPlugin(updatedIntent.integration);
 };

@@ -7,6 +7,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { IntentData } from '../../api/me/intents';
 import { PluginType } from '../../api/plugins';
 import useIntents from '../../hooks/useIntents';
+import useNotifications from '../../hooks/useNotifications';
 import useUserPlugins from '../../hooks/useUserPlugins';
 
 import { rangeFromMonth } from './utils';
@@ -24,6 +25,8 @@ const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
   // TODO: probably a non-listing version of useIntents is needed to avoid unnecessary calls to listing intents.
   const [range, setRange] = useState(rangeFromMonth(intent.date));
   const integrations = useUserPlugins().byType[PluginType.Integration];
+
+  const { success, warn } = useNotifications();
 
   const { create, update, remove } = useIntents(range.start, range.end);
   const { control, handleSubmit } = useForm<EditIntentFormValues>({
@@ -48,10 +51,15 @@ const EditIntentForm = ({ data: intent, onFinished }: EditIntentFormProps) => {
 
   const handleDelete = useCallback(async () => {
     if ('id' in intent) {
-      await remove(intent.id);
+      const result = await remove(intent.id);
+      if (result && result.booking) {
+        result.cancelled
+          ? success(`Booking cancelled`, `${result.booking.description} was cacelled`)
+          : warn(`Unable to cancel`, `${result.booking.description} could not be cancelled`);
+      }
     }
     onFinished?.();
-  }, [intent, onFinished, remove]);
+  }, [intent, onFinished, remove, success, warn]);
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="w-full grid formgrid p-fluid">

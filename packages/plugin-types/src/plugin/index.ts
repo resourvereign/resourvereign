@@ -27,6 +27,7 @@ export type PluginSchema = {
       metadata?: {
         secret?: boolean;
         overrideable?: boolean;
+        label?: string;
       };
     };
   };

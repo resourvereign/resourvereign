@@ -10,8 +10,14 @@ import {
   SchedulingUserPluginInput,
   UserPluginInput,
 } from '@resourvereign/common/api/me/plugins.js';
-import { deleteRequest, getRequest, postRequest, putRequest } from '@slangy/client/rest/request.js';
+import {
+  getRequest,
+  postRequest,
+  putRequest,
+  responselessDeleteRequest,
+} from '@slangy/client/rest/request.js';
 import { Jsonify } from 'type-fest';
+
 export { PluginStatus, PluginType } from '@resourvereign/common/api/me/plugins.js';
 
 const basePath = '/api/me/plugins';
@@ -104,5 +110,5 @@ export const updateUserPlugin = async (plugin: UserPluginUpdate): Promise<UserPl
 };
 
 export const removeUserPlugin = async (id: UserPlugin['id']) => {
-  await deleteRequest(`${basePath}/${id}`);
+  await responselessDeleteRequest(`${basePath}/${id}`);
 };

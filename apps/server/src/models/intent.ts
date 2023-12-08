@@ -1,5 +1,5 @@
 import { Intent } from '@resourvereign/common/models/intent.js';
-import { Book } from '@resourvereign/plugin-types/plugin/integration.js';
+import { Booking } from '@resourvereign/plugin-types/plugin/integration.js';
 import normalizeJson from '@slangy/mongo/middleware/mongoose/normalizeJson.js';
 import owner from '@slangy/mongo/middleware/mongoose/owner.js';
 import timestamps from '@slangy/mongo/middleware/mongoose/timestamps.js';
@@ -16,7 +16,7 @@ type IntentWithUser = Omit<Intent, 'integration'> & {
 
 export type IntentDocument = HydratedDocument<IntentWithUser>;
 
-const BookSchema = new Schema<Book<unknown>>(
+const BookSchema = new Schema<Booking<unknown>>(
   {
     id: Schema.Types.Mixed, // Allows 'id' to be any type
     description: String,
@@ -37,7 +37,7 @@ const intentSchema = new Schema<IntentWithUser>(
       ref: 'UserPlugin',
       index: true,
     },
-    book: {
+    booking: {
       type: BookSchema,
       default: null,
     },

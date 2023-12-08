@@ -1,4 +1,4 @@
-import { Intent, IntentInput } from '@resourvereign/common/api/me/intents.js';
+import { Intent, IntentDeletion, IntentInput } from '@resourvereign/common/api/me/intents.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -12,7 +12,8 @@ import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 
 import IntentModel, { IntentDocument } from '../../../../models/intent.js';
 import UserPluginModel from '../../../../models/userPlugin.js';
-import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
+import { getIntegrationInstanceFromIntent } from '../../../../utils/plugin.js';
+import { cancelIntentScheduling, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const intentById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { intent: IntentDocument }>>
@@ -92,13 +93,37 @@ export const updateIntent = controller<
   return res.status(SuccessStatusCode.SuccessCreated).send(intent.toJSON());
 });
 
-export const deleteIntent = controller<RequestWithFields<{ intent: IntentDocument }>>(
-  async (req, res) => {
-    const intent = req.intent;
+export const deleteIntent = controller<
+  RequestWithFields<{ intent: IntentDocument }>,
+  ResponseWithBody<IntentDeletion>
+>(async (req, res) => {
+  const intent = req.intent;
 
-    cancelIntent(intent);
-    await intent.deleteOne();
+  const booking = intent.booking;
+  // Quick and dirty way to prevent issues in the frontend for responseless responses
+  let resultBody: IntentDeletion = {
+    booking: undefined,
+    cancelled: false,
+  };
 
-    return res.status(SuccessStatusCode.SuccessNoContent).send();
-  },
-);
+  cancelIntentScheduling(intent);
+
+  if (booking) {
+    resultBody = { booking, cancelled: false };
+
+    const integrationInstance = await getIntegrationInstanceFromIntent(intent);
+
+    if (integrationInstance) {
+      const [result, err] = await integrationInstance.cancel(booking.id);
+      if (!err && result) {
+        resultBody.cancelled = true;
+      }
+    }
+  }
+
+  await intent.deleteOne();
+
+  return res
+    .status(resultBody ? SuccessStatusCode.SuccessOK : SuccessStatusCode.SuccessNoContent)
+    .send(resultBody);
+});

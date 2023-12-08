@@ -17,7 +17,7 @@ import { JwtData } from '@slangy/server/middleware/express/auth/jwt.js';
 import IntentModel from '../../../../models/intent.js';
 import UserPluginModel, { UserPluginDocument } from '../../../../models/userPlugin.js';
 import { getPluginInstance, isPluginAvailable } from '../../../../utils/plugin.js';
-import { cancelIntent, scheduleIntent } from '../../../../utils/scheduler.js';
+import { cancelIntentScheduling, scheduleIntent } from '../../../../utils/scheduler.js';
 
 export const pluginById = controller<
   RequestWithParams<{ id: string }, RequestWithFields<JwtData & { plugin: UserPluginDocument }>>
@@ -123,7 +123,7 @@ export const deletePlugin = controller<RequestWithFields<{ plugin: UserPluginDoc
 
       await Promise.all(
         pluginIntents.map(async (intent) => {
-          cancelIntent(intent);
+          cancelIntentScheduling(intent);
           await intent.deleteOne();
         }),
       );

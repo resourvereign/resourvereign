@@ -14,7 +14,7 @@ import {
 
 import { fromTimezone, toTimezone } from './date.js';
 import { MiddlewareChain } from './middlewareChain.js';
-import { getPluginInstanceFromUserPlugin } from './plugin.js';
+import { getIntegrationInstanceFromIntent, getPluginInstanceFromUserPlugin } from './plugin.js';
 
 type Task = {
   date: Date;
@@ -30,7 +30,7 @@ const minSecondsInFuture = 1;
 const isIntentSchedulable = (intent: IntentDocument) => {
   const todayStartOfDay = startOfDay(new Date());
 
-  return !intent.book && intent.date >= todayStartOfDay;
+  return !intent.booking && intent.date >= todayStartOfDay;
 };
 
 const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.intentCreation) => {
@@ -92,7 +92,7 @@ export const scheduleIntent = async (
     task.disposer();
   }
 
-  if (intent.book || !isIntentSchedulable(intent)) {
+  if (intent.booking || !isIntentSchedulable(intent)) {
     return;
   }
 
@@ -101,9 +101,7 @@ export const scheduleIntent = async (
   if (nextDate) {
     // Schedule job
     const job = scheduleJob(nextDate, async () => {
-      const updatedIntent = await IntentModel.findOne({ _id: intent.id })
-        .populate('integration')
-        .exec();
+      const updatedIntent = await IntentModel.findOne({ _id: intent.id });
 
       // If intent is not found, is satisfied or is scheduled for the past cancel job
       if (!updatedIntent || !isIntentSchedulable(intent)) {
@@ -111,13 +109,13 @@ export const scheduleIntent = async (
         return;
       }
 
-      const integrationInstance = await getPluginInstanceFromUserPlugin(updatedIntent.integration);
+      const integrationInstance = await getIntegrationInstanceFromIntent(updatedIntent);
 
       if (integrationInstance) {
         const [result] = await integrationInstance.book(intent.date);
 
         if (result) {
-          updatedIntent.book = result;
+          updatedIntent.booking = result;
           await updatedIntent.save();
 
           // Loop through notification plugins and send notification
@@ -163,7 +161,7 @@ export const scheduleIntent = async (
   }
 };
 
-export const cancelIntent = (intent: IntentDocument) => {
+export const cancelIntentScheduling = (intent: IntentDocument) => {
   const tasks = getUserTasksMap(intent.user.toString());
   const task = tasks.get(intent.id);
 

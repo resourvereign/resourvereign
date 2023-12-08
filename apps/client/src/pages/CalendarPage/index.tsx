@@ -57,14 +57,14 @@ const CalendarPage = () => {
           onEventClick={handleEventClick}
           events={intents.map((intent) => ({
             date: intent.date,
-            text: intent.book
-              ? `${intent.book.description} (${intent.integration.label})`
+            text: intent.booking
+              ? `${intent.booking.description} (${intent.integration.label})`
               : `${intent.integration.label}`,
             data: intent,
             color: `#${intent.integration.color}`,
             className: classNames({
               // TODO: maybe consider showing disabled plugins in a different way
-              [styles.satisfied]: !!intent.book,
+              [styles.satisfied]: !!intent.booking,
               [styles.past]: intent.date < beginningOfCurrentDay,
             }),
           }))}

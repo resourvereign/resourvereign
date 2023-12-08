@@ -30,7 +30,7 @@ const minSecondsInFuture = 1;
 const isIntentSchedulable = (intent: IntentDocument) => {
   const todayStartOfDay = startOfDay(new Date());
 
-  return !intent.satisfied && intent.date >= todayStartOfDay;
+  return !intent.book && intent.date >= todayStartOfDay;
 };
 
 const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.intentCreation) => {
@@ -92,7 +92,7 @@ export const scheduleIntent = async (
     task.disposer();
   }
 
-  if (intent.satisfied || !isIntentSchedulable(intent)) {
+  if (intent.book || !isIntentSchedulable(intent)) {
     return;
   }
 
@@ -114,10 +114,10 @@ export const scheduleIntent = async (
       const integrationInstance = await getPluginInstanceFromUserPlugin(updatedIntent.integration);
 
       if (integrationInstance) {
-        const result = await integrationInstance.book(intent.date);
+        const [result] = await integrationInstance.book(intent.date);
 
         if (result) {
-          updatedIntent.satisfied = true;
+          updatedIntent.book = result;
           await updatedIntent.save();
 
           // Loop through notification plugins and send notification
@@ -175,7 +175,7 @@ export const cancelIntent = (intent: IntentDocument) => {
 export const initializeScheduler = async () => {
   // Filter intents that are not satisfied and are scheduled for the future
   const yesterdayEndOfDay = endOfDay(subDays(new Date(), 1));
-  const intents = await IntentModel.find({ date: { $gte: yesterdayEndOfDay }, satisfied: false })
+  const intents = await IntentModel.find({ date: { $gte: yesterdayEndOfDay }, book: null })
     .populate('integration')
     .exec();
 

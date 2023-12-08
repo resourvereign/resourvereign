@@ -20,7 +20,7 @@ const pluginPattern = 'resourvereign-plugin';
 type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string] | undefined;
 
 const pluginRegistry = {
-  [PluginType.Integration]: {} as Record<string, IntegrationPlugin>,
+  [PluginType.Integration]: {} as Record<string, IntegrationPlugin<unknown>>,
   [PluginType.Notifications]: {} as Record<string, NotificationsPlugin>,
   [PluginType.Scheduling]: {} as Record<string, SchedulingPlugin>,
 };
@@ -83,7 +83,7 @@ export const getAllPlugins = () =>
 export const isPluginAvailable = (type: PluginType, name: string) => !!pluginRegistry[type]?.[name];
 
 type PluginInstance<Type extends PluginType> = Type extends PluginType.Integration
-  ? ReturnType<IntegrationPlugin['initialize']>
+  ? ReturnType<IntegrationPlugin<unknown>['initialize']>
   : Type extends PluginType.Notifications
     ? ReturnType<NotificationsPlugin['initialize']>
     : Type extends PluginType.Scheduling

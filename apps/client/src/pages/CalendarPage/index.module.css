@@ -4,5 +4,4 @@
 
 .satisfied {
   filter: saturate(30%);
-  text-decoration: line-through;
 }

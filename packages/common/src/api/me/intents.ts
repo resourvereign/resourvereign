@@ -5,9 +5,13 @@ import { IntegrationUserPlugin } from './plugins.js';
 
 export type Intent = Omit<ApiModel<IntentModel>, 'integration'> & {
   integration: IntegrationUserPlugin;
+  book: Omit<IntentModel['book'], 'id'> | undefined;
 };
 
 // TODO: Helper util to transform model references to string/ObjectId
-export type IntentInput = Omit<Intent, 'id' | 'created' | 'updated' | 'user' | 'integration'> & {
+export type IntentInput = Omit<
+  Intent,
+  'id' | 'created' | 'updated' | 'user' | 'integration' | 'book'
+> & {
   integration: string;
 };

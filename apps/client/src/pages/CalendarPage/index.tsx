@@ -31,7 +31,6 @@ const CalendarPage = () => {
     setEditingIntent({
       date: day,
       integration: '',
-      satisfied: false,
     });
   }, []);
 
@@ -58,12 +57,14 @@ const CalendarPage = () => {
           onEventClick={handleEventClick}
           events={intents.map((intent) => ({
             date: intent.date,
-            text: `${intent.integration.label} (${intent.integration.name})`,
+            text: intent.book
+              ? `${intent.book.description} (${intent.integration.label})`
+              : `${intent.integration.label}`,
             data: intent,
             color: `#${intent.integration.color}`,
             className: classNames({
               // TODO: maybe consider showing disabled plugins in a different way
-              [styles.satisfied]: intent.satisfied,
+              [styles.satisfied]: !!intent.book,
               [styles.past]: intent.date < beginningOfCurrentDay,
             }),
           }))}

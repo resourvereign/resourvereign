@@ -1673,10 +1673,10 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
-"@slangy/client@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@slangy/client/-/client-2.1.0.tgz#0daf78e38652c286737df79981c2803eeb47d5f3"
-  integrity sha512-LVQ62knSTfseqsOdpnJ/xKtM7JWqXvq68/lCpp54IKraNbjf6zzw+20UnXD2XnVOO06nksy8li1RZSf8ll9CIg==
+"@slangy/client@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@slangy/client/-/client-2.2.0.tgz#d28c47d9ea52ae590c8b38cae849131df5ae0816"
+  integrity sha512-CrnYIFn9Tmej1V+1MiwzKqiHurbDIUmuWf/pR4uZd63ZP6fuF43slH0iS76iNXKNlBqaDszHXfeCsw8hzeEuGg==
   dependencies:
     "@slangy/common" "2.0.1"
     qs "^6.11.2"
@@ -1699,10 +1699,10 @@
     chalk "^5.3.0"
     mongodb-memory-server "^9.0.1"
 
-"@slangy/react@^2.4.0":
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/@slangy/react/-/react-2.4.0.tgz#b3b4f6973b6496ade38891a55e8e6dab35a9fcfe"
-  integrity sha512-AEK+Gg91t3AxyaUrR3DkRPPwfmZFwbWnIz2UhQ6p2vgenf11Ow6r8VAn1BXJEv7GOKXp+52pYr6yjIK9D1r/QA==
+"@slangy/react@^2.6.0":
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/@slangy/react/-/react-2.6.0.tgz#14ec140df4581d7e7a66325f33382a168ab02b8c"
+  integrity sha512-w6Fvv4X1AEy0IUp0z1378oRzkFAH1ozr59H01oCC0Ef2+D0RYwcJmCJA4v3lqMqXBvYgRHLDeXmLM00B4BrI9w==
 
 "@slangy/server@^2.1.1":
   version "2.1.1"
@@ -7452,10 +7452,21 @@ vite-plugin-svgr@^4.2.0:
     "@svgr/core" "^8.1.0"
     "@svgr/plugin-jsx" "^8.1.0"
 
-vite@^5.0.0, vite@^5.0.6:
+vite@^5.0.0:
   version "5.0.6"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.0.6.tgz#f9e13503a4c5ccd67312c67803dec921f3bdea7c"
   integrity sha512-MD3joyAEBtV7QZPl2JVVUai6zHms3YOmLR+BpMzLlX2Yzjfcc4gTgNi09d/Rua3F4EtC8zdwPU8eQYyib4vVMQ==
+  dependencies:
+    esbuild "^0.19.3"
+    postcss "^8.4.32"
+    rollup "^4.2.0"
+  optionalDependencies:
+    fsevents "~2.3.3"
+
+vite@^5.0.7:
+  version "5.0.7"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-5.0.7.tgz#ad081d735f6769f76b556818500bdafb72c3fe93"
+  integrity sha512-B4T4rJCDPihrQo2B+h1MbeGL/k/GMAHzhQ8S0LjQ142s6/+l3hHTT095ORvsshj4QCkoWu3Xtmob5mazvakaOw==
   dependencies:
     esbuild "^0.19.3"
     postcss "^8.4.32"

@@ -4,7 +4,7 @@ import { Logger } from '../logger.js';
 
 import { BasePlugin, DefaultPluginConfig, Result } from './index.js';
 
-export type Book<Id> = {
+export type Booking<Id> = {
   id: Id;
   description: string;
 };
@@ -19,7 +19,7 @@ export type IntegrationPlugin<
     logger: Logger,
   ) => Promise<{
     validate: () => Promisable<boolean>;
-    book(date: Date, overrides?: BookOverrides): Promisable<Result<Book<BookId>>>;
+    book(date: Date, overrides?: BookOverrides): Promisable<Result<Booking<BookId>>>;
     cancel(id: BookId): Promisable<Result<boolean>>;
   }>;
 };

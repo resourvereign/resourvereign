@@ -75,7 +75,7 @@ const PluginConfigForm = <T extends FieldValues>({
 
     return (
       <div key={name} className="field col-12">
-        <label htmlFor={name}>{definition.metadata?.label ?? toStartCase(name)}</label>
+        <label htmlFor={name}>{definition.metadata?.name ?? toStartCase(name)}</label>
         {renderControl()}
       </div>
     );

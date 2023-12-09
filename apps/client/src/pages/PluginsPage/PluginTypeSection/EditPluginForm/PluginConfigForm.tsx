@@ -3,6 +3,8 @@ import classNames from 'classnames';
 import { InputSwitch } from 'primereact/inputswitch';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
+import { Tooltip } from 'primereact/tooltip';
+import { createRef } from 'react';
 import { Control, Controller, FieldValues, UseFormRegister } from 'react-hook-form';
 
 import { PluginSchema } from '../../../../api/plugins';
@@ -21,6 +23,7 @@ const PluginConfigForm = <T extends FieldValues>({
   return Object.entries(schema.properties).map(([name, definition]) => {
     // TODO: try to find an alternative
     const controllerName = `config.${name}` as any;
+    const descriptonTriggerRef = createRef<HTMLElement>();
 
     const renderControl = () => {
       switch (definition.type) {
@@ -75,7 +78,15 @@ const PluginConfigForm = <T extends FieldValues>({
 
     return (
       <div key={name} className="field col-12">
-        <label htmlFor={name}>{definition.metadata?.name ?? toStartCase(name)}</label>
+        {definition.metadata?.description && (
+          <Tooltip target={descriptonTriggerRef} content={definition.metadata?.description} />
+        )}
+        <label htmlFor={name}>
+          {definition.metadata?.name ?? toStartCase(name)}
+          {definition.metadata?.description && (
+            <i className="pi pi-question-circle ml-2" ref={descriptonTriggerRef} />
+          )}
+        </label>
         {renderControl()}
       </div>
     );

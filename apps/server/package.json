@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@resourvereign/common": "1.0.0",
-    "@resourvereign/plugin-types": "3.2.0",
+    "@resourvereign/plugin-types": "3.3.0",
     "@slangy/mongo": "^3.0.1",
     "@slangy/server": "^2.1.1",
     "chalk": "^5.3.0",

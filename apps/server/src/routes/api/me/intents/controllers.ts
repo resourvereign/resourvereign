@@ -114,7 +114,7 @@ export const deleteIntent = controller<
     const integrationInstance = await getIntegrationInstanceFromIntent(intent);
 
     if (integrationInstance) {
-      const [result, err] = await integrationInstance.cancel(booking.id);
+      const [result, err] = await integrationInstance.cancel(booking);
       if (!err && result) {
         resultBody.cancelled = true;
       }

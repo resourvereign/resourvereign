@@ -20,6 +20,6 @@ export type IntegrationPlugin<
   ) => Promise<{
     validate: () => Promisable<boolean>;
     book(date: Date, overrides?: BookOverrides): Promisable<Result<Booking<BookId>>>;
-    cancel(id: BookId): Promisable<Result<boolean>>;
+    cancel(booking: Booking<BookId>): Promisable<Result<boolean>>;
   }>;
 };

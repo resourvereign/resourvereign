@@ -51,9 +51,9 @@
     "clean:install": "./scripts/clean-install.sh",
     "clean:build": "./scripts/clean-build.sh",
     "clean": "yarn run:parallel 'yarn clean:install' 'yarn clean:build'",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "dependencies": {
-    "husky": "^8.0.3"
+    "husky": "^9.0.10"
   }
 }

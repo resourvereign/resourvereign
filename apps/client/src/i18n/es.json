@@ -40,12 +40,10 @@
       }
     },
     "settings": {
-      "settings": {
-        "tabs": {
-          "integration": "Integraciones",
-          "scheduling": "Planificación",
-          "notifications": "Notificaciones"
-        }
+      "tabs": {
+        "integration": "Integraciones",
+        "scheduling": "Planificación",
+        "notifications": "Notificaciones"
       }
     },
     "logs": {

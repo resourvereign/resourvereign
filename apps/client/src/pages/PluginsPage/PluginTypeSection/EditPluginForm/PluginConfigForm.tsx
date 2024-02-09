@@ -23,7 +23,7 @@ const PluginConfigForm = <T extends FieldValues>({
   return Object.entries(schema.properties).map(([name, definition]) => {
     // TODO: try to find an alternative
     const controllerName = `config.${name}` as any;
-    const descriptonTriggerRef = createRef<HTMLElement>();
+    const descriptionTriggerRef = createRef<HTMLElement>();
 
     const renderControl = () => {
       switch (definition.type) {
@@ -53,9 +53,26 @@ const PluginConfigForm = <T extends FieldValues>({
         case 'uint8':
         case 'uint16':
         case 'uint32':
+          return (
+            <InputText
+              className="w-full mb-3"
+              {...register(controllerName, {
+                setValueAs: (value) => parseInt(value, 10),
+              })}
+              type="number"
+            />
+          );
         case 'float32':
         case 'float64':
-          return <InputText className="w-full mb-3" {...register(controllerName)} type="number" />;
+          return (
+            <InputText
+              className="w-full mb-3"
+              {...register(controllerName, {
+                setValueAs: (value) => parseFloat(value),
+              })}
+              type="number"
+            />
+          );
         case 'boolean':
           return (
             <Controller
@@ -79,12 +96,12 @@ const PluginConfigForm = <T extends FieldValues>({
     return (
       <div key={name} className="field col-12">
         {definition.metadata?.description && (
-          <Tooltip target={descriptonTriggerRef} content={definition.metadata?.description} />
+          <Tooltip target={descriptionTriggerRef} content={definition.metadata?.description} />
         )}
         <label htmlFor={name}>
           {definition.metadata?.name ?? toStartCase(name)}
           {definition.metadata?.description && (
-            <i className="pi pi-question-circle ml-2" ref={descriptonTriggerRef} />
+            <i className="pi pi-question-circle ml-2" ref={descriptionTriggerRef} />
           )}
         </label>
         {renderControl()}

@@ -46,6 +46,7 @@ const getNextDate = async (intent: IntentDocument, reason = SchedulingReason.int
     (addon) => addon.type === PluginType.Scheduling,
   ) as SchedulingUserPluginDocument[]) {
     const schedulingInstance = await getPluginInstanceFromUserPlugin(notificationPlugin);
+
     if (schedulingInstance) {
       middlewareChain.use(schedulingInstance.scheduleMiddleware);
     }
@@ -125,10 +126,12 @@ export const scheduleIntent = async (
           ) as NotificationsUserPluginDocument[]) {
             const notificationInstance = await getPluginInstanceFromUserPlugin(notificationPlugin);
 
-            // TODO: improve notification message
-            await notificationInstance?.notify(
-              `${intent.integration.label} successfully booked for ${intent.date}`,
-            );
+            await notificationInstance?.notify({
+              integration: intent.integration.label,
+              resource: result.description,
+              success: true,
+              date: intent.date,
+            });
           }
           disposer();
         } else {

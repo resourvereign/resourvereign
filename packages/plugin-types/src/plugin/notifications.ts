@@ -4,7 +4,7 @@ import { Logger } from '../logger.js';
 
 import { BasePlugin, DefaultPluginConfig } from './index.js';
 
-type ResultNotification = {
+export type ResultNotification = {
   integration: string;
   resource: string;
   success: boolean;

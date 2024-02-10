@@ -4,6 +4,13 @@ import { Logger } from '../logger.js';
 
 import { BasePlugin, DefaultPluginConfig } from './index.js';
 
+type ResultNotification = {
+  integration: string;
+  resource: string;
+  success: boolean;
+  date: Date;
+};
+
 export type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
   BasePlugin & {
     initialize: (
@@ -11,6 +18,6 @@ export type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPlug
       logger: Logger,
     ) => Promise<{
       validate: () => Promisable<boolean>;
-      notify(msg: string): Promise<boolean>;
+      notify(notification: ResultNotification): Promise<boolean>;
     }>;
   };

@@ -1,7 +1,7 @@
 {
   "name": "@resourvereign/plugin-types",
   "private": false,
-  "version": "3.5.1",
+  "version": "0.0.2",
   "author": {
     "name": "Dani Lupión",
     "email": "danilupion@gmail.com"

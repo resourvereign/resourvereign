@@ -1,25 +1,19 @@
 import { Promisable } from 'type-fest';
 
-import { Logger } from '../logger.js';
-
-import { BasePlugin, DefaultPluginConfig, Result } from './index.js';
+import { BasePlugin, DefaultPluginConfig, PluginInstance, Result } from './index.js';
 
 export type Booking<Id> = {
   id: Id;
   description: string;
 };
 
+type IntegrationInstance<BookId, Overrides> = PluginInstance & {
+  book(date: Date, overrides?: Overrides): Promisable<Result<Booking<BookId>>>;
+  cancel(booking: Booking<BookId>): Promisable<Result<boolean>>;
+};
+
 export type IntegrationPlugin<
   BookId,
   Config extends DefaultPluginConfig = DefaultPluginConfig,
-  BookOverrides extends Config = Config,
-> = BasePlugin & {
-  initialize: (
-    config: Config,
-    logger: Logger,
-  ) => Promise<{
-    validate: () => Promisable<boolean>;
-    book(date: Date, overrides?: BookOverrides): Promisable<Result<Booking<BookId>>>;
-    cancel(booking: Booking<BookId>): Promisable<Result<boolean>>;
-  }>;
-};
+  Overrides extends Config = Config,
+> = BasePlugin<Config, IntegrationInstance<BookId, Overrides>>;

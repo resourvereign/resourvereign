@@ -3,7 +3,7 @@ import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 import { PluginConfig } from '@resourvereign/common/models/userPlugin.js';
-import { PluginType } from '@resourvereign/plugin-types/plugin/index.js';
+import { Plugin, PluginSchema, PluginType } from '@resourvereign/plugin-types/plugin/index.js';
 import { IntegrationPlugin } from '@resourvereign/plugin-types/plugin/integration.js';
 import { NotificationsPlugin } from '@resourvereign/plugin-types/plugin/notifications.js';
 import { SchedulingPlugin } from '@resourvereign/plugin-types/plugin/scheduling.js';
@@ -18,12 +18,21 @@ const __dirname = dirname(__filename);
 
 const pluginPattern = 'resourvereign-plugin';
 
-type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string] | undefined;
+type PluginByType<T extends PluginType> = (typeof pluginRegistry)[T][string];
 
 const pluginRegistry = {
-  [PluginType.Integration]: {} as Record<string, IntegrationPlugin<unknown>>,
-  [PluginType.Notifications]: {} as Record<string, NotificationsPlugin>,
-  [PluginType.Scheduling]: {} as Record<string, SchedulingPlugin>,
+  [PluginType.Integration]: {} as Record<
+    string,
+    { schema: PluginSchema; factory: Awaited<ReturnType<IntegrationPlugin<unknown>['register']>> }
+  >,
+  [PluginType.Notifications]: {} as Record<
+    string,
+    { schema: PluginSchema; factory: Awaited<ReturnType<NotificationsPlugin['register']>> }
+  >,
+  [PluginType.Scheduling]: {} as Record<
+    string,
+    { schema: PluginSchema; factory: Awaited<ReturnType<SchedulingPlugin['register']>> }
+  >,
 };
 
 function findNodeModules(startDir: string) {
@@ -61,9 +70,11 @@ const importPlugins = async () => {
 
     await Promise.all(
       pluginModules.map(async (moduleName) => {
-        pluginRegistry[pluginType][moduleName.replace(pluginPrefix, '')] = (
-          await import(moduleName)
-        ).default;
+        const pluginModule = (await import(moduleName)).default as Plugin;
+        pluginRegistry[pluginType][moduleName.replace(pluginPrefix, '')] = {
+          schema: pluginModule.schema,
+          factory: await pluginModule.register(),
+        } as PluginByType<typeof pluginType>;
       }),
     );
   }
@@ -84,11 +95,11 @@ export const getAllPlugins = () =>
 export const isPluginAvailable = (type: PluginType, name: string) => !!pluginRegistry[type]?.[name];
 
 type PluginInstance<Type extends PluginType> = Type extends PluginType.Integration
-  ? ReturnType<IntegrationPlugin<unknown>['initialize']>
+  ? ReturnType<IntegrationPlugin<unknown>['register']>
   : Type extends PluginType.Notifications
-    ? ReturnType<NotificationsPlugin['initialize']>
+    ? ReturnType<NotificationsPlugin['register']>
     : Type extends PluginType.Scheduling
-      ? ReturnType<SchedulingPlugin['initialize']>
+      ? ReturnType<SchedulingPlugin['register']>
       : unknown;
 
 export const getPluginInstance = async <Type extends PluginType, Config extends PluginConfig>(
@@ -98,10 +109,7 @@ export const getPluginInstance = async <Type extends PluginType, Config extends 
   const plugin = getPlugin(params.type, params.name);
 
   if (plugin) {
-    return (await plugin.initialize(
-      { ...params.config },
-      loggerForUser(userId, params.name),
-    )) as PluginInstance<Type>;
+    return await plugin.factory({ ...params.config }, loggerForUser(userId, params.name));
   }
 
   return null;
@@ -113,7 +121,9 @@ export const getPluginInstanceFromUserPlugin = async <
 >(
   userPlugin: UserPluginType,
 ) => {
-  return (await getPluginInstance(userPlugin, userPlugin.user.toString())) as PluginInstance<Type>;
+  return (await getPluginInstance(userPlugin, userPlugin.user.toString())) as ReturnType<
+    Awaited<PluginInstance<Type>>
+  >;
 };
 
 export const getIntegrationInstanceFromIntent = async (intent: IntentDocument) => {

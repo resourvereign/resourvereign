@@ -130,7 +130,7 @@ export const scheduleIntent = async (
               integration: intent.integration.label,
               resource: result.description,
               success: true,
-              date: intent.date,
+              date: toTimezone(intent.date, intent.user.timezone),
             });
           }
           disposer();

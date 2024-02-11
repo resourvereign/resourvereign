@@ -1,4 +1,7 @@
 import { Type } from 'jtd';
+import { Promisable } from 'type-fest';
+
+import { Logger } from '../logger.js';
 
 import { IntegrationPlugin } from './integration.js';
 import { NotificationsPlugin } from './notifications.js';
@@ -38,8 +41,23 @@ export type DefaultPluginConfig = {
   [key: string]: unknown;
 };
 
-export type BasePlugin<Schema = PluginSchema> = {
+export type PluginInstance = {
+  validate: () => Promisable<boolean>;
+};
+
+export type PluginInitializer<Config extends DefaultPluginConfig, Plugin extends PluginInstance> = (
+  config: Config,
+  logger: Logger,
+) => Promisable<Plugin>;
+
+export type BasePlugin<
+  Config extends DefaultPluginConfig,
+  Plugin extends PluginInstance,
+  Schema extends PluginSchema = PluginSchema,
+> = {
   schema: Schema;
+  register: () => Promisable<PluginInitializer<Config, Plugin>>;
+  unregister: () => Promisable<void>;
 };
 
 export type Plugin = IntegrationPlugin<unknown> | NotificationsPlugin | SchedulingPlugin;

@@ -1,8 +1,6 @@
 import { Promisable } from 'type-fest';
 
-import { Logger } from '../logger.js';
-
-import { BasePlugin, DefaultPluginConfig } from './index.js';
+import { BasePlugin, DefaultPluginConfig, PluginInstance } from './index.js';
 
 export enum SchedulingReason {
   intentCreation = 'intentCreation',
@@ -17,16 +15,14 @@ export type ScheduleMiddlewareContext = {
   date?: Date;
 };
 
-export type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
-  BasePlugin & {
-    initialize: (
-      config: Config,
-      logger: Logger,
-    ) => Promise<{
-      validate: () => Promisable<boolean>;
-      scheduleMiddleware(
-        context: ScheduleMiddlewareContext,
-        next: () => Promisable<void>,
-      ): Promisable<void>;
-    }>;
-  };
+type SchedulingInstance = PluginInstance & {
+  scheduleMiddleware(
+    context: ScheduleMiddlewareContext,
+    next: () => Promisable<void>,
+  ): Promisable<void>;
+};
+
+export type SchedulingPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> = BasePlugin<
+  Config,
+  SchedulingInstance
+>;

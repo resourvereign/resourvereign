@@ -1,8 +1,4 @@
-import { Promisable } from 'type-fest';
-
-import { Logger } from '../logger.js';
-
-import { BasePlugin, DefaultPluginConfig } from './index.js';
+import { BasePlugin, DefaultPluginConfig, PluginInstance } from './index.js';
 
 export type ResultNotification = {
   integration: string;
@@ -11,13 +7,9 @@ export type ResultNotification = {
   date: Date;
 };
 
+type NotificationInstance = PluginInstance & {
+  notify(notification: ResultNotification): Promise<boolean>;
+};
+
 export type NotificationsPlugin<Config extends DefaultPluginConfig = DefaultPluginConfig> =
-  BasePlugin & {
-    initialize: (
-      config: Config,
-      logger: Logger,
-    ) => Promise<{
-      validate: () => Promisable<boolean>;
-      notify(notification: ResultNotification): Promise<boolean>;
-    }>;
-  };
+  BasePlugin<Config, NotificationInstance>;

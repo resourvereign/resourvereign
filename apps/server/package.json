@@ -9,7 +9,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "start:dev": "NODE_ENV=development nodemon --watch src --watch config -e ts,json --ignore '**/*.spec.*' --exec 'tsx --tsconfig tsconfig.dev.json ./src/server.ts'",
+    "start:dev": "TZ='America/New_York' NODE_ENV=development nodemon --watch src --watch config -e ts,json --ignore '**/*.spec.*' --exec 'tsx --tsconfig tsconfig.dev.json ./src/server.ts'",
     "start:prod": "tsx --tsconfig tsconfig.json ./src/server.ts",
     "build": "tsc -p tsconfig.json",
     "build:check": "tsc -p tsconfig.json --noEmit",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@resourvereign/common": "1.0.0",
-    "@resourvereign/plugin-types": "3.5.0",
+    "@resourvereign/plugin-types": "0.0.2",
     "@slangy/mongo": "^3.0.1",
     "@slangy/server": "^2.1.1",
     "chalk": "^5.3.0",
@@ -57,7 +57,7 @@
     "lint-staged": "^15.2.2",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.5",
-    "tsx": "^4.7.0",
+    "tsx": "^4.7.1",
     "typescript": "^5.3.3",
     "vitest": "^1.2.2"
   },

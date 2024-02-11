@@ -17,6 +17,8 @@ const __dirname = dirname(__filename);
 
 await initializePlugins();
 
+console.log(new Date().toString());
+
 await server({
   port: config.get<number>('server.port'),
   acceptJson: true,

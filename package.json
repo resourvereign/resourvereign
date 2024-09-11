@@ -45,7 +45,7 @@
     "build:server": "yarn workspace @resourvereign/server build",
     "build:libs": "yarn build:plugin-types && yarn build:common",
     "build:apps": "yarn run:parallel 'yarn build:client' 'yarn build:server'",
-    "build": "./scripts/build.sh",
+    "build": "ACTION=copy ./scripts/build.sh",
     "build:check": "yarn build:plugin-types && yarn build:check:common && yarn build:check:client && yarn build:check:server",
     "run:parallel": "./scripts/run-parallel.sh",
     "clean:install": "./scripts/clean-install.sh",

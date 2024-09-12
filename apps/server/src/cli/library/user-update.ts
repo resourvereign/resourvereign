@@ -28,7 +28,7 @@ export const handler = async (argv: UpdateUserOptions) => {
   const { email, password } = argv;
 
   try {
-    await connectMongoose();
+    await connectMongoose({ uri: process.env.MONGODB_URI });
     const user = await UserModel.findOne({
       email,
     });

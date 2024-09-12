@@ -1,4 +1,3 @@
-import * as console from 'console';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -17,8 +16,6 @@ const __dirname = dirname(__filename);
 
 await initializePlugins();
 
-console.log(new Date().toString());
-
 await server({
   port: config.get<number>('server.port'),
   acceptJson: true,
@@ -27,7 +24,7 @@ await server({
   spaFilePath: join(__dirname, 'public', 'index.html'),
   routes: [['/api', api]],
   init: async () => {
-    await connectMongoose();
+    await connectMongoose({ uri: process.env.MONGODB_URI });
   },
 })
   .then(() => {

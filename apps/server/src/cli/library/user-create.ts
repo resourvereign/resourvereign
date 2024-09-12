@@ -42,7 +42,7 @@ export const handler = async (argv: CreateUserOptions) => {
   const { username, email, password, timezone, admin } = argv;
 
   try {
-    await connectMongoose();
+    await connectMongoose({ uri: process.env.MONGODB_URI });
     await UserModel.create({
       username,
       email,
